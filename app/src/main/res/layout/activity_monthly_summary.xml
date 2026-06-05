@@ -22,18 +22,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="24dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="28dp">
 
             <!-- Month navigator -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -42,8 +42,8 @@
                     android:gravity="center_vertical"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp">
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
 
                     <ImageButton
                         android:id="@+id/btnPrevMonth"
@@ -79,18 +79,18 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="3dp"
                 app:cardBackgroundColor="@color/primary">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingTop="18dp"
-                    android:paddingBottom="18dp"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="22dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
                     android:gravity="center_vertical">
                     <LinearLayout
                         android:layout_width="0dp"
@@ -100,11 +100,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TOTAL EARNINGS"
-                            android:textColor="#AAFFFFFF"
-                            android:textSize="11sp"
+                            android:text="Total Earnings"
+                            android:textColor="#BBFFFFFF"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:letterSpacing="0.1"
                             android:paddingBottom="4dp" />
                         <TextView
                             android:id="@+id/tvTotalEarnings"
@@ -112,7 +111,7 @@
                             android:layout_height="wrap_content"
                             android:text="Rs. 0.00"
                             android:textColor="#FFFFFF"
-                            android:textSize="30sp"
+                            android:textSize="32sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
@@ -123,8 +122,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="AVG/DAY"
-                            android:textColor="#AAFFFFFF"
+                            android:text="Avg/Day"
+                            android:textColor="#BBFFFFFF"
                             android:textSize="10sp"
                             android:paddingBottom="2dp" />
                         <TextView
@@ -143,43 +142,43 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="18dp">
+                    android:padding="20dp">
 
                     <!-- Cow row -->
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🐄" android:textSize="18sp" android:layout_marginEnd="10dp" />
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Cow Milk" android:textColor="@color/text_primary" android:textSize="14sp" />
-                        <TextView android:id="@+id/tvCowTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/cow_color" android:textSize="15sp" android:textStyle="bold" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🐄" android:textSize="20sp" android:layout_marginEnd="12dp" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Cow Milk" android:textColor="@color/text_primary" android:textSize="15sp" />
+                        <TextView android:id="@+id/tvCowTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/cow_color" android:textSize="16sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <!-- Buffalo row -->
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🐃" android:textSize="18sp" android:layout_marginEnd="10dp" />
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Buffalo Milk" android:textColor="@color/text_primary" android:textSize="14sp" />
-                        <TextView android:id="@+id/tvBufTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/buffalo_color" android:textSize="15sp" android:textStyle="bold" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🐃" android:textSize="20sp" android:layout_marginEnd="12dp" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Buffalo Milk" android:textColor="@color/text_primary" android:textSize="15sp" />
+                        <TextView android:id="@+id/tvBufTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/buffalo_color" android:textSize="16sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <!-- Divider -->
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginBottom="12dp" />
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginBottom="14dp" />
 
                     <!-- Total liters -->
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="6dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Total Liters" android:textColor="@color/text_secondary" android:textSize="14sp" />
-                        <TextView android:id="@+id/tvTotalLiters" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/text_primary" android:textSize="15sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tvTotalLiters" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <!-- Days recorded -->
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Days Recorded" android:textColor="@color/text_secondary" android:textSize="14sp" />
-                        <TextView android:id="@+id/tvDaysRecorded" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 days" android:textColor="@color/text_primary" android:textSize="15sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tvDaysRecorded" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 days" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -188,7 +187,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DAILY RECORDS"
+                android:text="Daily Records"
                 style="@style/SectionLabel" />
 
             <TextView
@@ -197,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:text="No records this month."
                 android:gravity="center"
-                android:padding="24dp"
+                android:padding="28dp"
                 android:textSize="15sp"
                 android:textColor="@color/text_secondary"
                 android:visibility="gone" />

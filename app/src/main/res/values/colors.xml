@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand greens -->
-    <color name="primary">#1B8A3F</color>
-    <color name="primary_dark">#136B30</color>
-    <color name="primary_light">#D6F0DC</color>
-    <color name="primary_ultra_light">#F0FAF2</color>
-    <color name="accent">#F57F17</color>
-    <color name="accent_light">#FFF3E0</color>
+    <!-- Brand teal-greens -->
+    <color name="primary">#0D7C5F</color>
+    <color name="primary_dark">#095E48</color>
+    <color name="primary_light">#D4F0E7</color>
+    <color name="primary_ultra_light">#EDF8F3</color>
+    <color name="accent">#E8913A</color>
+    <color name="accent_light">#FFF5E6</color>
 
     <!-- Surfaces -->
-    <color name="background">#F5F7F5</color>
+    <color name="background">#F7F8FA</color>
     <color name="surface">#FFFFFF</color>
     <color name="card_bg">#FFFFFF</color>
-    <color name="divider">#E8EDE8</color>
+    <color name="divider">#E6EBE9</color>
 
     <!-- Text -->
-    <color name="text_primary">#1A2E1A</color>
-    <color name="text_secondary">#6B7D6B</color>
-    <color name="text_hint">#A0B0A0</color>
+    <color name="text_primary">#1A2B26</color>
+    <color name="text_secondary">#607D72</color>
+    <color name="text_hint">#9BB0A6</color>
     <color name="text_on_primary">#FFFFFF</color>
     <color name="text_on_accent">#FFFFFF</color>
 
     <!-- Semantic -->
-    <color name="earnings_color">#1B8A3F</color>
+    <color name="earnings_color">#0D7C5F</color>
     <color name="pending_color">#D32F2F</color>
-    <color name="paid_color">#1B8A3F</color>
-    <color name="cow_color">#1565C0</color>
-    <color name="buffalo_color">#7B1FA2</color>
+    <color name="paid_color">#0D7C5F</color>
+    <color name="cow_color">#2979B5</color>
+    <color name="buffalo_color">#7E57A8</color>
 
     <!-- Input fields -->
-    <color name="input_bg">#F8FBF8</color>
-    <color name="input_stroke">#C8D8C8</color>
+    <color name="input_bg">#F5F9F7</color>
+    <color name="input_stroke">#C2D5CC</color>
 </resources>

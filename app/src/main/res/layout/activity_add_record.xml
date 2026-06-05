@@ -24,45 +24,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="28dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="32dp">
 
             <!-- Date picker -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DATE"
+                android:text="Date"
                 style="@style/SectionLabel" />
 
             <Button
                 android:id="@+id/btnDate"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="18dp"
                 android:text="Select Date"
                 android:backgroundTint="@color/primary_light"
                 android:textColor="@color/primary_dark"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                app:cornerRadius="12dp"
+                app:cornerRadius="14dp"
                 android:elevation="0dp" />
 
             <!-- COW MILK CARD -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <!-- Header row -->
                     <LinearLayout
@@ -70,19 +70,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:paddingBottom="12dp">
+                        android:paddingBottom="14dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="🐄"
-                            android:textSize="22sp"
-                            android:layout_marginEnd="8dp" />
+                            android:textSize="24sp"
+                            android:layout_marginEnd="10dp" />
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Cow Milk"
-                            android:textSize="15sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/cow_color" />
                         <TextView
@@ -141,35 +141,35 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:paddingBottom="12dp">
+                        android:paddingBottom="14dp">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="🐃"
-                            android:textSize="22sp"
-                            android:layout_marginEnd="8dp" />
+                            android:textSize="24sp"
+                            android:layout_marginEnd="10dp" />
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Buffalo Milk"
-                            android:textSize="15sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/buffalo_color" />
                         <TextView
@@ -227,18 +227,18 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="3dp"
                 app:cardBackgroundColor="@color/primary">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
+                    android:paddingStart="22dp"
+                    android:paddingEnd="22dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp"
                     android:gravity="center_vertical">
                     <LinearLayout
                         android:layout_width="0dp"
@@ -248,11 +248,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="GRAND TOTAL"
-                            android:textColor="#AAFFFFFF"
-                            android:textSize="11sp"
+                            android:text="Grand Total"
+                            android:textColor="#BBFFFFFF"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:letterSpacing="0.1"
                             android:paddingBottom="2dp" />
                         <TextView
                             android:id="@+id/tvGrandTotal"
@@ -267,8 +266,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="✓"
-                        android:textColor="#AAFFFFFF"
-                        android:textSize="28sp" />
+                        android:textColor="#BBFFFFFF"
+                        android:textSize="30sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -276,7 +275,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="18dp"
                 android:hint="Note (optional)"
                 style="@style/InputField">
                 <com.google.android.material.textfield.TextInputEditText
@@ -297,7 +296,7 @@
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:backgroundTint="@color/primary"
-                app:cornerRadius="14dp" />
+                app:cornerRadius="16dp" />
 
         </LinearLayout>
     </ScrollView>

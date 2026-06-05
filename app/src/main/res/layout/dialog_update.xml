@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/ivUpdateIcon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_marginBottom="12dp"
             android:src="@drawable/ic_milk_drop"
             app:tint="@color/primary"
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Update Available"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:gravity="center" />
@@ -36,11 +36,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="A new version of Milk Diary is available."
-            android:textSize="14sp"
+            android:text="A new version of Milk Diary is ready to install."
+            android:textSize="13sp"
             android:textColor="@color/text_secondary"
             android:gravity="center"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="2dp" />
     </LinearLayout>
 
     <!-- Version Comparison Box -->
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/primary_ultra_light">
 
@@ -68,8 +68,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="INSTALLED"
-                    android:textSize="10sp"
+                    android:text="CURRENT"
+                    android:textSize="9sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_secondary"
                     android:letterSpacing="0.05" />
@@ -78,15 +78,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1.0"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginTop="2dp" />
+                    android:layout_marginTop="1dp" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:src="@android:drawable/ic_media_play"
                 app:tint="@color/text_secondary"
                 android:contentDescription="arrow" />
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LATEST"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
                     android:letterSpacing="0.05" />
@@ -110,31 +110,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1.1.0"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary"
-                    android:layout_marginTop="2dp" />
+                    android:layout_marginTop="1dp" />
             </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Release Notes ScrollView -->
+    <!-- Release Notes Box -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="WHAT'S NEW"
-        android:textSize="11sp"
+        android:textSize="10sp"
         android:textStyle="bold"
         android:textColor="@color/text_secondary"
         android:letterSpacing="0.08"
-        android:layout_marginBottom="6dp" />
+        android:layout_marginBottom="4dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="120dp"
-        android:layout_marginBottom="20dp"
+        android:maxHeight="100dp"
+        android:layout_marginBottom="16dp"
         android:scrollbars="vertical"
         android:background="@drawable/card_rounded"
         android:padding="10dp">
@@ -158,9 +158,9 @@
         <Button
             android:id="@+id/btnUpdateNow"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:text="Update Now"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:backgroundTint="@color/primary"
             app:cornerRadius="10dp"
@@ -169,9 +169,9 @@
         <Button
             android:id="@+id/btnUpdateLater"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:text="Later"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textColor="@color/primary"
             android:backgroundTint="@android:color/transparent"
             app:strokeColor="@color/primary"
@@ -179,5 +179,16 @@
             app:cornerRadius="10dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
     </LinearLayout>
+
+    <!-- Developer Credit (Nabin Thapa) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Developed by Nabin Thapa"
+        android:gravity="center"
+        android:textSize="11sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="12dp"
+        android:alpha="0.8" />
 
 </LinearLayout>
