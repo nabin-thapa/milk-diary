@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#2E7D32</color>
+    <color name="primary_light">#1B3A1F</color>
+    <color name="primary_ultra_light">#0F1F11</color>
+    <color name="accent">#FFB300</color>
+    <color name="accent_light">#2D2200</color>
+    <color name="background">#0F1410</color>
+    <color name="surface">#1A211A</color>
+    <color name="card_bg">#1E271E</color>
+    <color name="divider">#2A352A</color>
+    <color name="text_primary">#E8F5E9</color>
+    <color name="text_secondary">#8FAF8F</color>
+    <color name="text_hint">#4A6A4A</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_accent">#000000</color>
+    <color name="earnings_color">#66BB6A</color>
+    <color name="pending_color">#EF9A9A</color>
+    <color name="paid_color">#66BB6A</color>
+    <color name="cow_color">#90CAF9</color>
+    <color name="buffalo_color">#CE93D8</color>
+    <color name="input_bg">#1A211A</color>
+    <color name="input_stroke">#2E4A2E</color>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Milk Diary</string>
+    <string name="today_cow_milk">Today\'s Cow Milk</string>
+    <string name="today_buffalo_milk">Today\'s Buffalo Milk</string>
+    <string name="today_earnings">Today\'s Earnings</string>
+    <string name="monthly_milk">Monthly Milk</string>
+    <string name="monthly_earnings">Monthly Earnings</string>
+    <string name="pending_payment">Pending Payment</string>
+    <string name="add_record">Add Daily Record</string>
+    <string name="history">History</string>
+    <string name="monthly_summary">Monthly Summary</string>
+    <string name="payments">Payments</string>
+    <string name="settings">Settings</string>
+    <string name="save">Save Record</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="backup">Backup Database</string>
+    <string name="restore">Restore Data</string>
+    <string name="export_csv">Export CSV</string>
+</resources>

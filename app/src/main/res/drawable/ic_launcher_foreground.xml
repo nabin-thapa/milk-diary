@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simple milk drop icon for launcher foreground -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Milk drop shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,20 C54,20 34,50 34,65 C34,76 43,84 54,84 C65,84 74,76 74,65 C74,50 54,20 54,20 Z" />
+    <!-- Cow spots -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M45,60 C45,60 48,55 52,58 C56,61 53,66 49,65 C46,64 44,62 45,60 Z" />
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M58,68 C58,68 61,63 65,66 C69,69 66,74 62,73 C59,72 57,70 58,68 Z" />
+</vector>

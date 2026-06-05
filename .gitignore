@@ -1,0 +1,38 @@
+# Gradle build files
+.gradle/
+build/
+app/build/
+app/build.gradle.user
+
+# Local configuration files
+local.properties
+
+# Log files
+*.log
+
+# Android Studio temporary files
+.idea/
+*.iml
+*.ipr
+*.iws
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Generated files
+bin/
+gen/
+out/
+
+# Keystores
+*.jks
+*.keystore
+
+# Device databases
+*.db
+*.db-journal
+
+# Temp files
+*.tmp
+*.temp
