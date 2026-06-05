@@ -37,7 +37,7 @@ import java.util.concurrent.Executors;
 public class UpdateManager {
 
     // Default configuration URL. Change this to your raw GitHub Pages or Firebase URL
-    public static String UPDATE_JSON_URL = "https://raw.githubusercontent.com/username/milk-diary/main/version.json";
+    public static String UPDATE_JSON_URL = "https://raw.githubusercontent.com/nabin-thapa/milk-diary/main/version.json";
     
     private static final String PREF_LAST_CHECK_TIME = "last_update_check_time";
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
