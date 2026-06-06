@@ -21,13 +21,13 @@ public class RoleSetupActivity extends AppCompatActivity {
 
         RoleManager roleManager = new RoleManager(this);
 
-        binding.btnOwner.setOnClickListener(v -> {
-            roleManager.setRole(RoleManager.ROLE_OWNER);
+        binding.btnDairy.setOnClickListener(v -> {
+            roleManager.setRole(RoleManager.ROLE_DAIRY);
             proceedToDashboard();
         });
 
-        binding.btnSalesman.setOnClickListener(v -> {
-            roleManager.setRole(RoleManager.ROLE_SALESMAN);
+        binding.btnSupplier.setOnClickListener(v -> {
+            roleManager.setRole(RoleManager.ROLE_SUPPLIER);
             proceedToDashboard();
         });
     }

@@ -42,10 +42,10 @@
         android:paddingBottom="24dp" />
 
     <Button
-        android:id="@+id/btnOwner"
+        android:id="@+id/btnDairy"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="👑  I am the Owner"
+        android:text="👑  I am the Dairy Owner"
         android:textSize="16sp"
         android:textStyle="bold"
         android:backgroundTint="@color/primary"
@@ -54,10 +54,10 @@
         android:layout_marginBottom="12dp" />
 
     <Button
-        android:id="@+id/btnSalesman"
+        android:id="@+id/btnSupplier"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="🛒  I am a Salesman"
+        android:text="🥛  I am a Milk Supplier"
         android:textSize="16sp"
         android:textStyle="bold"
         android:backgroundTint="@color/accent"

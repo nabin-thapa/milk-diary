@@ -28,7 +28,7 @@ public class AddSaleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RoleManager.requireOwner(this);
+        RoleManager.requireDairy(this);
         binding = ActivityAddSaleBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);

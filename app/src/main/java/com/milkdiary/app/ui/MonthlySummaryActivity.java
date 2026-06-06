@@ -35,7 +35,7 @@ public class MonthlySummaryActivity extends AppCompatActivity implements RecordA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RoleManager.requireOwner(this);
+        RoleManager.requireDairy(this);
         binding = ActivityMonthlySummaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);

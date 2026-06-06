@@ -136,12 +136,14 @@
 
             <!-- Record Payment -->
             <TextView
+                android:id="@+id/labelRecordPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="RECORD PAYMENT"
                 style="@style/SectionLabel" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/sectionRecordPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"

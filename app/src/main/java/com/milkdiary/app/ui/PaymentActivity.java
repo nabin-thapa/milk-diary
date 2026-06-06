@@ -44,7 +44,6 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RoleManager.requireOwner(this);
         binding = ActivityPaymentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -58,10 +57,20 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
         supplierDao = new SupplierDao(this);
         selectedDate = DateUtils.todayDb();
 
-        setupTabs();
+        RoleManager roleManager = new RoleManager(this);
+        if (roleManager.isSupplier()) {
+            // Supplier view: only supplier payments, read-only
+            binding.tabCustomerPayments.setVisibility(View.GONE);
+            binding.tabSupplierPayments.performClick();
+            binding.labelRecordPayment.setVisibility(View.GONE);
+            binding.sectionRecordPayment.setVisibility(View.GONE);
+        } else {
+            setupTabs();
+            setupAddButton();
+        }
+
         setupSupplierDropdown();
         setupDatePicker();
-        setupAddButton();
 
         binding.recyclerPayments.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PaymentAdapter(this);

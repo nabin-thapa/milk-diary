@@ -52,12 +52,11 @@ public class DashboardActivity extends AppCompatActivity {
             return;
         }
 
-        // Hide owner-only sections for Salesman
-        if (roleManager.isSalesman()) {
+        // Hide dairy-only sections for Milk Supplier
+        if (roleManager.isSupplier()) {
             binding.btnSuppliers.setVisibility(View.GONE);
             binding.btnSales.setVisibility(View.GONE);
             binding.btnInventory.setVisibility(View.GONE);
-            binding.btnPayments.setVisibility(View.GONE);
             binding.btnMonthlySummary.setVisibility(View.GONE);
             binding.sectionThisMonth.setVisibility(View.GONE);
         }

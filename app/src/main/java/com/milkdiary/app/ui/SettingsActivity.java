@@ -92,14 +92,14 @@ public class SettingsActivity extends AppCompatActivity {
     private void setupRoleSection() {
         binding.tvRoleValue.setText(roleManager.getRoleDisplayName());
         binding.btnSwitchRole.setOnClickListener(v -> {
-            if (!roleManager.isOwner()) {
-                Toast.makeText(this, "Only the Owner can change role.", Toast.LENGTH_SHORT).show();
+            if (!roleManager.isDairy()) {
+                Toast.makeText(this, "Only the Dairy owner can change role.", Toast.LENGTH_SHORT).show();
                 return;
             }
             new androidx.appcompat.app.AlertDialog.Builder(this)
                     .setTitle("Switch Role")
-                    .setItems(new String[]{"Owner", "Salesman"}, (dialog, which) -> {
-                        String newRole = which == 0 ? RoleManager.ROLE_OWNER : RoleManager.ROLE_SALESMAN;
+                    .setItems(new String[]{"Dairy", "Milk Supplier"}, (dialog, which) -> {
+                        String newRole = which == 0 ? RoleManager.ROLE_DAIRY : RoleManager.ROLE_SUPPLIER;
                         roleManager.setRole(newRole);
                         binding.tvRoleValue.setText(roleManager.getRoleDisplayName());
                         Toast.makeText(this,

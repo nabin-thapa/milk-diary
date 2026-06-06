@@ -7,8 +7,8 @@ import androidx.preference.PreferenceManager;
 
 public class RoleManager {
 
-    public static final String ROLE_OWNER = "owner";
-    public static final String ROLE_SALESMAN = "salesman";
+    public static final String ROLE_DAIRY = "dairy";
+    public static final String ROLE_SUPPLIER = "supplier";
 
     private static final String KEY_ROLE = "user_role";
     private static final String KEY_ROLE_SET = "role_initialized";
@@ -23,16 +23,16 @@ public class RoleManager {
         return prefs.getBoolean(KEY_ROLE_SET, false);
     }
 
-    public boolean isOwner() {
-        return ROLE_OWNER.equals(prefs.getString(KEY_ROLE, ROLE_OWNER));
+    public boolean isDairy() {
+        return ROLE_DAIRY.equals(prefs.getString(KEY_ROLE, ROLE_DAIRY));
     }
 
-    public boolean isSalesman() {
-        return ROLE_SALESMAN.equals(prefs.getString(KEY_ROLE, ROLE_OWNER));
+    public boolean isSupplier() {
+        return ROLE_SUPPLIER.equals(prefs.getString(KEY_ROLE, ROLE_DAIRY));
     }
 
     public String getRole() {
-        return prefs.getString(KEY_ROLE, ROLE_OWNER);
+        return prefs.getString(KEY_ROLE, ROLE_DAIRY);
     }
 
     public void setRole(String role) {
@@ -43,15 +43,15 @@ public class RoleManager {
     }
 
     public String getRoleDisplayName() {
-        if (isOwner()) return "Owner";
-        return "Salesman";
+        if (isDairy()) return "Dairy";
+        return "Milk Supplier";
     }
 
-    public static void requireOwner(android.content.Context context) {
+    public static void requireDairy(android.content.Context context) {
         RoleManager rm = new RoleManager(context);
-        if (rm.isSalesman()) {
+        if (rm.isSupplier()) {
             android.widget.Toast.makeText(context,
-                    "Only the Owner can access this section.",
+                    "Only the Dairy owner can access this section.",
                     android.widget.Toast.LENGTH_SHORT).show();
             if (context instanceof android.app.Activity) {
                 ((android.app.Activity) context).finish();

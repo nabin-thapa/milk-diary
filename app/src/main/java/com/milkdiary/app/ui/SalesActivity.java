@@ -26,7 +26,7 @@ public class SalesActivity extends AppCompatActivity implements SalesAdapter.Sal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RoleManager.requireOwner(this);
+        RoleManager.requireDairy(this);
         binding = ActivitySalesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);

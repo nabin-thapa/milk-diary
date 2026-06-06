@@ -83,8 +83,8 @@ public class HistoryActivity extends AppCompatActivity implements RecordAdapter.
 
     @Override
     public void onEditRecord(MilkRecord record) {
-        if (new RoleManager(this).isSalesman()) {
-            Toast.makeText(this, "View only - Salesman cannot edit records",
+        if (new RoleManager(this).isSupplier()) {
+            Toast.makeText(this, "View only - Milk Supplier cannot edit records",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -95,8 +95,8 @@ public class HistoryActivity extends AppCompatActivity implements RecordAdapter.
 
     @Override
     public void onDeleteRecord(MilkRecord record) {
-        if (new RoleManager(this).isSalesman()) {
-            Toast.makeText(this, "View only - Salesman cannot delete records",
+        if (new RoleManager(this).isSupplier()) {
+            Toast.makeText(this, "View only - Milk Supplier cannot delete records",
                     Toast.LENGTH_SHORT).show();
             return;
         }
