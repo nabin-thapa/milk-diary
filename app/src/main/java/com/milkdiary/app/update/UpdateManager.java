@@ -2,14 +2,12 @@ package com.milkdiary.app.update;
 
 import android.app.Activity;
 import android.app.DownloadManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -28,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.milkdiary.app.R;
@@ -36,9 +35,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
@@ -339,6 +336,10 @@ public class UpdateManager {
                 return;
             }
 
+            // Delete any stale APK before downloading fresh
+            File oldApk = new File(activity.getExternalFilesDir(null), "MilkDiary-update.apk");
+            if (oldApk.exists()) oldApk.delete();
+
             Uri uri = Uri.parse(apkUrl);
             DownloadManager.Request request = new DownloadManager.Request(uri);
             request.setTitle("Milk Diary Update");
@@ -398,38 +399,19 @@ public class UpdateManager {
                 return;
             }
 
-            PackageInstaller packageInstaller = context.getPackageManager().getPackageInstaller();
-            PackageInstaller.SessionParams params = new PackageInstaller.SessionParams(
-                    PackageInstaller.SessionParams.MODE_FULL_INSTALL);
-            params.setAppPackageName(context.getPackageName());
-            params.setSize(apkFile.length());
+            Uri apkUri = FileProvider.getUriForFile(context,
+                    context.getPackageName() + ".fileprovider", apkFile);
 
-            int sessionId = packageInstaller.createSession(params);
-            PackageInstaller.Session session = packageInstaller.openSession(sessionId);
+            Intent installIntent = new Intent(Intent.ACTION_VIEW);
+            installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            try (OutputStream out = session.openWrite("base.apk", 0, apkFile.length());
-                 FileInputStream in = new FileInputStream(apkFile)) {
-                byte[] buffer = new byte[8192];
-                int len;
-                while ((len = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, len);
-                }
-                session.fsync(out);
-            }
+            context.startActivity(installIntent);
 
-            Intent intent = new Intent(context, UpdateInstallReceiver.class);
-            int flags = PendingIntent.FLAG_UPDATE_CURRENT;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                flags |= PendingIntent.FLAG_IMMUTABLE;
-            }
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, flags);
-
-            session.commit(pendingIntent.getIntentSender());
-
-            Toast.makeText(context, "Installing update...", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Opening installer...", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Failed to install: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Failed to launch installer: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

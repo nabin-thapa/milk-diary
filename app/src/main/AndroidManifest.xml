@@ -76,10 +76,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <receiver
-            android:name=".update.UpdateInstallReceiver"
-            android:exported="false" />
-
     </application>
 
 </manifest>
