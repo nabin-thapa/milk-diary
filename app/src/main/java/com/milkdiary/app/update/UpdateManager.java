@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -322,6 +323,10 @@ public class UpdateManager {
     }
 
     private static void downloadAndInstallApk(final Activity activity, String apkUrl) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !activity.getPackageManager().canRequestPackageInstalls()) {
+            showInstallPermissionDialog(activity, apkUrl);
+            return;
+        }
         try {
             DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
             if (dm == null) {
@@ -411,6 +416,38 @@ public class UpdateManager {
             case DownloadManager.ERROR_CANNOT_RESUME: return "Cannot resume";
             default: return "Unknown error (" + reason + ")";
         }
+    }
+
+    private static void showInstallPermissionDialog(Activity activity, String apkUrl) {
+        PreferenceManager.getDefaultSharedPreferences(activity)
+            .edit().putString("pending_apk_url", apkUrl).apply();
+
+        new AlertDialog.Builder(activity)
+            .setTitle("Install Updates")
+            .setMessage("Milk Diary needs a one-time permission to install updates.\n\n" +
+                "Your data stays on this device and is never shared. Tap 'Allow' to continue.")
+            .setPositiveButton("Allow", (d, w) -> {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                intent.setData(Uri.parse("package:" + activity.getPackageName()));
+                activity.startActivity(intent);
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
+    }
+
+    public static void retryPendingDownload(Activity activity) {
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        String pendingUrl = prefs.getString("pending_apk_url", null);
+        if (pendingUrl == null) return;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !activity.getPackageManager().canRequestPackageInstalls()) {
+            return;
+        }
+
+        prefs.edit().remove("pending_apk_url").apply();
+        downloadAndInstallApk(activity, pendingUrl);
     }
 
     private static void saveLastCheckResult(Context context, String status) {

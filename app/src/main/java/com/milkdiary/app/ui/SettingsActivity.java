@@ -67,6 +67,12 @@ public class SettingsActivity extends AppCompatActivity {
         initUpdateSection();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        com.milkdiary.app.update.UpdateManager.retryPendingDownload(this);
+    }
+
     private void loadDefaultRates() {
         float cowRate = prefs.getFloat(AddRecordActivity.PREF_COW_RATE, 0f);
         float bufRate = prefs.getFloat(AddRecordActivity.PREF_BUF_RATE, 0f);
