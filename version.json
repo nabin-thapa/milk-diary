@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.1.0",
-  "versionCode": 101,
+  "latestVersion": "2.2.0",
+  "versionCode": 102,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "• Dairy Management System v2 - Major upgrade\n• Dual role system (Owner / Salesman)\n• Supplier management with rates tracking\n• Sales management with customer types\n• Enhanced milk entry (supplier link, fat%)\n• Dual payment tracking (customer + supplier)\n• Daily inventory management\n• Expanded monthly reports with financial summary\n• Salesman role with restricted access\n• Database v4 migration (zero data loss)\n• Bug fixes and performance improvements",
+  "releaseNotes": "• Switch Role System - Dairy Owner vs Milk Supplier\n• Dairy Owner: full access (suppliers, sales, inventory, payments)\n• Milk Supplier: add records, view history, view supplier payments\n• Improved role setup screen with clearer role names\n• Settings now shows Dairy / Milk Supplier for role switch",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }

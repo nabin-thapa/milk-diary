@@ -10,8 +10,8 @@ android {
         applicationId "com.milkdiary.app"
         minSdk 21
         targetSdk 34
-        versionCode 101
-        versionName "2.1.0"
+        versionCode 102
+        versionName "2.2.0"
     }
 
     buildTypes {
