@@ -1,7 +1,10 @@
 package com.milkdiary.app.update;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -11,6 +14,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceManager;
 
 import com.milkdiary.app.R;
@@ -28,6 +33,7 @@ import com.milkdiary.app.R;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -291,15 +297,8 @@ public class UpdateManager {
         final boolean isForced = updateInfo.isForceUpdate() || currentCode < updateInfo.getMinimumSupportedVersion();
 
         btnUpdate.setOnClickListener(v -> {
-            try {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo.getApkUrl()));
-                activity.startActivity(browserIntent);
-            } catch (Exception e) {
-                Toast.makeText(activity, "Unable to open download link.", Toast.LENGTH_SHORT).show();
-            }
-            if (!isForced) {
-                dialog.dismiss();
-            }
+            dialog.dismiss();
+            downloadAndInstallApk(activity, updateInfo.getApkUrl());
         });
 
         if (isForced) {
@@ -311,6 +310,98 @@ public class UpdateManager {
         }
 
         dialog.show();
+    }
+
+    private static void downloadAndInstallApk(final Activity activity, String apkUrl) {
+        try {
+            DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+            if (dm == null) {
+                Toast.makeText(activity, "Download service not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Uri uri = Uri.parse(apkUrl);
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setTitle("Milk Diary Update");
+            request.setDescription("Downloading latest version...");
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setMimeType("application/vnd.android.package-archive");
+            request.setDestinationInExternalFilesDir(activity, null, "MilkDiary-update.apk");
+
+            final long downloadId = dm.enqueue(request);
+            final Context appContext = activity.getApplicationContext();
+
+            BroadcastReceiver onComplete = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                    if (id != downloadId) return;
+
+                    appContext.unregisterReceiver(this);
+
+                    DownloadManager.Query query = new DownloadManager.Query();
+                    query.setFilterById(downloadId);
+                    try (Cursor c = dm.query(query)) {
+                        if (c != null && c.moveToFirst()) {
+                            int status = c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS));
+                            if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                                installApk(activity);
+                            } else {
+                                int reason = c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON));
+                                Toast.makeText(activity, "Download failed: " + getDownloadErrorString(reason), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(activity, "Download verification failed", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                appContext.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+            } else {
+                appContext.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            }
+
+            Toast.makeText(activity, "Downloading update...", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(activity, "Failed to start download: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private static void installApk(Context context) {
+        try {
+            File apkFile = new File(context.getExternalFilesDir(null), "MilkDiary-update.apk");
+            if (!apkFile.exists()) {
+                Toast.makeText(context, "Downloaded file not found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Uri fileUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", apkFile);
+            Intent installIntent = new Intent(Intent.ACTION_VIEW);
+            installIntent.setDataAndType(fileUri, "application/vnd.android.package-archive");
+            installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(installIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Failed to install: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private static String getDownloadErrorString(int reason) {
+        switch (reason) {
+            case DownloadManager.ERROR_FILE_ERROR: return "File error";
+            case DownloadManager.ERROR_UNHANDLED_HTTP_CODE: return "Server error";
+            case DownloadManager.ERROR_HTTP_DATA_ERROR: return "Network error";
+            case DownloadManager.ERROR_TOO_MANY_REDIRECTS: return "Redirect error";
+            case DownloadManager.ERROR_INSUFFICIENT_SPACE: return "Insufficient space";
+            case DownloadManager.ERROR_DEVICE_NOT_FOUND: return "Device not found";
+            case DownloadManager.ERROR_CANNOT_RESUME: return "Cannot resume";
+            default: return "Unknown error (" + reason + ")";
+        }
     }
 
     private static void saveLastCheckResult(Context context, String status) {
