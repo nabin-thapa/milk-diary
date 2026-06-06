@@ -17,5 +17,6 @@
     <string name="backup">Backup Database</string>
     <string name="restore">Restore Data</string>
     <string name="export_csv">Export CSV</string>
-    <string name="developer_credit">Made with ❤ by Nabin Thapa</string>
+    <string name="developer_credit">Developer Name - Nabin Thapa</string>
+    <string name="developer_credit_heart">Made with ❤ by Nabin Thapa</string>
 </resources>
