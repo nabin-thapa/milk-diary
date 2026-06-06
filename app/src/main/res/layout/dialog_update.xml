@@ -159,12 +159,13 @@
             android:id="@+id/btnUpdateNow"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Update Now"
+            android:text="⬇  Update Now"
             android:textSize="14sp"
             android:textStyle="bold"
             android:backgroundTint="@color/primary"
-            app:cornerRadius="10dp"
-            android:layout_marginBottom="8dp" />
+            app:cornerRadius="12dp"
+            android:layout_marginBottom="8dp"
+            android:stateListAnimator="@null" />
 
         <Button
             android:id="@+id/btnUpdateLater"

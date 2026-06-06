@@ -85,13 +85,14 @@
                 android:layout_height="wrap_content"
                 android:text="Record Payment"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="18dp"
-                app:cardElevation="1dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,14 +103,15 @@
                     <Button
                         android:id="@+id/btnPayDate"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="50dp"
                         android:layout_marginBottom="14dp"
+                        android:text="📅  Select Date"
                         android:backgroundTint="@color/primary_light"
                         android:textColor="@color/primary_dark"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         app:cornerRadius="14dp"
-                        android:elevation="0dp" />
+                        android:stateListAnimator="@null" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -143,11 +145,12 @@
                         android:id="@+id/btnAddPayment"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
-                        android:text="Add Payment"
+                        android:text="＋  Add Payment"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:backgroundTint="@color/accent"
-                        app:cornerRadius="14dp" />
+                        app:cornerRadius="14dp"
+                        android:stateListAnimator="@null" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -157,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="Payment History"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <TextView
                 android:id="@+id/tvNoPayments"

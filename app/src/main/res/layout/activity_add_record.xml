@@ -35,19 +35,20 @@
                 android:layout_height="wrap_content"
                 android:text="Date"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <Button
                 android:id="@+id/btnDate"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="18dp"
-                android:text="Select Date"
+                android:layout_height="52dp"
+                android:layout_marginBottom="20dp"
+                android:text="📅  Select Date"
                 android:backgroundTint="@color/primary_light"
                 android:textColor="@color/primary_dark"
                 android:textStyle="bold"
                 android:textSize="15sp"
                 app:cornerRadius="14dp"
-                android:elevation="0dp" />
+                android:stateListAnimator="@null" />
 
             <!-- COW MILK CARD -->
             <androidx.cardview.widget.CardView
@@ -275,7 +276,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
+                android:layout_marginBottom="20dp"
                 android:hint="Note (optional)"
                 style="@style/InputField">
                 <com.google.android.material.textfield.TextInputEditText
@@ -291,12 +292,13 @@
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:text="Save Record"
+                android:layout_height="56dp"
+                android:text="💾  Save Record"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:backgroundTint="@color/primary"
-                app:cornerRadius="16dp" />
+                app:cornerRadius="16dp"
+                android:stateListAnimator="@null" />
 
         </LinearLayout>
     </ScrollView>

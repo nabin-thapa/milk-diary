@@ -189,6 +189,7 @@
                 android:layout_height="wrap_content"
                 android:text="Daily Records"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <TextView
                 android:id="@+id/tvNoData"

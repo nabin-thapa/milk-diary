@@ -30,13 +30,14 @@
                 android:layout_height="wrap_content"
                 android:text="APPEARANCE"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/card_bg">
 
                 <LinearLayout
@@ -67,13 +68,14 @@
                 android:layout_height="wrap_content"
                 android:text="DEFAULT MILK RATES"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/card_bg">
 
                 <LinearLayout
@@ -101,7 +103,7 @@
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:hint="🐄 Cow Rate (Rs/L)"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            style="@style/InputField">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etDefaultCowRate"
@@ -117,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="🐃 Buffalo Rate (Rs/L)"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                            style="@style/InputField">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etDefaultBufRate"
@@ -171,13 +173,14 @@
                 android:layout_height="wrap_content"
                 android:text="APP UPDATES"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/card_bg">
 
                 <LinearLayout
@@ -263,7 +266,10 @@
                         android:layout_height="56dp"
                         android:text="🔄  Check for Updates"
                         android:textSize="15sp"
-                        android:backgroundTint="@color/primary" />
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/primary"
+                        app:cornerRadius="14dp"
+                        android:stateListAnimator="@null" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -273,6 +279,7 @@
                 android:layout_height="wrap_content"
                 android:text="DATA MANAGEMENT"
                 style="@style/SectionLabel" />
+            <View style="@style/SectionDivider" />
 
             <Button
                 android:id="@+id/btnBackup"
@@ -281,7 +288,10 @@
                 android:layout_marginBottom="10dp"
                 android:text="📤  Backup Database"
                 android:textSize="15sp"
-                android:backgroundTint="@color/primary" />
+                android:textStyle="bold"
+                android:backgroundTint="@color/primary"
+                app:cornerRadius="14dp"
+                android:stateListAnimator="@null" />
 
             <Button
                 android:id="@+id/btnRestore"
@@ -290,7 +300,10 @@
                 android:layout_marginBottom="10dp"
                 android:text="📥  Restore Data"
                 android:textSize="15sp"
-                android:backgroundTint="@color/primary_dark" />
+                android:textStyle="bold"
+                android:backgroundTint="@color/primary_dark"
+                app:cornerRadius="14dp"
+                android:stateListAnimator="@null" />
 
             <Button
                 android:id="@+id/btnExportCsv"
@@ -299,7 +312,10 @@
                 android:layout_marginBottom="24dp"
                 android:text="📊  Export CSV"
                 android:textSize="15sp"
-                android:backgroundTint="@color/accent" />
+                android:textStyle="bold"
+                android:backgroundTint="@color/accent"
+                app:cornerRadius="14dp"
+                android:stateListAnimator="@null" />
 
             <TextView
                 android:layout_width="match_parent"
