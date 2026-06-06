@@ -6,8 +6,8 @@
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="1dp"
     app:cardBackgroundColor="@color/card_bg">
 
     <LinearLayout
@@ -15,24 +15,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Color accent bar -->
         <View
             android:layout_width="4dp"
             android:layout_height="match_parent"
             android:background="@color/primary"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="12dp"
+            android:paddingStart="14dp"
             android:paddingEnd="14dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp">
 
-            <!-- Header: date + action buttons -->
+            <!-- Header: date + actions -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +56,8 @@
                     android:src="@android:drawable/ic_menu_edit"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/primary"
-                    android:contentDescription="Edit record" />
+                    android:contentDescription="Edit record"
+                    android:padding="6dp" />
 
                 <ImageButton
                     android:id="@+id/btnDeleteRecord"
@@ -66,10 +66,10 @@
                     android:src="@android:drawable/ic_menu_delete"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/pending_color"
-                    android:contentDescription="Delete record" />
+                    android:contentDescription="Delete record"
+                    android:padding="6dp" />
             </LinearLayout>
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -94,7 +94,7 @@
                 android:textColor="@color/buffalo_color"
                 android:paddingBottom="6dp" />
 
-            <!-- Total row -->
+            <!-- Total -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                     android:textColor="@color/earnings_color" />
             </LinearLayout>
 
-            <!-- Optional note -->
+            <!-- Note -->
             <TextView
                 android:id="@+id/tvRecordNote"
                 android:layout_width="match_parent"

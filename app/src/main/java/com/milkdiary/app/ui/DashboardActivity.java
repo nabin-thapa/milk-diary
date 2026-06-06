@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -60,6 +61,9 @@ public class DashboardActivity extends AppCompatActivity {
         String today     = DateUtils.todayDb();
         String thisMonth = DateUtils.currentMonthDb();
 
+        // Set greeting based on time of day
+        setGreeting();
+
         // Today's record
         MilkRecord todayRecord = recordDao.getRecordByDate(today);
         double cowLiters = 0, bufLiters = 0, todayEarnings = 0;
@@ -103,6 +107,19 @@ public class DashboardActivity extends AppCompatActivity {
         binding.tvPending.setTextColor(pending > 0.01
                 ? getResources().getColor(R.color.pending_color, getTheme())
                 : getResources().getColor(R.color.earnings_color, getTheme()));
+    }
+
+    private void setGreeting() {
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        String greeting;
+        if (hour < 12) {
+            greeting = getString(R.string.greeting_morning);
+        } else if (hour < 17) {
+            greeting = getString(R.string.greeting_afternoon);
+        } else {
+            greeting = getString(R.string.greeting_evening);
+        }
+        binding.tvGreeting.setText(greeting);
     }
 
     private void setupButtons() {

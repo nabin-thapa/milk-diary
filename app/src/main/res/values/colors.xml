@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand teal-greens -->
-    <color name="primary">#0D7C5F</color>
-    <color name="primary_dark">#095E48</color>
-    <color name="primary_light">#D4F0E7</color>
-    <color name="primary_ultra_light">#EDF8F3</color>
-    <color name="accent">#E8913A</color>
-    <color name="accent_light">#FFF5E6</color>
+    <color name="primary">#1B7A4A</color>
+    <color name="primary_dark">#0F5C36</color>
+    <color name="primary_light">#E8F5E9</color>
+    <color name="primary_ultra_light">#F1F8E9</color>
+    <color name="primary_surface">#F0FDF4</color>
+    <color name="accent">#F59E0B</color>
+    <color name="accent_light">#FEF3C7</color>
+    <color name="accent_dark">#D97706</color>
 
-    <!-- Surfaces -->
-    <color name="background">#F7F8FA</color>
+    <color name="background">#F8FAFC</color>
     <color name="surface">#FFFFFF</color>
     <color name="card_bg">#FFFFFF</color>
-    <color name="divider">#E6EBE9</color>
+    <color name="card_bg_alt">#F1F5F9</color>
+    <color name="divider">#E2E8F0</color>
 
-    <!-- Text -->
-    <color name="text_primary">#1A2B26</color>
-    <color name="text_secondary">#607D72</color>
-    <color name="text_hint">#9BB0A6</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
     <color name="text_on_primary">#FFFFFF</color>
     <color name="text_on_accent">#FFFFFF</color>
 
-    <!-- Semantic -->
-    <color name="earnings_color">#0D7C5F</color>
-    <color name="pending_color">#D32F2F</color>
-    <color name="paid_color">#0D7C5F</color>
-    <color name="cow_color">#2979B5</color>
-    <color name="buffalo_color">#7E57A8</color>
+    <color name="earnings_color">#16A34A</color>
+    <color name="pending_color">#DC2626</color>
+    <color name="paid_color">#16A34A</color>
+    <color name="cow_color">#2563EB</color>
+    <color name="buffalo_color">#7C3AED</color>
+    <color name="warning_color">#F59E0B</color>
 
-    <!-- Input fields -->
-    <color name="input_bg">#F5F9F7</color>
-    <color name="input_stroke">#C2D5CC</color>
+    <color name="input_bg">#F1F5F9</color>
+    <color name="input_stroke">#CBD5E1</color>
+
+    <color name="header_start">#1B7A4A</color>
+    <color name="header_end">#0F5C36</color>
+    <color name="header_accent">#F59E0B</color>
+
+    <color name="gradient_blue">#2563EB</color>
+    <color name="gradient_purple">#7C3AED</color>
+    <color name="status_good">#16A34A</color>
+    <color name="status_warn">#F59E0B</color>
 </resources>

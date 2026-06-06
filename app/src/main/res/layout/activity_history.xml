@@ -8,11 +8,8 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/header_gradient"
-        app:titleTextColor="#FFFFFF"
-        app:navigationIconTint="#FFFFFF" />
+        style="@style/ToolbarStyle"
+        app:title="@string/history" />
 
     <!-- Search bar -->
     <LinearLayout
@@ -27,10 +24,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search by date  (e.g. 2024-06)"
+            android:hint="Search by date (e.g. 2024-06)"
             style="@style/InputField"
             app:startIconDrawable="@android:drawable/ic_menu_search"
-            app:startIconTint="@color/text_secondary">
+            app:startIconTint="@color/text_hint"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/text_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSearch"
@@ -38,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:imeOptions="actionSearch"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -80,7 +80,7 @@
         android:layout_height="match_parent"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:paddingTop="8dp"
+        android:paddingTop="6dp"
         android:paddingBottom="20dp"
         android:clipToPadding="false" />
 

@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="colorOnPrimary">@color/text_on_primary</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
         <item name="android:textColorPrimary">@color/text_primary</item>
@@ -14,74 +15,96 @@
         <item name="android:navigationBarColor">@color/background</item>
     </style>
 
-    <!-- Section header: "Today", "This Month", etc. -->
+    <!-- Section header -->
     <style name="SectionLabel">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.03</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingTop">6dp</item>
-    </style>
-
-    <!-- Muted label inside stat cards -->
-    <style name="CardLabel">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">4dp</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.06</item>
-        <item name="android:paddingBottom">4dp</item>
     </style>
 
-    <!-- Primary large button -->
+    <!-- Input field -->
+    <style name="InputField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxStrokeColor">@color/input_stroke_selector</item>
+        <item name="boxBackgroundColor">@color/input_bg</item>
+        <item name="hintTextColor">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+    </style>
+
+    <!-- Card style -->
+    <style name="CardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">1dp</item>
+        <item name="cardBackgroundColor">@color/card_bg</item>
+        <item name="contentPadding">0dp</item>
+        <item name="strokeColor">@color/divider</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Primary button -->
     <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_height">54dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.02</item>
-        <item name="cornerRadius">16dp</item>
+        <item name="cornerRadius">14dp</item>
         <item name="backgroundTint">@color/primary</item>
-        <item name="android:elevation">2dp</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
-    <!-- Secondary/outlined button -->
+    <!-- Secondary button -->
     <style name="SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">52dp</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="cornerRadius">14dp</item>
         <item name="strokeColor">@color/primary</item>
         <item name="android:textColor">@color/primary</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
-    <!-- Input field style -->
-    <style name="InputField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxCornerRadiusTopStart">14dp</item>
-        <item name="boxCornerRadiusTopEnd">14dp</item>
-        <item name="boxCornerRadiusBottomStart">14dp</item>
-        <item name="boxCornerRadiusBottomEnd">14dp</item>
-        <item name="boxStrokeColor">@color/input_stroke_selector</item>
-        <item name="hintTextColor">@color/text_secondary</item>
+    <!-- Stat value text -->
+    <style name="StatValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
-    <!-- Reusable card style for consistent elevation/corners -->
-    <style name="CardStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">18dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="cardBackgroundColor">@color/card_bg</item>
-        <item name="contentPadding">0dp</item>
+    <!-- Stat label text -->
+    <style name="StatLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <!-- Small decorative divider used between sections -->
-    <style name="SectionDivider">
-        <item name="android:layout_width">32dp</item>
-        <item name="android:layout_height">3dp</item>
+    <!-- Toolbar style -->
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/primary</item>
-        <item name="android:layout_marginBottom">12dp</item>
+        <item name="titleTextColor">@color/text_on_primary</item>
+        <item name="navigationIconTint">@color/text_on_primary</item>
+        <item name="titleTextAppearance">@style/ToolbarTitle</item>
+    </style>
+
+    <style name="ToolbarTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -19,4 +19,19 @@
     <string name="export_csv">Export CSV</string>
     <string name="developer_credit">Developer Name - Nabin Thapa</string>
     <string name="developer_credit_heart">Made with ❤ by Nabin Thapa</string>
+    <string name="greeting_morning">Good Morning</string>
+    <string name="greeting_afternoon">Good Afternoon</string>
+    <string name="greeting_evening">Good Evening</string>
+    <string name="today_recorded">Today recorded</string>
+    <string name="no_record_today">No record yet today</string>
+    <string name="cow_milk">Cow Milk</string>
+    <string name="buffalo_milk">Buffalo Milk</string>
+    <string name="today_earnings_label">Today\'s Earnings</string>
+    <string name="pending_label">Pending</string>
+    <string name="total_milk">Total Milk</string>
+    <string name="earned">Earned</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="add_record_btn">Add Record</string>
+    <string name="monthly_report">Monthly Report</string>
+    <string name="greeting_default">Welcome</string>
 </resources>

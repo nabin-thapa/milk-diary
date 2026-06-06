@@ -6,14 +6,10 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/header_gradient"
-        app:titleTextColor="#FFFFFF"
-        app:navigationIconTint="#FFFFFF" />
+        style="@style/ToolbarStyle"
+        app:title="@string/add_record" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,13 +25,12 @@
             android:paddingTop="20dp"
             android:paddingBottom="32dp">
 
-            <!-- Date picker -->
+            <!-- Date Selector -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="DATE"
                 style="@style/SectionLabel" />
-            <View style="@style/SectionDivider" />
 
             <Button
                 android:id="@+id/btnDate"
@@ -50,53 +45,50 @@
                 app:cornerRadius="14dp"
                 android:stateListAnimator="@null" />
 
-            <!-- COW MILK CARD -->
+            <!-- Cow Milk Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🐄  COW MILK"
+                style="@style/SectionLabel" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="18dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="18dp">
+                    android:padding="16dp">
 
-                    <!-- Header row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:paddingBottom="14dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🐄"
-                            android:textSize="24sp"
-                            android:layout_marginEnd="10dp" />
+                        android:paddingBottom="12dp">
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Cow Milk"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/cow_color" />
+                            android:text="Liters &amp; Rate"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_secondary"
+                            android:textStyle="bold" />
                         <TextView
                             android:id="@+id/tvCowAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Rs. 0.00"
-                            android:textSize="15sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/cow_color" />
                     </LinearLayout>
 
-                    <!-- Input row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -105,7 +97,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
+                            android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:hint="Liters"
                             style="@style/InputField">
@@ -115,6 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="numberDecimal"
                                 android:textSize="18sp"
+                                android:textStyle="bold"
                                 android:selectAllOnFocus="true"
                                 android:imeOptions="actionNext" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -123,7 +116,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Rate (Rs/L)"
+                            android:hint="Rate"
                             style="@style/InputField">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etCowRate"
@@ -131,6 +124,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="numberDecimal"
                                 android:textSize="18sp"
+                                android:textStyle="bold"
                                 android:selectAllOnFocus="true"
                                 android:imeOptions="actionNext" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -138,47 +132,46 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- BUFFALO MILK CARD -->
+            <!-- Buffalo Milk Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🐃  BUFFALO MILK"
+                style="@style/SectionLabel" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="18dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="18dp">
+                    android:padding="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:paddingBottom="14dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🐃"
-                            android:textSize="24sp"
-                            android:layout_marginEnd="10dp" />
+                        android:paddingBottom="12dp">
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Buffalo Milk"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/buffalo_color" />
+                            android:text="Liters &amp; Rate"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_secondary"
+                            android:textStyle="bold" />
                         <TextView
                             android:id="@+id/tvBufAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Rs. 0.00"
-                            android:textSize="15sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             android:textColor="@color/buffalo_color" />
                     </LinearLayout>
@@ -191,7 +184,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
+                            android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:hint="Liters"
                             style="@style/InputField">
@@ -201,6 +194,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="numberDecimal"
                                 android:textSize="18sp"
+                                android:textStyle="bold"
                                 android:selectAllOnFocus="true"
                                 android:imeOptions="actionNext" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -209,7 +203,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Rate (Rs/L)"
+                            android:hint="Rate"
                             style="@style/InputField">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etBufRate"
@@ -217,6 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="numberDecimal"
                                 android:textSize="18sp"
+                                android:textStyle="bold"
                                 android:selectAllOnFocus="true"
                                 android:imeOptions="actionNext" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -224,20 +219,20 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- GRAND TOTAL CARD -->
+            <!-- Grand Total -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="3dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/primary">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="22dp"
-                    android:paddingEnd="22dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
                     android:paddingTop="18dp"
                     android:paddingBottom="18dp"
                     android:gravity="center_vertical">
@@ -249,10 +244,11 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Grand Total"
-                            android:textColor="#BBFFFFFF"
-                            android:textSize="12sp"
+                            android:text="TOTAL"
+                            android:textColor="#B0FFFFFF"
+                            android:textSize="11sp"
                             android:textStyle="bold"
+                            android:letterSpacing="0.04"
                             android:paddingBottom="2dp" />
                         <TextView
                             android:id="@+id/tvGrandTotal"
@@ -266,9 +262,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="✓"
-                        android:textColor="#BBFFFFFF"
-                        android:textSize="30sp" />
+                        android:text="💰"
+                        android:textSize="32sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -285,20 +280,16 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:maxLines="2"
+                    android:textSize="14sp"
                     android:imeOptions="actionDone" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Save button -->
+            <!-- Save Button -->
             <Button
                 android:id="@+id/btnSave"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
+                style="@style/PrimaryButton"
                 android:text="💾  Save Record"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/primary"
-                app:cornerRadius="16dp"
-                android:stateListAnimator="@null" />
+                android:textSize="17sp" />
 
         </LinearLayout>
     </ScrollView>
