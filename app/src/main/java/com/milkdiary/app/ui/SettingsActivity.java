@@ -25,6 +25,7 @@ import com.milkdiary.app.db.PaymentDao;
 import com.milkdiary.app.util.BackupUtils;
 import com.milkdiary.app.util.ExportUtils;
 import com.milkdiary.app.util.FormatUtils;
+import com.milkdiary.app.util.RoleManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private ActivitySettingsBinding binding;
     private SharedPreferences prefs;
+    private RoleManager roleManager;
     private static final int PICK_BACKUP_FILE = 101;
     private static final int REQUEST_PICK_IMAGE = 202;
     private boolean ratesUpdating = false;
@@ -51,6 +53,10 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        roleManager = new RoleManager(this);
+
+        // Role section
+        setupRoleSection();
 
         // Dark mode
         binding.switchDarkMode.setChecked(prefs.getBoolean("dark_mode", false));
@@ -81,6 +87,27 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         com.milkdiary.app.update.UpdateManager.retryPendingDownload(this);
+    }
+
+    private void setupRoleSection() {
+        binding.tvRoleValue.setText(roleManager.getRoleDisplayName());
+        binding.btnSwitchRole.setOnClickListener(v -> {
+            if (!roleManager.isOwner()) {
+                Toast.makeText(this, "Only the Owner can change role.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Switch Role")
+                    .setItems(new String[]{"Owner", "Salesman"}, (dialog, which) -> {
+                        String newRole = which == 0 ? RoleManager.ROLE_OWNER : RoleManager.ROLE_SALESMAN;
+                        roleManager.setRole(newRole);
+                        binding.tvRoleValue.setText(roleManager.getRoleDisplayName());
+                        Toast.makeText(this,
+                                "Role changed to " + roleManager.getRoleDisplayName(),
+                                Toast.LENGTH_SHORT).show();
+                    })
+                    .show();
+        });
     }
 
     private void loadDefaultRates() {

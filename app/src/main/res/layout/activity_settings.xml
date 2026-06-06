@@ -120,6 +120,55 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- ROLE -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="YOUR ROLE"
+                style="@style/SectionLabel" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/card_bg">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="👤  Current Role"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary" />
+                    <TextView
+                        android:id="@+id/tvRoleValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Owner"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"
+                        android:layout_marginEnd="12dp" />
+                    <Button
+                        android:id="@+id/btnSwitchRole"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Change"
+                        android:textSize="12sp"
+                        android:backgroundTint="@color/primary_light"
+                        android:textColor="@color/primary"
+                        android:stateListAnimator="@null"
+                        app:cornerRadius="18dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <!-- DEFAULT RATES -->
             <TextView
                 android:layout_width="match_parent"

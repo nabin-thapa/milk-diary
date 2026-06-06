@@ -7,13 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "milk_diary.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     // Table: milk_records
     public static final String TABLE_RECORDS = "milk_records";
     public static final String COL_ID = "_id";
-    public static final String COL_DATE = "date";              // YYYY-MM-DD
-    public static final String COL_SESSION_TYPE = "session_type"; // "morning" or "evening"
+    public static final String COL_DATE = "date";
+    public static final String COL_SESSION_TYPE = "session_type";
     public static final String COL_COW_LITERS = "cow_liters";
     public static final String COL_COW_RATE = "cow_rate";
     public static final String COL_COW_AMOUNT = "cow_amount";
@@ -23,13 +23,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_TOTAL = "total";
     public static final String COL_NOTE = "note";
     public static final String COL_EDIT_COUNT = "edit_count";
+    public static final String COL_SUPPLIER_ID = "supplier_id";
+    public static final String COL_FAT_PERCENTAGE = "fat_percentage";
 
     // Table: payments
     public static final String TABLE_PAYMENTS = "payments";
     public static final String COL_PAY_ID = "_id";
-    public static final String COL_PAY_DATE = "pay_date";      // YYYY-MM-DD
+    public static final String COL_PAY_DATE = "pay_date";
     public static final String COL_PAY_AMOUNT = "pay_amount";
     public static final String COL_PAY_NOTE = "pay_note";
+    public static final String COL_PARTY_TYPE = "party_type";
+    public static final String COL_PARTY_ID = "party_id";
+
+    // Table: suppliers
+    public static final String TABLE_SUPPLIERS = "suppliers";
+    public static final String COL_SUP_NAME = "name";
+    public static final String COL_SUP_PHONE = "phone";
+    public static final String COL_SUP_VILLAGE = "village";
+    public static final String COL_SUP_MILK_TYPE = "milk_type";
+    public static final String COL_SUP_COW_RATE = "default_cow_rate";
+    public static final String COL_SUP_BUF_RATE = "default_buffalo_rate";
+    public static final String COL_SUP_ACTIVE = "is_active";
+    public static final String COL_SUP_CREATED_AT = "created_at";
+
+    // Table: sales
+    public static final String TABLE_SALES = "sales";
+    public static final String COL_SALE_DATE = "date";
+    public static final String COL_SALE_SESSION = "session_type";
+    public static final String COL_SALE_CUSTOMER = "customer_name";
+    public static final String COL_SALE_CUSTOMER_TYPE = "customer_type";
+    public static final String COL_SALE_MILK_TYPE = "milk_type";
+    public static final String COL_SALE_QUANTITY = "quantity";
+    public static final String COL_SALE_RATE = "rate";
+    public static final String COL_SALE_AMOUNT = "amount";
+    public static final String COL_SALE_PAID = "is_paid";
+    public static final String COL_SALE_NOTE = "note";
+    public static final String COL_SALE_CREATED_AT = "created_at";
+
+    // Table: inventory
+    public static final String TABLE_INVENTORY = "inventory";
+    public static final String COL_INV_DATE = "date";
+    public static final String COL_INV_MORNING = "morning_collected";
+    public static final String COL_INV_EVENING = "evening_collected";
+    public static final String COL_INV_TOTAL_COLLECTED = "total_collected";
+    public static final String COL_INV_SOLD = "sold";
+    public static final String COL_INV_WASTE = "waste";
+    public static final String COL_INV_CLOSING = "closing_stock";
+    public static final String COL_INV_NOTE = "note";
 
     private static final String CREATE_RECORDS_TABLE =
             "CREATE TABLE " + TABLE_RECORDS + " (" +
@@ -45,6 +85,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_TOTAL + " REAL DEFAULT 0, " +
             COL_NOTE + " TEXT, " +
             COL_EDIT_COUNT + " INTEGER DEFAULT 0, " +
+            COL_SUPPLIER_ID + " INTEGER DEFAULT 0, " +
+            COL_FAT_PERCENTAGE + " REAL DEFAULT 0, " +
             "UNIQUE(" + COL_DATE + ", " + COL_SESSION_TYPE + ")" +
             ");";
 
@@ -53,7 +95,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_PAY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COL_PAY_DATE + " TEXT NOT NULL, " +
             COL_PAY_AMOUNT + " REAL DEFAULT 0, " +
-            COL_PAY_NOTE + " TEXT" +
+            COL_PAY_NOTE + " TEXT, " +
+            COL_PARTY_TYPE + " TEXT DEFAULT 'general', " +
+            COL_PARTY_ID + " INTEGER DEFAULT 0" +
+            ");";
+
+    private static final String CREATE_SUPPLIERS_TABLE =
+            "CREATE TABLE " + TABLE_SUPPLIERS + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_SUP_NAME + " TEXT NOT NULL, " +
+            COL_SUP_PHONE + " TEXT, " +
+            COL_SUP_VILLAGE + " TEXT, " +
+            COL_SUP_MILK_TYPE + " TEXT DEFAULT 'both', " +
+            COL_SUP_COW_RATE + " REAL DEFAULT 0, " +
+            COL_SUP_BUF_RATE + " REAL DEFAULT 0, " +
+            COL_SUP_ACTIVE + " INTEGER DEFAULT 1, " +
+            COL_SUP_CREATED_AT + " TEXT NOT NULL" +
+            ");";
+
+    private static final String CREATE_SALES_TABLE =
+            "CREATE TABLE " + TABLE_SALES + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_SALE_DATE + " TEXT NOT NULL, " +
+            COL_SALE_SESSION + " TEXT NOT NULL DEFAULT 'morning', " +
+            COL_SALE_CUSTOMER + " TEXT NOT NULL, " +
+            COL_SALE_CUSTOMER_TYPE + " TEXT DEFAULT 'other', " +
+            COL_SALE_MILK_TYPE + " TEXT NOT NULL, " +
+            COL_SALE_QUANTITY + " REAL DEFAULT 0, " +
+            COL_SALE_RATE + " REAL DEFAULT 0, " +
+            COL_SALE_AMOUNT + " REAL DEFAULT 0, " +
+            COL_SALE_PAID + " INTEGER DEFAULT 0, " +
+            COL_SALE_NOTE + " TEXT, " +
+            COL_SALE_CREATED_AT + " TEXT NOT NULL" +
+            ");";
+
+    private static final String CREATE_INVENTORY_TABLE =
+            "CREATE TABLE " + TABLE_INVENTORY + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_INV_DATE + " TEXT NOT NULL UNIQUE, " +
+            COL_INV_MORNING + " REAL DEFAULT 0, " +
+            COL_INV_EVENING + " REAL DEFAULT 0, " +
+            COL_INV_TOTAL_COLLECTED + " REAL DEFAULT 0, " +
+            COL_INV_SOLD + " REAL DEFAULT 0, " +
+            COL_INV_WASTE + " REAL DEFAULT 0, " +
+            COL_INV_CLOSING + " REAL DEFAULT 0, " +
+            COL_INV_NOTE + " TEXT" +
             ");";
 
     private static volatile DatabaseHelper instance;
@@ -80,33 +166,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_RECORDS_TABLE);
         db.execSQL(CREATE_PAYMENTS_TABLE);
+        db.execSQL(CREATE_SUPPLIERS_TABLE);
+        db.execSQL(CREATE_SALES_TABLE);
+        db.execSQL(CREATE_INVENTORY_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // v2 -> v3: add session_type, edit_count; change UNIQUE(date) to UNIQUE(date, session_type)
         if (oldVersion < 3) {
-            // Create new table with composite unique constraint
             String tempTable = TABLE_RECORDS + "_new";
             String createTemp = CREATE_RECORDS_TABLE.replace(TABLE_RECORDS, tempTable);
             db.execSQL(createTemp);
-
-            // Copy existing records as "morning" entries
             db.execSQL("INSERT INTO " + tempTable + " (" +
                     COL_ID + ", " + COL_DATE + ", " + COL_SESSION_TYPE + ", " +
                     COL_COW_LITERS + ", " + COL_COW_RATE + ", " + COL_COW_AMOUNT + ", " +
                     COL_BUFFALO_LITERS + ", " + COL_BUFFALO_RATE + ", " + COL_BUFFALO_AMOUNT + ", " +
-                    COL_TOTAL + ", " + COL_NOTE + ", " + COL_EDIT_COUNT + ") " +
+                    COL_TOTAL + ", " + COL_NOTE + ", " + COL_EDIT_COUNT + ", " +
+                    COL_SUPPLIER_ID + ", " + COL_FAT_PERCENTAGE + ") " +
                     "SELECT " +
                     COL_ID + ", " + COL_DATE + ", 'morning', " +
                     COL_COW_LITERS + ", " + COL_COW_RATE + ", " + COL_COW_AMOUNT + ", " +
                     COL_BUFFALO_LITERS + ", " + COL_BUFFALO_RATE + ", " + COL_BUFFALO_AMOUNT + ", " +
-                    COL_TOTAL + ", " + COL_NOTE + ", 0 " +
+                    COL_TOTAL + ", " + COL_NOTE + ", 0, 0, 0 " +
                     "FROM " + TABLE_RECORDS);
-
-            // Drop old table, rename new one
             db.execSQL("DROP TABLE " + TABLE_RECORDS);
             db.execSQL("ALTER TABLE " + tempTable + " RENAME TO " + TABLE_RECORDS);
+        }
+        if (oldVersion < 4) {
+            db.execSQL("ALTER TABLE " + TABLE_RECORDS + " ADD COLUMN " + COL_SUPPLIER_ID + " INTEGER DEFAULT 0");
+            db.execSQL("ALTER TABLE " + TABLE_RECORDS + " ADD COLUMN " + COL_FAT_PERCENTAGE + " REAL DEFAULT 0");
+            db.execSQL("ALTER TABLE " + TABLE_PAYMENTS + " ADD COLUMN " + COL_PARTY_TYPE + " TEXT DEFAULT 'general'");
+            db.execSQL("ALTER TABLE " + TABLE_PAYMENTS + " ADD COLUMN " + COL_PARTY_ID + " INTEGER DEFAULT 0");
+            db.execSQL(CREATE_SUPPLIERS_TABLE);
+            db.execSQL(CREATE_SALES_TABLE);
+            db.execSQL(CREATE_INVENTORY_TABLE);
         }
     }
 }

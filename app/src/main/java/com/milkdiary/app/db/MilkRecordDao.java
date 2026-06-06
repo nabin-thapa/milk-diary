@@ -214,6 +214,8 @@ public class MilkRecordDao {
         v.put(DatabaseHelper.COL_TOTAL, r.getTotal());
         v.put(DatabaseHelper.COL_NOTE, r.getNote());
         v.put(DatabaseHelper.COL_EDIT_COUNT, r.getEditCount());
+        v.put(DatabaseHelper.COL_SUPPLIER_ID, r.getSupplierId());
+        v.put(DatabaseHelper.COL_FAT_PERCENTAGE, r.getFatPercentage());
         return v;
     }
 
@@ -231,6 +233,8 @@ public class MilkRecordDao {
         r.setTotal(c.getDouble(c.getColumnIndexOrThrow(DatabaseHelper.COL_TOTAL)));
         r.setNote(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_NOTE)));
         r.setEditCount(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_EDIT_COUNT)));
+        r.setSupplierId(c.getLong(c.getColumnIndexOrThrow(DatabaseHelper.COL_SUPPLIER_ID)));
+        r.setFatPercentage(c.getDouble(c.getColumnIndexOrThrow(DatabaseHelper.COL_FAT_PERCENTAGE)));
         return r;
     }
 

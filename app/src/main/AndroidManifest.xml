@@ -45,6 +45,25 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".ui.RoleSetupActivity"
+            android:theme="@style/Theme.MilkDiary" />
+
+        <activity
+            android:name=".ui.SupplierListActivity" />
+
+        <activity
+            android:name=".ui.SupplierFormActivity" />
+
+        <activity
+            android:name=".ui.SalesActivity" />
+
+        <activity
+            android:name=".ui.AddSaleActivity" />
+
+        <activity
+            android:name=".ui.InventoryActivity" />
+
+        <activity
             android:name=".ui.SettingsActivity" />
 
         <provider

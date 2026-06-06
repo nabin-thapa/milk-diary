@@ -49,6 +49,16 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         holder.tvDate.setText(DateUtils.dbToDisplay(payment.getDate()));
         holder.tvAmount.setText(FormatUtils.money(payment.getAmount()));
 
+        String partyInfo;
+        if (payment.isSupplierPayment()) {
+            String name = payment.getPartyName();
+            if (name == null || name.isEmpty()) name = "Supplier #" + payment.getPartyId();
+            partyInfo = "To: " + name;
+        } else {
+            partyInfo = "From: Customer";
+        }
+        holder.tvParty.setText(partyInfo);
+
         if (payment.getNote() != null && !payment.getNote().isEmpty()) {
             holder.tvNote.setVisibility(View.VISIBLE);
             holder.tvNote.setText(payment.getNote());
@@ -67,13 +77,14 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDate, tvAmount, tvNote;
+        TextView tvDate, tvAmount, tvParty, tvNote;
         ImageButton btnDelete;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tvPayDate);
             tvAmount = itemView.findViewById(R.id.tvPayAmount);
+            tvParty = itemView.findViewById(R.id.tvPayParty);
             tvNote = itemView.findViewById(R.id.tvPayNote);
             btnDelete = itemView.findViewById(R.id.btnDeletePayment);
         }

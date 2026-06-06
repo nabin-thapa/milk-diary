@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +14,15 @@ import androidx.preference.PreferenceManager;
 
 import com.milkdiary.app.databinding.ActivityAddRecordBinding;
 import com.milkdiary.app.db.MilkRecordDao;
+import com.milkdiary.app.db.SupplierDao;
 import com.milkdiary.app.model.MilkRecord;
+import com.milkdiary.app.model.Supplier;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddRecordActivity extends AppCompatActivity {
 
@@ -28,11 +33,16 @@ public class AddRecordActivity extends AppCompatActivity {
 
     private ActivityAddRecordBinding binding;
     private MilkRecordDao recordDao;
+    private SupplierDao supplierDao;
     private SharedPreferences prefs;
     private String selectedDate;
     private String sessionType = MilkRecord.SESSION_MORNING;
     private long editRecordId = -1;
     private boolean isUpdating = false;
+
+    private List<Supplier> supplierList = new ArrayList<>();
+    private Supplier selectedSupplier;
+    private long selectedSupplierId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +53,10 @@ public class AddRecordActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recordDao = new MilkRecordDao(this);
+        supplierDao = new SupplierDao(this);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         selectedDate = DateUtils.todayDb();
 
-        // Get session type from intent
         sessionType = getIntent().getStringExtra(EXTRA_SESSION_TYPE);
         if (sessionType == null) {
             sessionType = MilkRecord.SESSION_MORNING;
@@ -54,10 +64,11 @@ public class AddRecordActivity extends AppCompatActivity {
 
         editRecordId = getIntent().getLongExtra(EXTRA_RECORD_ID, -1);
 
+        setupSupplierDropdown();
+
         if (editRecordId != -1) {
             loadRecord(editRecordId);
         } else {
-            // Validate no duplicate session
             if (recordDao.getRecordByDateAndSession(selectedDate, sessionType) != null) {
                 String msg = sessionType.equals(MilkRecord.SESSION_MORNING)
                         ? "Morning milk already recorded."
@@ -76,6 +87,40 @@ public class AddRecordActivity extends AppCompatActivity {
         setupSaveButton();
 
         binding.etCowLiters.requestFocus();
+    }
+
+    private void setupSupplierDropdown() {
+        supplierList = supplierDao.getActive();
+        List<String> names = new ArrayList<>();
+        names.add("-- No Supplier --");
+        for (Supplier s : supplierList) names.add(s.getName());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, names);
+        binding.etSupplier.setAdapter(adapter);
+        binding.etSupplier.setOnItemClickListener((parent, view, position, id) -> {
+            if (position == 0) {
+                selectedSupplier = null;
+                selectedSupplierId = 0;
+            } else {
+                selectedSupplier = supplierList.get(position - 1);
+                selectedSupplierId = selectedSupplier.getId();
+                autoFillRatesFromSupplier();
+            }
+        });
+    }
+
+    private void autoFillRatesFromSupplier() {
+        if (selectedSupplier == null) return;
+        isUpdating = true;
+        if (selectedSupplier.getDefaultCowRate() > 0) {
+            binding.etCowRate.setText(FormatUtils.rateValue(selectedSupplier.getDefaultCowRate()));
+        }
+        if (selectedSupplier.getDefaultBuffaloRate() > 0) {
+            binding.etBufRate.setText(FormatUtils.rateValue(selectedSupplier.getDefaultBuffaloRate()));
+        }
+        isUpdating = false;
+        recalculate();
     }
 
     private void setToolbarTitle(boolean isEdit) {
@@ -106,7 +151,6 @@ public class AddRecordActivity extends AppCompatActivity {
             return;
         }
 
-        // Check one-time edit rule
         if (!record.canEdit()) {
             Toast.makeText(this, "This record can only be edited once.", Toast.LENGTH_LONG).show();
             finish();
@@ -129,6 +173,20 @@ public class AddRecordActivity extends AppCompatActivity {
             binding.etBufRate.setText(FormatUtils.inputValue(record.getBuffaloRate()));
         if (record.getNote() != null)
             binding.etNote.setText(record.getNote());
+        if (record.getFatPercentage() > 0)
+            binding.etFatPercent.setText(FormatUtils.inputValue(record.getFatPercentage()));
+
+        selectedSupplierId = record.getSupplierId();
+        if (selectedSupplierId > 0) {
+            for (int i = 0; i < supplierList.size(); i++) {
+                if (supplierList.get(i).getId() == selectedSupplierId) {
+                    binding.etSupplier.setText(supplierList.get(i).getName(), false);
+                    selectedSupplier = supplierList.get(i);
+                    break;
+                }
+            }
+        }
+
         isUpdating = false;
         recalculate();
     }
@@ -193,6 +251,7 @@ public class AddRecordActivity extends AppCompatActivity {
         double bufL = parseDecimal(binding.etBufLiters.getText().toString());
         double bufR = parseDecimal(binding.etBufRate.getText().toString());
         String note = binding.etNote.getText().toString().trim();
+        double fatPct = parseDecimal(binding.etFatPercent.getText().toString());
 
         if (cowL <= 0 && bufL <= 0) {
             Toast.makeText(this,
@@ -222,10 +281,11 @@ public class AddRecordActivity extends AppCompatActivity {
         if (bufR > 0) prefs.edit().putFloat(PREF_BUF_RATE, (float) bufR).apply();
 
         MilkRecord record = new MilkRecord(selectedDate, sessionType, cowL, cowR, bufL, bufR, note);
+        record.setSupplierId(selectedSupplierId);
+        record.setFatPercentage(fatPct);
 
         if (editRecordId != -1) {
             record.setId(editRecordId);
-            // Increment edit count for one-time edit rule
             MilkRecord existing = recordDao.getRecordById(editRecordId);
             if (existing != null) {
                 record.setEditCount(existing.getEditCount() + 1);

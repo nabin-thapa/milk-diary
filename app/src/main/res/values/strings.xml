@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Milk Diary</string>
+    <string name="app_name">Milk Diary - Dairy Management</string>
     <string name="today_cow_milk">Today\'s Cow Milk</string>
     <string name="today_buffalo_milk">Today\'s Buffalo Milk</string>
     <string name="today_earnings">Today\'s Earnings</string>

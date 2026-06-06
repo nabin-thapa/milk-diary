@@ -17,6 +17,8 @@ public class MilkRecord {
     private double total;
     private String note;
     private int editCount;
+    private long supplierId;
+    private double fatPercentage;
 
     public MilkRecord() {}
 
@@ -88,4 +90,10 @@ public class MilkRecord {
 
     public int getEditCount() { return editCount; }
     public void setEditCount(int editCount) { this.editCount = editCount; }
+
+    public long getSupplierId() { return supplierId; }
+    public void setSupplierId(long supplierId) { this.supplierId = supplierId; }
+
+    public double getFatPercentage() { return fatPercentage; }
+    public void setFatPercentage(double fatPercentage) { this.fatPercentage = fatPercentage; }
 }

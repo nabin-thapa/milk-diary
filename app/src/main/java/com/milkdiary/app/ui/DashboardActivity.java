@@ -21,6 +21,7 @@ import com.milkdiary.app.db.PaymentDao;
 import com.milkdiary.app.model.MilkRecord;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
+import com.milkdiary.app.util.RoleManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -43,6 +44,23 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        RoleManager roleManager = new RoleManager(this);
+        if (!roleManager.isRoleSet()) {
+            startActivity(new Intent(this, RoleSetupActivity.class));
+            finish();
+            return;
+        }
+
+        // Hide owner-only sections for Salesman
+        if (roleManager.isSalesman()) {
+            binding.btnSuppliers.setVisibility(View.GONE);
+            binding.btnSales.setVisibility(View.GONE);
+            binding.btnInventory.setVisibility(View.GONE);
+            binding.btnPayments.setVisibility(View.GONE);
+            binding.btnMonthlySummary.setVisibility(View.GONE);
+            binding.sectionThisMonth.setVisibility(View.GONE);
+        }
 
         recordDao = new MilkRecordDao(this);
         paymentDao = new PaymentDao(this);
@@ -225,6 +243,12 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MonthlySummaryActivity.class)));
         binding.btnPayments.setOnClickListener(v ->
                 startActivity(new Intent(this, PaymentActivity.class)));
+        binding.btnSuppliers.setOnClickListener(v ->
+                startActivity(new Intent(this, SupplierListActivity.class)));
+        binding.btnSales.setOnClickListener(v ->
+                startActivity(new Intent(this, SalesActivity.class)));
+        binding.btnInventory.setOnClickListener(v ->
+                startActivity(new Intent(this, InventoryActivity.class)));
         binding.btnSettings.setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
     }

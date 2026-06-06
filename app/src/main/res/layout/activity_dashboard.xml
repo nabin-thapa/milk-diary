@@ -362,6 +362,12 @@
             </androidx.cardview.widget.CardView>
 
             <!-- ── THIS MONTH ── -->
+            <LinearLayout
+                android:id="@+id/sectionThisMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -402,6 +408,8 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            </LinearLayout>
+
             <!-- ── QUICK ACTIONS ── -->
             <TextView
                 android:layout_width="match_parent"
@@ -439,6 +447,42 @@
                     app:cornerRadius="14dp"
                     android:stateListAnimator="@null" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSales"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:text="📦  Sales"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/accent"
+                app:cornerRadius="14dp"
+                android:stateListAnimator="@null" />
+
+            <Button
+                android:id="@+id/btnInventory"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:text="📊  Inventory"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/gradient_blue"
+                app:cornerRadius="14dp"
+                android:stateListAnimator="@null" />
+
+            <Button
+                android:id="@+id/btnSuppliers"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="10dp"
+                android:text="👥  Suppliers"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/primary_dark"
+                app:cornerRadius="14dp"
+                android:stateListAnimator="@null" />
 
             <Button
                 android:id="@+id/btnPayments"

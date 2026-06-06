@@ -24,6 +24,39 @@
             android:paddingTop="16dp"
             android:paddingBottom="28dp">
 
+            <!-- Tabs: Customer / Supplier -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_spinner">
+
+                <TextView
+                    android:id="@+id/tabCustomerPayments"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="💰  From Customers"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/primary"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tabSupplierPayments"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="📤  To Suppliers"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:background="@color/card_bg"
+                    android:padding="10dp" />
+            </LinearLayout>
+
             <!-- Balance hero card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -44,7 +77,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PENDING AMOUNT"
+                        android:text="SUMMARY"
                         android:textColor="#B0FFFFFF"
                         android:textSize="11sp"
                         android:textStyle="bold"
@@ -63,16 +96,43 @@
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#33FFFFFF" android:layout_marginBottom="16dp" />
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingBottom="8dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Total Earned" android:textColor="#B0FFFFFF" android:textSize="13sp" />
-                        <TextView android:id="@+id/tvTotalEarned" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Earned: Rs. 0.00" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Earnings" android:textColor="#B0FFFFFF" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvTotalEarned" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Total Paid" android:textColor="#B0FFFFFF" android:textSize="13sp" />
-                        <TextView android:id="@+id/tvTotalPaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Paid: Rs. 0.00" android:textColor="#BBF7D0" android:textSize="14sp" android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Paid" android:textColor="#B0FFFFFF" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvTotalPaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textColor="#BBF7D0" android:textSize="14sp" android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Supplier Section (hidden when on Customer tab) -->
+            <LinearLayout
+                android:id="@+id/supplierSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Supplier"
+                    style="@style/InputField"
+                    android:layout_marginBottom="12dp"
+                    app:endIconMode="dropdown_menu">
+                    <AutoCompleteTextView
+                        android:id="@+id/etPaySupplier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textSize="16sp"
+                        android:focusable="false"
+                        android:clickable="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <!-- Record Payment -->
             <TextView
@@ -111,7 +171,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:hint="Amount Paid (Rs)"
+                        android:hint="Amount (Rs)"
                         style="@style/InputField">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPayAmount"

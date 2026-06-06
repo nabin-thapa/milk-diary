@@ -48,6 +48,15 @@
                     android:textColor="@color/primary" />
 
                 <TextView
+                    android:id="@+id/tvPayParty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="12sp"
+                    android:textColor="@color/text_hint"
+                    android:paddingTop="2dp" />
+
+                <TextView
                     android:id="@+id/tvPayNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -8,13 +8,17 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.milkdiary.app.R;
 import com.milkdiary.app.databinding.ActivityMonthlySummaryBinding;
 import com.milkdiary.app.db.MilkRecordDao;
+import com.milkdiary.app.db.PaymentDao;
+import com.milkdiary.app.db.SaleDao;
 import com.milkdiary.app.model.MilkRecord;
 import com.milkdiary.app.model.MonthlySummary;
 import com.milkdiary.app.ui.adapter.RecordAdapter;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
+import com.milkdiary.app.util.RoleManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -23,21 +27,26 @@ public class MonthlySummaryActivity extends AppCompatActivity implements RecordA
 
     private ActivityMonthlySummaryBinding binding;
     private MilkRecordDao recordDao;
+    private SaleDao saleDao;
+    private PaymentDao paymentDao;
     private RecordAdapter adapter;
     private String selectedYearMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RoleManager.requireOwner(this);
         binding = ActivityMonthlySummaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Monthly Summary");
+            getSupportActionBar().setTitle("Monthly Report");
         }
 
         recordDao = new MilkRecordDao(this);
+        saleDao = new SaleDao(this);
+        paymentDao = new PaymentDao(this);
         selectedYearMonth = DateUtils.currentMonthDb();
 
         adapter = new RecordAdapter(this);
@@ -85,13 +94,32 @@ public class MonthlySummaryActivity extends AppCompatActivity implements RecordA
         binding.tvTotalLiters.setText(FormatUtils.liters(summary.getTotalLiters()));
         binding.tvTotalEarnings.setText(FormatUtils.money(summary.getTotalEarnings()));
         binding.tvAvgDaily.setText(FormatUtils.money(summary.getAvgDailyEarnings()));
-        binding.tvDaysRecorded.setText(summary.getRecordCount() + " days recorded");
+        binding.tvDaysRecorded.setText(summary.getRecordCount() + " days");
+
+        double totalSales = saleDao.getTotalAmountByMonth(selectedYearMonth);
+        double totalPaid = paymentDao.getTotalPaid();
+        double totalPaidToSuppliers = paymentDao.getTotalPaidToSuppliers();
+        double totalEarningsAll = recordDao.getTotalEarningsAllTime();
+        double pending = totalEarningsAll - totalPaid;
+
+        binding.tvTotalSales.setText(FormatUtils.money(totalSales));
+        binding.tvNetCollection.setText(FormatUtils.money(totalPaid));
+        binding.tvSupplierOutgo.setText(FormatUtils.money(totalPaidToSuppliers));
+        binding.tvPendingOverall.setText(FormatUtils.money(Math.max(0, pending)));
+
+        // Pending color
+        if (pending > 0.01) {
+            binding.tvPendingOverall.setTextColor(
+                    getResources().getColor(android.R.color.holo_red_dark, getTheme()));
+        } else {
+            binding.tvPendingOverall.setTextColor(
+                    getResources().getColor(R.color.earnings_color, getTheme()));
+        }
 
         adapter.setRecords(records);
         binding.tvNoData.setVisibility(records.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
-    // RecordAdapter.RecordListener — open edit screen from summary list
     @Override
     public void onEditRecord(MilkRecord record) {
         Intent intent = new Intent(this, AddRecordActivity.class);
@@ -101,7 +129,6 @@ public class MonthlySummaryActivity extends AppCompatActivity implements RecordA
 
     @Override
     public void onDeleteRecord(MilkRecord record) {
-        // Not allowed from summary view — user should use History for deletes
         android.widget.Toast.makeText(this,
                 "Use History screen to delete records", android.widget.Toast.LENGTH_SHORT).show();
     }
@@ -109,7 +136,6 @@ public class MonthlySummaryActivity extends AppCompatActivity implements RecordA
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh after returning from edit
         loadSummary();
     }
 

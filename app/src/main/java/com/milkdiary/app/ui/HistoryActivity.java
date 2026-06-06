@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.milkdiary.app.databinding.ActivityHistoryBinding;
 import com.milkdiary.app.db.MilkRecordDao;
 import com.milkdiary.app.model.MilkRecord;
 import com.milkdiary.app.ui.adapter.RecordAdapter;
+import com.milkdiary.app.util.RoleManager;
 
 import java.util.List;
 
@@ -81,6 +83,11 @@ public class HistoryActivity extends AppCompatActivity implements RecordAdapter.
 
     @Override
     public void onEditRecord(MilkRecord record) {
+        if (new RoleManager(this).isSalesman()) {
+            Toast.makeText(this, "View only - Salesman cannot edit records",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(this, AddRecordActivity.class);
         intent.putExtra(AddRecordActivity.EXTRA_RECORD_ID, record.getId());
         startActivity(intent);
@@ -88,6 +95,11 @@ public class HistoryActivity extends AppCompatActivity implements RecordAdapter.
 
     @Override
     public void onDeleteRecord(MilkRecord record) {
+        if (new RoleManager(this).isSalesman()) {
+            Toast.makeText(this, "View only - Salesman cannot delete records",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         new AlertDialog.Builder(this)
                 .setTitle("Delete Record")
                 .setMessage("Delete record for " + record.getDate() + "?")
