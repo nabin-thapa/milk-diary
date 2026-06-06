@@ -14,8 +14,18 @@ android {
         versionName "2.2.0"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("${rootProject.projectDir}/milkdiary.jks")
+            storePassword "milkdiary123"
+            keyAlias "milkdiary"
+            keyPassword "milkdiary123"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
