@@ -295,6 +295,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         updateLastCheckedDisplay();
 
+        // Set dynamic footer version
+        String footerText = "Milk Diary v" + binding.tvCurrentVersion.getText()
+                + "  •  Fully Offline  •  Data stored on this device";
+        binding.tvFooterVersion.setText(footerText);
+
         binding.btnCheckUpdates.setOnClickListener(v -> {
             binding.btnCheckUpdates.setEnabled(false);
             binding.btnCheckUpdates.setText("Checking...");
@@ -313,10 +318,23 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvUpdateStatus.setText("Never checked");
             binding.tvUpdateStatus.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
         } else {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault());
-            binding.tvLastUpdateCheck.setText(sdf.format(new java.util.Date(lastCheck)));
+            long now = System.currentTimeMillis();
+            long diffMs = now - lastCheck;
+            long seconds = diffMs / 1000;
+            String ago;
+            if (seconds < 60) {
+                ago = "Just now";
+            } else if (seconds < 3600) {
+                ago = (seconds / 60) + " minutes ago";
+            } else if (seconds < 86400) {
+                long hours = seconds / 3600;
+                ago = hours + " hour" + (hours > 1 ? "s" : "") + " ago";
+            } else {
+                long days = seconds / 86400;
+                ago = days + " day" + (days > 1 ? "s" : "") + " ago";
+            }
+            binding.tvLastUpdateCheck.setText(ago);
 
-            // Fetch last status from preferences
             String status = prefs.getString("last_update_status", "Up to date");
             binding.tvUpdateStatus.setText(status);
             if ("Update available".equalsIgnoreCase(status)) {
