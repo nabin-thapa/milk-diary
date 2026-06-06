@@ -2,11 +2,15 @@ package com.milkdiary.app.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +27,7 @@ import com.milkdiary.app.util.ExportUtils;
 import com.milkdiary.app.util.FormatUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
     private SharedPreferences prefs;
     private static final int PICK_BACKUP_FILE = 101;
+    private static final int REQUEST_PICK_IMAGE = 202;
     private boolean ratesUpdating = false;
 
     @Override
@@ -65,6 +71,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Update Section
         initUpdateSection();
+
+        // Profile section
+        loadProfile();
+        setupProfile();
     }
 
     @Override
@@ -173,6 +183,72 @@ public class SettingsActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Toast.makeText(this, "Restore failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+            handleProfileImageResult(data);
+        }
+    }
+
+    private void loadProfile() {
+        String name = prefs.getString("profile_name", "");
+        if (!name.isEmpty()) {
+            binding.etProfileName.setText(name);
+        }
+        loadProfileImage();
+    }
+
+    private void loadProfileImage() {
+        File imgFile = new File(getFilesDir(), "profile_pic.jpg");
+        if (imgFile.exists()) {
+            Bitmap bm = BitmapFactory.decodeFile(imgFile.getPath());
+            if (bm != null) {
+                binding.ivProfile.setImageBitmap(bm);
+            }
+        }
+    }
+
+    private void setupProfile() {
+        binding.etProfileName.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                saveProfileName();
+                return true;
+            }
+            return false;
+        });
+
+        binding.etProfileName.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+            @Override public void onTextChanged(CharSequence s, int st, int b, int c) {}
+            @Override public void afterTextChanged(Editable s) {
+                saveProfileName();
+            }
+        });
+
+        binding.btnChangePhoto.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, REQUEST_PICK_IMAGE);
+        });
+    }
+
+    private void saveProfileName() {
+        String name = binding.etProfileName.getText().toString().trim();
+        prefs.edit().putString("profile_name", name).apply();
+    }
+
+    private void handleProfileImageResult(Intent data) {
+        try {
+            Uri sourceUri = data.getData();
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), sourceUri);
+            Bitmap resized = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            File outFile = new File(getFilesDir(), "profile_pic.jpg");
+            try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                resized.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+            }
+            binding.ivProfile.setImageBitmap(resized);
+            bitmap.recycle();
+            resized.recycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
         }
     }
 

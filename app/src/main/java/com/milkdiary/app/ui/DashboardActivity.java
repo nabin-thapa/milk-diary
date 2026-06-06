@@ -2,6 +2,8 @@ package com.milkdiary.app.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +65,7 @@ public class DashboardActivity extends AppCompatActivity {
         String thisMonth = DateUtils.currentMonthDb();
 
         setGreeting();
+        loadProfileImage();
 
         // Get today's records for both sessions
         List<MilkRecord> todayRecords = recordDao.getRecordsByDate(today);
@@ -177,7 +180,22 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             greeting = getString(R.string.greeting_evening);
         }
+        String name = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString("profile_name", "").trim();
+        if (!name.isEmpty()) {
+            greeting += ", " + name;
+        }
         binding.tvGreeting.setText(greeting);
+    }
+
+    private void loadProfileImage() {
+        java.io.File imgFile = new java.io.File(getFilesDir(), "profile_pic.jpg");
+        if (imgFile.exists()) {
+            Bitmap bm = BitmapFactory.decodeFile(imgFile.getPath());
+            if (bm != null) {
+                binding.ivProfile.setImageBitmap(bm);
+            }
+        }
     }
 
     private void setupButtons() {
