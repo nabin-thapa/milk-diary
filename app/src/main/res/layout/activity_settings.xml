@@ -326,7 +326,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Milk Diary v1.3.0  •  Fully Offline  •  Data stored on this device"
+                android:text="Milk Diary v2.0.0  •  Fully Offline  •  Data stored on this device"
                 android:gravity="center"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary"

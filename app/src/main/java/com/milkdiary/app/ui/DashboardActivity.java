@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -52,6 +53,21 @@ public class DashboardActivity extends AppCompatActivity {
             isAppLaunchCheckDone = true;
             com.milkdiary.app.update.UpdateManager.checkForUpdates(this, false, null);
         }
+
+        checkVersionChanged();
+    }
+
+    private void checkVersionChanged() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        int savedVersion = sp.getInt("app_version_code", 0);
+        int currentVersion = 0;
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+        } catch (Exception ignored) {}
+        if (currentVersion > 0 && savedVersion > 0 && currentVersion != savedVersion) {
+            Toast.makeText(this, "✅ Updated to v" + currentVersion, Toast.LENGTH_LONG).show();
+        }
+        sp.edit().putInt("app_version_code", currentVersion).apply();
     }
 
     @Override
