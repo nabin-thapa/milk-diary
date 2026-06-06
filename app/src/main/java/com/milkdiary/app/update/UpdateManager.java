@@ -143,7 +143,12 @@ public class UpdateManager {
                 // Read current App details
                 PackageManager pm = activity.getPackageManager();
                 PackageInfo pi = pm.getPackageInfo(activity.getPackageName(), 0);
-                final int currentCode = pi.versionCode;
+                final int currentCode;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    currentCode = (int) pi.getLongVersionCode();
+                } else {
+                    currentCode = pi.versionCode;
+                }
                 final String currentName = pi.versionName;
 
                 // Compare versions
@@ -285,7 +290,11 @@ public class UpdateManager {
         int currentCode = 0;
         try {
             PackageInfo pi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-            currentCode = pi.versionCode;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                currentCode = (int) pi.getLongVersionCode();
+            } else {
+                currentCode = pi.versionCode;
+            }
             tvInstalled.setText(pi.versionName + " (" + pi.versionCode + ")");
         } catch (Exception ignored) {
             tvInstalled.setText("Unknown");

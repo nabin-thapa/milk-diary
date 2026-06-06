@@ -1,8 +1,8 @@
 {
-  "latestVersion": "1.2.0",
-  "versionCode": 3,
+  "latestVersion": "1.3.0",
+  "versionCode": 4,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "• New Morning & Evening entry system - record milk twice daily\n• Dashboard shows morning/evening status with smart buttons\n• One-time edit rule - each session editable only once\n• Day lock - day completes after both sessions recorded\n• History shows session type (morning/evening) with icons\n• Improved monthly stats with session-based calculations\n• Bug fixes and performance improvements",
+  "releaseNotes": "• In-app APK download & install - no more Chrome redirect\n• Developer credit updated\n• Dashboard now has Settings button in toolbar\n• Fixed deprecated API usage for future Android compatibility\n• Overall bug fixes and stability improvements",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }
