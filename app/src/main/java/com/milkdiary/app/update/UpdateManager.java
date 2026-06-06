@@ -150,7 +150,7 @@ public class UpdateManager {
                 } else {
                     currentCode = pi.versionCode;
                 }
-                final String currentName = pi.versionName;
+                final String currentName = pi.versionName != null ? pi.versionName : "0.0.0";
 
                 // Compare versions
                 final boolean hasUpdate = isUpdateAvailable(currentCode, currentName, updateInfo.getVersionCode(), updateInfo.getLatestVersion());
@@ -202,8 +202,10 @@ public class UpdateManager {
             URL url = new URL(urlStr);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(15000); // 15 seconds timeout
+            conn.setConnectTimeout(15000);
             conn.setReadTimeout(15000);
+            conn.setUseCaches(false);
+            conn.setRequestProperty("Cache-Control", "no-cache");
             conn.connect();
 
             int code = conn.getResponseCode();
