@@ -365,15 +365,15 @@ public class UpdateManager {
                         if (c != null && c.moveToFirst()) {
                             int status = c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS));
                             if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                                installApk(activity);
+                                installApk(appContext);
                             } else {
                                 int reason = c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON));
-                                Toast.makeText(activity, "Download failed: " + getDownloadErrorString(reason), Toast.LENGTH_LONG).show();
+                                Toast.makeText(appContext, "Download failed: " + getDownloadErrorString(reason), Toast.LENGTH_LONG).show();
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(activity, "Download verification failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(appContext, "Download verification failed", Toast.LENGTH_LONG).show();
                     }
                 }
             };
