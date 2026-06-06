@@ -22,6 +22,7 @@ import java.util.Calendar;
 public class AddRecordActivity extends AppCompatActivity {
 
     public static final String EXTRA_RECORD_ID = "record_id";
+    public static final String EXTRA_SESSION_TYPE = "session_type";
     public static final String PREF_COW_RATE   = "default_cow_rate";
     public static final String PREF_BUF_RATE   = "default_buf_rate";
 
@@ -29,8 +30,8 @@ public class AddRecordActivity extends AppCompatActivity {
     private MilkRecordDao recordDao;
     private SharedPreferences prefs;
     private String selectedDate;
+    private String sessionType = MilkRecord.SESSION_MORNING;
     private long editRecordId = -1;
-    // Guard flag prevents infinite TextWatcher loops during programmatic setText
     private boolean isUpdating = false;
 
     @Override
@@ -42,16 +43,30 @@ public class AddRecordActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recordDao = new MilkRecordDao(this);
-        prefs     = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         selectedDate = DateUtils.todayDb();
+
+        // Get session type from intent
+        sessionType = getIntent().getStringExtra(EXTRA_SESSION_TYPE);
+        if (sessionType == null) {
+            sessionType = MilkRecord.SESSION_MORNING;
+        }
 
         editRecordId = getIntent().getLongExtra(EXTRA_RECORD_ID, -1);
 
         if (editRecordId != -1) {
-            if (getSupportActionBar() != null) getSupportActionBar().setTitle("Edit Record");
             loadRecord(editRecordId);
         } else {
-            if (getSupportActionBar() != null) getSupportActionBar().setTitle("Add Daily Record");
+            // Validate no duplicate session
+            if (recordDao.getRecordByDateAndSession(selectedDate, sessionType) != null) {
+                String msg = sessionType.equals(MilkRecord.SESSION_MORNING)
+                        ? "Morning milk already recorded."
+                        : "Evening milk already recorded.";
+                Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
+            setToolbarTitle(false);
             updateDateButton();
             prefillDefaultRates();
         }
@@ -60,11 +75,19 @@ public class AddRecordActivity extends AppCompatActivity {
         setupAutoCalculation();
         setupSaveButton();
 
-        // Focus cow liters field automatically for speed
         binding.etCowLiters.requestFocus();
     }
 
-    /** Fill rate fields with saved defaults so user only needs to enter liters */
+    private void setToolbarTitle(boolean isEdit) {
+        if (getSupportActionBar() == null) return;
+        String sessionLabel = sessionType.equals(MilkRecord.SESSION_MORNING) ? "Morning" : "Evening";
+        if (isEdit) {
+            getSupportActionBar().setTitle("Edit " + sessionLabel);
+        } else {
+            getSupportActionBar().setTitle("Add " + sessionLabel + " Milk");
+        }
+    }
+
     private void prefillDefaultRates() {
         float cowRate = prefs.getFloat(PREF_COW_RATE, 0f);
         float bufRate = prefs.getFloat(PREF_BUF_RATE, 0f);
@@ -72,7 +95,6 @@ public class AddRecordActivity extends AppCompatActivity {
         if (cowRate > 0) binding.etCowRate.setText(FormatUtils.rateValue(cowRate));
         if (bufRate > 0) binding.etBufRate.setText(FormatUtils.rateValue(bufRate));
         isUpdating = false;
-        // Trigger a calculation with the pre-filled rates shown
         recalculate();
     }
 
@@ -83,8 +105,19 @@ public class AddRecordActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        // Check one-time edit rule
+        if (!record.canEdit()) {
+            Toast.makeText(this, "This record can only be edited once.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        sessionType = record.getSessionType();
         selectedDate = record.getDate();
+        setToolbarTitle(true);
         updateDateButton();
+
         isUpdating = true;
         if (record.getCowLiters() > 0)
             binding.etCowLiters.setText(FormatUtils.inputValue(record.getCowLiters()));
@@ -161,7 +194,6 @@ public class AddRecordActivity extends AppCompatActivity {
         double bufR = parseDecimal(binding.etBufRate.getText().toString());
         String note = binding.etNote.getText().toString().trim();
 
-        // --- Validation ---
         if (cowL <= 0 && bufL <= 0) {
             Toast.makeText(this,
                     "Enter at least some milk quantity (Cow or Buffalo)",
@@ -186,14 +218,18 @@ public class AddRecordActivity extends AppCompatActivity {
             return;
         }
 
-        // Remember rates as new defaults for next time
         if (cowR > 0) prefs.edit().putFloat(PREF_COW_RATE, (float) cowR).apply();
         if (bufR > 0) prefs.edit().putFloat(PREF_BUF_RATE, (float) bufR).apply();
 
-        MilkRecord record = new MilkRecord(selectedDate, cowL, cowR, bufL, bufR, note);
+        MilkRecord record = new MilkRecord(selectedDate, sessionType, cowL, cowR, bufL, bufR, note);
 
         if (editRecordId != -1) {
             record.setId(editRecordId);
+            // Increment edit count for one-time edit rule
+            MilkRecord existing = recordDao.getRecordById(editRecordId);
+            if (existing != null) {
+                record.setEditCount(existing.getEditCount() + 1);
+            }
             int rows = recordDao.updateRecord(record);
             if (rows > 0) {
                 Toast.makeText(this, "Record updated ✓", Toast.LENGTH_SHORT).show();
@@ -212,10 +248,6 @@ public class AddRecordActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Locale-safe decimal parser.
-     * Accepts both "5.5" and "5,5" (some keyboards type comma as decimal separator).
-     */
     private double parseDecimal(String s) {
         if (s == null || s.trim().isEmpty()) return 0.0;
         try {

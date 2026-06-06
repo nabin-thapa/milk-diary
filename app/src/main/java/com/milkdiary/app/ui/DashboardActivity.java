@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import java.util.Calendar;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -19,6 +19,9 @@ import com.milkdiary.app.model.MilkRecord;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
 
+import java.util.Calendar;
+import java.util.List;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private ActivityDashboardBinding binding;
@@ -28,7 +31,6 @@ public class DashboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Apply dark mode before super.onCreate to avoid flicker
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         AppCompatDelegate.setDefaultNightMode(
                 prefs.getBoolean("dark_mode", false)
@@ -44,7 +46,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         setupButtons();
 
-        // Check for updates automatically on app launch (once per session)
         if (!isAppLaunchCheckDone) {
             isAppLaunchCheckDone = true;
             com.milkdiary.app.update.UpdateManager.checkForUpdates(this, false, null);
@@ -58,55 +59,112 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void refreshDashboard() {
-        String today     = DateUtils.todayDb();
+        String today = DateUtils.todayDb();
         String thisMonth = DateUtils.currentMonthDb();
 
-        // Set greeting based on time of day
         setGreeting();
 
-        // Today's record
-        MilkRecord todayRecord = recordDao.getRecordByDate(today);
-        double cowLiters = 0, bufLiters = 0, todayEarnings = 0;
-        if (todayRecord != null) {
-            cowLiters     = todayRecord.getCowLiters();
-            bufLiters     = todayRecord.getBuffaloLiters();
-            todayEarnings = todayRecord.getTotal();
+        // Get today's records for both sessions
+        List<MilkRecord> todayRecords = recordDao.getRecordsByDate(today);
+        MilkRecord morningRecord = null;
+        MilkRecord eveningRecord = null;
+        double todayCowLiters = 0, todayBufLiters = 0, todayEarnings = 0;
+
+        for (MilkRecord r : todayRecords) {
+            if (r.isMorning()) morningRecord = r;
+            if (r.isEvening()) eveningRecord = r;
+            todayCowLiters += r.getCowLiters();
+            todayBufLiters += r.getBuffaloLiters();
+            todayEarnings += r.getTotal();
         }
 
-        // Monthly stats via a single SQL query
-        double[] monthly       = recordDao.getMonthlyStats(thisMonth);
-        double monthlyLiters   = monthly[0] + monthly[1];
+        boolean hasMorning = morningRecord != null;
+        boolean hasEvening = eveningRecord != null;
+        boolean dayComplete = hasMorning && hasEvening;
+
+        // Monthly stats
+        double[] monthly = recordDao.getMonthlyStats(thisMonth);
+        double monthlyLiters = monthly[0] + monthly[1];
         double monthlyEarnings = monthly[2];
 
-        // Pending = all-time earnings − all-time paid
+        // Pending
         double totalEarnings = recordDao.getTotalEarningsAllTime();
-        double totalPaid     = paymentDao.getTotalPaid();
-        double pending       = totalEarnings - totalPaid;
+        double totalPaid = paymentDao.getTotalPaid();
+        double pending = totalEarnings - totalPaid;
 
         // Update UI
         binding.tvTodayDate.setText(DateUtils.dbToDisplay(today));
-        binding.tvCowLiters.setText(FormatUtils.liters(cowLiters));
-        binding.tvBufLiters.setText(FormatUtils.liters(bufLiters));
+        binding.tvCowLiters.setText(FormatUtils.liters(todayCowLiters));
+        binding.tvBufLiters.setText(FormatUtils.liters(todayBufLiters));
         binding.tvTodayEarnings.setText(FormatUtils.money(todayEarnings));
         binding.tvMonthlyLiters.setText(FormatUtils.liters(monthlyLiters));
         binding.tvMonthlyEarnings.setText(FormatUtils.money(monthlyEarnings));
         binding.tvPending.setText(FormatUtils.money(Math.max(0, pending)));
 
-        // Status indicator: did we record today?
-        if (todayRecord != null) {
-            binding.tvTodayStatus.setText("✓ Today recorded");
+        // Status indicator
+        if (dayComplete) {
+            binding.tvTodayStatus.setText("✓ Today completed");
             binding.tvTodayStatus.setTextColor(
                     getResources().getColor(R.color.earnings_color, getTheme()));
+        } else if (hasMorning || hasEvening) {
+            binding.tvTodayStatus.setText("⚠ Partial record");
+            binding.tvTodayStatus.setTextColor(
+                    getResources().getColor(R.color.warning_color, getTheme()));
         } else {
             binding.tvTodayStatus.setText("⚠ No record yet today");
             binding.tvTodayStatus.setTextColor(
                     getResources().getColor(R.color.pending_color, getTheme()));
         }
 
-        // Color pending red if unpaid, green if settled
+        // Pending color
         binding.tvPending.setTextColor(pending > 0.01
                 ? getResources().getColor(R.color.pending_color, getTheme())
                 : getResources().getColor(R.color.earnings_color, getTheme()));
+
+        // --- Morning/Evening Entry UI ---
+        updateSessionUI(hasMorning, hasEvening);
+    }
+
+    private void updateSessionUI(boolean hasMorning, boolean hasEvening) {
+        // Morning
+        if (hasMorning) {
+            binding.tvMorningStatus.setText("Completed");
+            binding.tvMorningStatus.setTextColor(
+                    getResources().getColor(R.color.earnings_color, getTheme()));
+            binding.btnMorningAdd.setText("✅  Morning Completed");
+            binding.btnMorningAdd.setEnabled(false);
+            binding.btnMorningAdd.setAlpha(0.7f);
+        } else {
+            binding.tvMorningStatus.setText("Pending");
+            binding.tvMorningStatus.setTextColor(
+                    getResources().getColor(R.color.warning_color, getTheme()));
+            binding.btnMorningAdd.setText("➕  Add Morning Milk");
+            binding.btnMorningAdd.setEnabled(true);
+            binding.btnMorningAdd.setAlpha(1f);
+        }
+
+        // Evening
+        if (hasEvening) {
+            binding.tvEveningStatus.setText("Completed");
+            binding.tvEveningStatus.setTextColor(
+                    getResources().getColor(R.color.earnings_color, getTheme()));
+            binding.btnEveningAdd.setText("✅  Evening Completed");
+            binding.btnEveningAdd.setEnabled(false);
+            binding.btnEveningAdd.setAlpha(0.7f);
+        } else {
+            binding.tvEveningStatus.setText("Pending");
+            binding.tvEveningStatus.setTextColor(
+                    getResources().getColor(R.color.warning_color, getTheme()));
+            binding.btnEveningAdd.setText("➕  Add Evening Milk");
+            binding.btnEveningAdd.setEnabled(true);
+            binding.btnEveningAdd.setAlpha(1f);
+        }
+
+        // Day complete card
+        boolean dayComplete = hasMorning && hasEvening;
+        binding.cardDayComplete.setVisibility(dayComplete ? View.VISIBLE : View.GONE);
+        binding.cardMorning.setVisibility(dayComplete ? View.GONE : View.VISIBLE);
+        binding.cardEvening.setVisibility(dayComplete ? View.GONE : View.VISIBLE);
     }
 
     private void setGreeting() {
@@ -123,8 +181,10 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        binding.btnAddRecord.setOnClickListener(v ->
-                startActivity(new Intent(this, AddRecordActivity.class)));
+        binding.btnMorningAdd.setOnClickListener(v ->
+                openAddRecord(MilkRecord.SESSION_MORNING));
+        binding.btnEveningAdd.setOnClickListener(v ->
+                openAddRecord(MilkRecord.SESSION_EVENING));
         binding.btnHistory.setOnClickListener(v ->
                 startActivity(new Intent(this, HistoryActivity.class)));
         binding.btnMonthlySummary.setOnClickListener(v ->
@@ -133,6 +193,12 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PaymentActivity.class)));
         binding.btnSettings.setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
+    }
+
+    private void openAddRecord(String sessionType) {
+        Intent intent = new Intent(this, AddRecordActivity.class);
+        intent.putExtra(AddRecordActivity.EXTRA_SESSION_TYPE, sessionType);
+        startActivity(intent);
     }
 
     @Override

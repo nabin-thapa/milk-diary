@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- ── PREMIUM HEADER ── -->
+    <!-- ── HEADER ── -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,6 @@
         android:paddingTop="48dp"
         android:paddingBottom="28dp">
 
-        <!-- Top row: greeting + settings -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/tvGreeting"
                     android:layout_width="wrap_content"
@@ -39,7 +37,6 @@
                     android:textColor="#B0FFFFFF"
                     android:textSize="14sp"
                     android:paddingBottom="2dp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,14 +58,12 @@
                 android:padding="10dp" />
         </LinearLayout>
 
-        <!-- Date + status row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:paddingTop="8dp">
-
             <TextView
                 android:id="@+id/tvTodayDate"
                 android:layout_width="0dp"
@@ -76,7 +71,6 @@
                 android:layout_weight="1"
                 android:textColor="#D0FFFFFF"
                 android:textSize="14sp" />
-
             <TextView
                 android:id="@+id/tvTodayStatus"
                 android:layout_width="wrap_content"
@@ -115,14 +109,11 @@
                 android:text="TODAY'S SUMMARY"
                 style="@style/SectionLabel" />
 
-            <!-- 2x2 Summary Cards Grid -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="4dp">
-
-                <!-- Cow Milk Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -137,32 +128,11 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🐄"
-                            android:textSize="28sp"
-                            android:paddingBottom="6dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cow"
-                            android:textSize="11sp"
-                            android:textColor="@color/text_secondary"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:id="@+id/tvCowLiters"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00 L"
-                            android:textColor="@color/cow_color"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:paddingTop="2dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🐄" android:textSize="28sp" android:paddingBottom="6dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cow" android:textSize="11sp" android:textColor="@color/text_secondary" android:textStyle="bold" />
+                        <TextView android:id="@+id/tvCowLiters" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/cow_color" android:textSize="20sp" android:textStyle="bold" android:paddingTop="2dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-                <!-- Buffalo Milk Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -177,28 +147,9 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🐃"
-                            android:textSize="28sp"
-                            android:paddingBottom="6dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Buffalo"
-                            android:textSize="11sp"
-                            android:textColor="@color/text_secondary"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:id="@+id/tvBufLiters"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00 L"
-                            android:textColor="@color/buffalo_color"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:paddingTop="2dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🐃" android:textSize="28sp" android:paddingBottom="6dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Buffalo" android:textSize="11sp" android:textColor="@color/text_secondary" android:textStyle="bold" />
+                        <TextView android:id="@+id/tvBufLiters" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textColor="@color/buffalo_color" android:textSize="20sp" android:textStyle="bold" android:paddingTop="2dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -208,8 +159,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="20dp">
-
-                <!-- Earnings Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -224,33 +173,11 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="💰"
-                            android:textSize="24sp"
-                            android:paddingBottom="4dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/today_earnings_label"
-                            android:textSize="10sp"
-                            android:textColor="@color/primary"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.02" />
-                        <TextView
-                            android:id="@+id/tvTodayEarnings"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rs. 0.00"
-                            android:textColor="@color/primary"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:paddingTop="2dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💰" android:textSize="24sp" android:paddingBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/today_earnings_label" android:textSize="10sp" android:textColor="@color/primary" android:textStyle="bold" android:letterSpacing="0.02" />
+                        <TextView android:id="@+id/tvTodayEarnings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textColor="@color/primary" android:textSize="20sp" android:textStyle="bold" android:paddingTop="2dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-                <!-- Pending Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -265,32 +192,163 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:padding="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⏳"
-                            android:textSize="24sp"
-                            android:paddingBottom="4dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pending_label"
-                            android:textSize="10sp"
-                            android:textColor="@color/text_secondary"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.02" />
-                        <TextView
-                            android:id="@+id/tvPending"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rs. 0.00"
-                            android:textColor="@color/pending_color"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:paddingTop="2dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏳" android:textSize="24sp" android:paddingBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pending_label" android:textSize="10sp" android:textColor="@color/text_secondary" android:textStyle="bold" android:letterSpacing="0.02" />
+                        <TextView android:id="@+id/tvPending" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textColor="@color/pending_color" android:textSize="20sp" android:textStyle="bold" android:paddingTop="2dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
+            <!-- ── TODAY'S ENTRY ── -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TODAY'S ENTRY"
+                style="@style/SectionLabel" />
+
+            <!-- Morning Entry -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/card_bg"
+                android:id="@+id/cardMorning">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🌅"
+                            android:textSize="22sp"
+                            android:layout_marginEnd="10dp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Morning"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                        <TextView
+                            android:id="@+id/tvMorningStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pending"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/warning_color" />
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/btnMorningAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="➕  Add Morning Milk"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/primary"
+                        app:cornerRadius="12dp"
+                        android:stateListAnimator="@null" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Evening Entry -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/card_bg"
+                android:id="@+id/cardEvening">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="10dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🌆"
+                            android:textSize="22sp"
+                            android:layout_marginEnd="10dp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Evening"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                        <TextView
+                            android:id="@+id/tvEveningStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pending"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/warning_color" />
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/btnEveningAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="➕  Add Evening Milk"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/accent"
+                        app:cornerRadius="12dp"
+                        android:stateListAnimator="@null" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Day Complete Message -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"
+                android:id="@+id/cardDayComplete"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/primary_surface">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✅"
+                        android:textSize="28sp"
+                        android:layout_marginEnd="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today's milk entry completed"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- ── THIS MONTH ── -->
             <TextView
@@ -311,55 +369,24 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="18dp">
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/total_milk"
-                            style="@style/StatLabel" />
-                        <TextView
-                            android:id="@+id/tvMonthlyLiters"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00 L"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary"
-                            android:paddingTop="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/total_milk" style="@style/StatLabel" />
+                        <TextView android:id="@+id/tvMonthlyLiters" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00 L" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/text_primary" android:paddingTop="4dp" />
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="40dp"
-                        android:background="@color/divider"
-                        android:layout_gravity="center_vertical" />
-
+                    <View android:layout_width="1dp" android:layout_height="40dp" android:background="@color/divider" android:layout_gravity="center_vertical" />
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/earned"
-                            style="@style/StatLabel" />
-                        <TextView
-                            android:id="@+id/tvMonthlyEarnings"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rs. 0.00"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/earnings_color"
-                            android:paddingTop="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/earned" style="@style/StatLabel" />
+                        <TextView android:id="@+id/tvMonthlyEarnings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textSize="22sp" android:textStyle="bold" android:textColor="@color/earnings_color" android:paddingTop="4dp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -371,24 +398,11 @@
                 android:text="@string/quick_actions"
                 style="@style/SectionLabel" />
 
-            <Button
-                android:id="@+id/btnAddRecord"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="10dp"
-                android:text="＋  Add Record"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/primary"
-                app:cornerRadius="16dp"
-                android:stateListAnimator="@null" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="10dp">
-
                 <Button
                     android:id="@+id/btnHistory"
                     android:layout_width="0dp"
@@ -401,7 +415,6 @@
                     android:backgroundTint="@color/primary_dark"
                     app:cornerRadius="14dp"
                     android:stateListAnimator="@null" />
-
                 <Button
                     android:id="@+id/btnMonthlySummary"
                     android:layout_width="0dp"
