@@ -1,0 +1,8 @@
+{
+  "latestVersion": "1.0.0",
+  "versionCode": 1,
+  "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
+  "releaseNotes": "• Initial release of Milk Diary\n• Track daily cow & buffalo milk records\n• Monthly summaries and payment tracking\n• Fully offline with backup/restore",
+  "forceUpdate": false,
+  "minimumSupportedVersion": 0
+}

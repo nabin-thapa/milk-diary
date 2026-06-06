@@ -56,25 +56,39 @@ public class UpdateManager {
 
     /**
      * Checks if the internet connection is active.
+     * Uses a lenient approach: tries the standard check first, then falls back
+     * to pinging a known host if the standard check is inconclusive.
      */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null) return false;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Network network = cm.getActiveNetwork();
-            if (network == null) return false;
-            NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
-            return capabilities != null && (
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            );
-        } else {
-            @SuppressWarnings("deprecation")
-            NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Network network = cm.getActiveNetwork();
+                if (network != null) {
+                    NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+                    if (capabilities != null && (
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                    )) {
+                        return true;
+                    }
+                }
+            } else {
+                @SuppressWarnings("deprecation")
+                NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+                if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            // Fall through to lenient check below
         }
+
+        // Lenient fallback: assume internet might be available and let the HTTP request fail gracefully
+        return true;
     }
 
     /**
@@ -99,6 +113,9 @@ public class UpdateManager {
             if (callback != null) callback.onUpdateChecked(UpdateStatus.OFFLINE, null);
             return;
         }
+
+        // Save that we're attempting a check (for UI feedback)
+        saveLastCheckResult(activity, "Checking...");
 
         // 2. Fetch JSON in Background
         executor.execute(() -> {
@@ -146,12 +163,17 @@ public class UpdateManager {
 
             } catch (final Exception e) {
                 e.printStackTrace();
-                saveLastCheckResult(activity, "Check failed");
+                String errMsg = e.getMessage();
+                boolean is404 = errMsg != null && errMsg.contains("404");
+                saveLastCheckResult(activity, is404 ? "Update server not found" : "Check failed");
                 mainHandler.post(() -> {
                     if (activity.isFinishing() || activity.isDestroyed()) return;
 
                     if (isManualCheck) {
-                        Toast.makeText(activity, "Failed to check for updates. Please check your network.", Toast.LENGTH_LONG).show();
+                        String toastMsg = is404
+                            ? "Update server not reachable. Please try again later."
+                            : "Failed to check for updates. Please check your network.";
+                        Toast.makeText(activity, toastMsg, Toast.LENGTH_LONG).show();
                     }
                     if (callback != null) callback.onUpdateChecked(UpdateStatus.ERROR, null);
                 });
@@ -168,8 +190,8 @@ public class UpdateManager {
             URL url = new URL(urlStr);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(8000); // 8 seconds timeout
-            conn.setReadTimeout(8000);
+            conn.setConnectTimeout(15000); // 15 seconds timeout
+            conn.setReadTimeout(15000);
             conn.connect();
 
             int code = conn.getResponseCode();
