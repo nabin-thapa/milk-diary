@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.2.0",
-  "versionCode": 102,
+  "latestVersion": "2.4.0",
+  "versionCode": 104,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "• Switch Role System - Dairy Owner vs Milk Supplier\n• Dairy Owner: full access (suppliers, sales, inventory, payments)\n• Milk Supplier: add records, view history, view supplier payments\n• Improved role setup screen with clearer role names\n• Settings now shows Dairy / Milk Supplier for role switch",
+  "releaseNotes": "• Complete authentication system - login, signup, logout\n• Role-based accounts: Dairy Owner and Supplier/Farmers\n• Supplier record isolation - suppliers see only their own data\n• Session management with Remember Me\n• SHA-256 password hashing for security\n• Account section in Settings with logout\n• Database migrated safely - all existing data preserved",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }
