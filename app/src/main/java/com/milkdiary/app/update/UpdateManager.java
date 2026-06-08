@@ -101,7 +101,8 @@ public class UpdateManager {
 
         executor.execute(() -> {
             try {
-                String jsonStr = fetchStringFromUrl(UPDATE_JSON_URL);
+                String cacheBuster = "?t=" + System.currentTimeMillis();
+                String jsonStr = fetchStringFromUrl(UPDATE_JSON_URL + cacheBuster);
                 JSONObject json = new JSONObject(jsonStr);
 
                 final UpdateInfo updateInfo = new UpdateInfo(
