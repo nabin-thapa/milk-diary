@@ -77,6 +77,24 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
         binding.recyclerPayments.setAdapter(adapter);
 
         loadPayments();
+
+        handleIntentExtras();
+    }
+
+    private void handleIntentExtras() {
+        String partyType = getIntent().getStringExtra("party_type");
+        long partyId = getIntent().getLongExtra("party_id", -1);
+        if ("supplier".equals(partyType) && partyId > 0) {
+            binding.tabSupplierPayments.performClick();
+            for (int i = 0; i < supplierList.size(); i++) {
+                if (supplierList.get(i).getId() == partyId) {
+                    binding.etPaySupplier.setText(supplierList.get(i).getName(), false);
+                    selectedSupplier = supplierList.get(i);
+                    showSupplierBalance(partyId);
+                    break;
+                }
+            }
+        }
     }
 
     private void setupTabs() {
@@ -122,10 +140,25 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
         binding.etPaySupplier.setOnItemClickListener((parent, view, position, id) -> {
             if (position == 0) {
                 selectedSupplier = null;
+                binding.cardSupplierBalance.setVisibility(View.GONE);
             } else {
                 selectedSupplier = supplierList.get(position - 1);
+                showSupplierBalance(selectedSupplier.getId());
             }
         });
+    }
+
+    private void showSupplierBalance(long supplierId) {
+        double earned = supplierDao.getTotalEarningsBySupplier(supplierId);
+        double paid = supplierDao.getTotalPaidBySupplier(supplierId);
+        double pending = earned - paid;
+        binding.tvSupplierEarned.setText(FormatUtils.money(earned));
+        binding.tvSupplierPaid.setText(FormatUtils.money(paid));
+        binding.tvSupplierPending.setText(FormatUtils.money(Math.max(0, pending)));
+        binding.tvSupplierPending.setTextColor(pending > 0.01
+                ? getResources().getColor(R.color.pending_color, getTheme())
+                : getResources().getColor(R.color.earnings_color, getTheme()));
+        binding.cardSupplierBalance.setVisibility(View.VISIBLE);
     }
 
     private void setupDatePicker() {

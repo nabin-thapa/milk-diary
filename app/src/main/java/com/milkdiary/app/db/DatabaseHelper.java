@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "milk_diary.db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
 
     // Table: milk_records
     public static final String TABLE_RECORDS = "milk_records";
@@ -59,6 +59,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_SALE_PAID = "is_paid";
     public static final String COL_SALE_NOTE = "note";
     public static final String COL_SALE_CREATED_AT = "created_at";
+
+    // Table: customers
+    public static final String TABLE_CUSTOMERS = "customers";
+    public static final String COL_CUS_NAME = "name";
+    public static final String COL_CUS_PHONE = "phone";
+    public static final String COL_CUS_TYPE = "customer_type";
+    public static final String COL_CUS_ADDRESS = "address";
+    public static final String COL_CUS_CREATED_AT = "created_at";
+    public static final String COL_SALE_CUSTOMER_ID = "customer_id";
 
     // Table: inventory
     public static final String TABLE_INVENTORY = "inventory";
@@ -190,6 +199,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_SP_MILK_TYPE + " TEXT DEFAULT 'both'" +
             ");";
 
+    private static final String CREATE_CUSTOMERS_TABLE =
+            "CREATE TABLE " + TABLE_CUSTOMERS + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_CUS_NAME + " TEXT NOT NULL, " +
+            COL_CUS_PHONE + " TEXT, " +
+            COL_CUS_TYPE + " TEXT DEFAULT 'other', " +
+            COL_CUS_ADDRESS + " TEXT, " +
+            COL_CUS_CREATED_AT + " TEXT NOT NULL" +
+            ");";
+
     private static volatile DatabaseHelper instance;
 
     public static synchronized DatabaseHelper getInstance(Context context) {
@@ -220,6 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_OWNER_PROFILES_TABLE);
         db.execSQL(CREATE_SUPPLIER_PROFILES_TABLE);
+        db.execSQL(CREATE_CUSTOMERS_TABLE);
     }
 
     @Override
@@ -260,6 +280,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE " + TABLE_SUPPLIERS + " ADD COLUMN user_id INTEGER DEFAULT 0");
             } catch (Exception ignored) {
                 // Column may already exist
+            }
+        }
+        if (oldVersion < 6) {
+            db.execSQL(CREATE_CUSTOMERS_TABLE);
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_SALES + " ADD COLUMN " + COL_SALE_CUSTOMER_ID + " INTEGER DEFAULT 0");
+            } catch (Exception ignored) {
             }
         }
     }

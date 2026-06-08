@@ -82,6 +82,31 @@ public class SupplierDao {
         return list;
     }
 
+    public double getTotalEarningsBySupplier(long supplierId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor c = db.rawQuery("SELECT COALESCE(SUM(" + DatabaseHelper.COL_TOTAL + "),0) FROM " +
+                DatabaseHelper.TABLE_RECORDS + " WHERE " + DatabaseHelper.COL_SUPPLIER_ID + "=?",
+                new String[]{String.valueOf(supplierId)})) {
+            if (c != null && c.moveToFirst()) return c.getDouble(0);
+        }
+        return 0;
+    }
+
+    public double getTotalPaidBySupplier(long supplierId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor c = db.rawQuery("SELECT COALESCE(SUM(" + DatabaseHelper.COL_PAY_AMOUNT + "),0) FROM " +
+                DatabaseHelper.TABLE_PAYMENTS + " WHERE " + DatabaseHelper.COL_PARTY_TYPE + "='supplier' AND " +
+                DatabaseHelper.COL_PARTY_ID + "=?",
+                new String[]{String.valueOf(supplierId)})) {
+            if (c != null && c.moveToFirst()) return c.getDouble(0);
+        }
+        return 0;
+    }
+
+    public double getPendingBalance(long supplierId) {
+        return getTotalEarningsBySupplier(supplierId) - getTotalPaidBySupplier(supplierId);
+    }
+
     private ContentValues toValues(Supplier s) {
         ContentValues v = new ContentValues();
         v.put(DatabaseHelper.COL_SUP_NAME, s.getName());

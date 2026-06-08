@@ -77,6 +77,16 @@
             android:name=".ui.InventoryActivity" />
 
         <activity
+            android:name=".ui.CustomerListActivity" />
+
+        <activity
+            android:name=".ui.CustomerFormActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.SupplierProfileActivity" />
+
+        <activity
             android:name=".ui.SettingsActivity" />
 
         <provider

@@ -85,9 +85,9 @@ public class SupplierListActivity extends AppCompatActivity implements SupplierA
 
     @Override
     public void onEditSupplier(Supplier supplier) {
-        Intent intent = new Intent(this, SupplierFormActivity.class);
+        Intent intent = new Intent(this, SupplierProfileActivity.class);
         intent.putExtra("supplier_id", supplier.getId());
-        startActivityForResult(intent, REQUEST_EDIT);
+        startActivity(intent);
     }
 
     @Override

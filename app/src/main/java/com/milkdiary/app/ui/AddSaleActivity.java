@@ -1,6 +1,7 @@
 package com.milkdiary.app.ui;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,19 +12,26 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.milkdiary.app.databinding.ActivityAddSaleBinding;
+import com.milkdiary.app.db.CustomerDao;
 import com.milkdiary.app.db.SaleDao;
+import com.milkdiary.app.model.Customer;
 import com.milkdiary.app.model.Sale;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.RoleManager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddSaleActivity extends AppCompatActivity {
 
     private ActivityAddSaleBinding binding;
     private SaleDao saleDao;
+    private CustomerDao customerDao;
     private String selectedDate;
     private long editId = -1;
+    private long selectedCustomerId = -1;
+    private List<Customer> customerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +45,12 @@ public class AddSaleActivity extends AppCompatActivity {
         }
 
         saleDao = new SaleDao(this);
+        customerDao = new CustomerDao(this);
         selectedDate = DateUtils.todayDb();
 
         editId = getIntent().getLongExtra("sale_id", -1);
 
+        setupCustomerDropdown();
         setupCustomerTypeSpinner();
         setupMilkTypeSpinner();
         setupSessionSpinner();
@@ -55,6 +65,35 @@ public class AddSaleActivity extends AppCompatActivity {
         }
 
         setupSaveButton();
+    }
+
+    private void setupCustomerDropdown() {
+        customerList = customerDao.getAll();
+        List<String> customerNames = new ArrayList<>();
+        for (Customer c : customerList) {
+            customerNames.add(c.getName());
+        }
+        customerNames.add("+ Add New Customer");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, customerNames);
+        binding.etCustomerName.setAdapter(adapter);
+        binding.etCustomerName.setOnItemClickListener((parent, view, position, id) -> {
+            if (position < customerList.size()) {
+                Customer selected = customerList.get(position);
+                selectedCustomerId = selected.getId();
+                binding.etCustomerName.setText(selected.getName());
+                for (int i = 0; i < CustomerDao.CUSTOMER_TYPE_VALUES.length; i++) {
+                    if (CustomerDao.CUSTOMER_TYPE_VALUES[i].equals(selected.getCustomerType())) {
+                        binding.spinnerCustomerType.setSelection(i);
+                        break;
+                    }
+                }
+            } else {
+                selectedCustomerId = -1;
+                startActivity(new Intent(AddSaleActivity.this, CustomerFormActivity.class));
+            }
+        });
     }
 
     private void setupCustomerTypeSpinner() {
@@ -135,6 +174,7 @@ public class AddSaleActivity extends AppCompatActivity {
         selectedDate = s.getDate();
         updateDateButton();
         binding.etCustomerName.setText(s.getCustomerName());
+        selectedCustomerId = s.getCustomerId();
         binding.etQuantity.setText(String.valueOf(s.getQuantity()));
         binding.etRate.setText(String.valueOf(s.getRate()));
         binding.etNote.setText(s.getNote());
@@ -209,11 +249,13 @@ public class AddSaleActivity extends AppCompatActivity {
                 s.setAmount(qty * rate);
                 s.setPaid(isPaid);
                 s.setNote(note);
+                s.setCustomerId(selectedCustomerId);
                 saleDao.update(s);
                 Toast.makeText(this, "Sale updated", Toast.LENGTH_SHORT).show();
             }
         } else {
             Sale s = new Sale(selectedDate, session, customerName, customerType, milkType, qty, rate, isPaid, note);
+            s.setCustomerId(selectedCustomerId);
             saleDao.insert(s);
             Toast.makeText(this, "Sale saved", Toast.LENGTH_SHORT).show();
         }

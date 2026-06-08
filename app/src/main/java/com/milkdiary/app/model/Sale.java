@@ -14,6 +14,7 @@ public class Sale {
     private String sessionType;
     private String customerName;
     private String customerType;
+    private long customerId;
     private String milkType;
     private double quantity;
     private double rate;
@@ -56,6 +57,8 @@ public class Sale {
     public void setCustomerName(String customerName) { this.customerName = customerName; }
     public String getCustomerType() { return customerType; }
     public void setCustomerType(String customerType) { this.customerType = customerType; }
+    public long getCustomerId() { return customerId; }
+    public void setCustomerId(long customerId) { this.customerId = customerId; }
     public String getMilkType() { return milkType; }
     public void setMilkType(String milkType) { this.milkType = milkType; }
     public double getQuantity() { return quantity; }

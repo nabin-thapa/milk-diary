@@ -130,6 +130,7 @@ public class SaleDao {
         v.put(DatabaseHelper.COL_SALE_PAID, s.isPaid() ? 1 : 0);
         v.put(DatabaseHelper.COL_SALE_NOTE, s.getNote());
         v.put(DatabaseHelper.COL_SALE_CREATED_AT, s.getCreatedAt());
+        v.put(DatabaseHelper.COL_SALE_CUSTOMER_ID, s.getCustomerId());
         return v;
     }
 
@@ -147,6 +148,8 @@ public class SaleDao {
         s.setPaid(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_SALE_PAID)) == 1);
         s.setNote(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_SALE_NOTE)));
         s.setCreatedAt(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_SALE_CREATED_AT)));
+        int customerIdIdx = c.getColumnIndex(DatabaseHelper.COL_SALE_CUSTOMER_ID);
+        if (customerIdIdx >= 0) s.setCustomerId(c.getLong(customerIdIdx));
         return s;
     }
 }

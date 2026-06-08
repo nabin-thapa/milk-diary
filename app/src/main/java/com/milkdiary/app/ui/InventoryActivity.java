@@ -109,9 +109,17 @@ public class InventoryActivity extends AppCompatActivity {
         if (inv != null) {
             binding.tvTotalCollected.setText(FormatUtils.liters(inv.getTotalCollected()));
             binding.tvClosingStock.setText(FormatUtils.liters(inv.getClosingStock()));
+            binding.tvStockPurchased.setText(FormatUtils.liters(inv.getTotalCollected()));
+            binding.tvStockSold.setText(FormatUtils.liters(inv.getSold()));
+            binding.tvStockWaste.setText(FormatUtils.liters(inv.getWaste()));
+            binding.tvStockRemaining.setText(FormatUtils.liters(inv.getClosingStock()));
         } else {
             binding.tvTotalCollected.setText("0.00 L");
             binding.tvClosingStock.setText("0.00 L");
+            binding.tvStockPurchased.setText("0.00 L");
+            binding.tvStockSold.setText("0.00 L");
+            binding.tvStockWaste.setText("0.00 L");
+            binding.tvStockRemaining.setText("0.00 L");
         }
     }
 

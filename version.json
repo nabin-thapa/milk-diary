@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.4.0",
-  "versionCode": 104,
+  "latestVersion": "2.5.0",
+  "versionCode": 105,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "• Complete authentication system - login, signup, logout\n• Role-based accounts: Dairy Owner and Supplier/Farmers\n• Supplier record isolation - suppliers see only their own data\n• Session management with Remember Me\n• SHA-256 password hashing for security\n• Account section in Settings with logout\n• Database migrated safely - all existing data preserved",
+  "releaseNotes": "• Customer management - add, edit, delete customers with profiles\n• Supplier profile view - today's entry, monthly summary, payment history, pending balance\n• Customer-linked sales - dropdown customer selection, auto-fill customer type\n• Enhanced dashboard - today's purchase, stock available, profit estimate\n• Supplier balance tracking - see earned, paid, pending when recording payments\n• Enhanced inventory - stock breakdown with purchased, sold, waste, remaining\n• Customers navigation button on dashboard\n• Database migrated safely - all existing data preserved",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }

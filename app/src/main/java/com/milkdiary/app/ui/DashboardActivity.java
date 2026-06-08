@@ -16,8 +16,11 @@ import androidx.preference.PreferenceManager;
 
 import com.milkdiary.app.R;
 import com.milkdiary.app.databinding.ActivityDashboardBinding;
+import com.milkdiary.app.db.InventoryDao;
 import com.milkdiary.app.db.MilkRecordDao;
 import com.milkdiary.app.db.PaymentDao;
+import com.milkdiary.app.db.SaleDao;
+import com.milkdiary.app.model.Inventory;
 import com.milkdiary.app.model.MilkRecord;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
@@ -32,6 +35,8 @@ public class DashboardActivity extends AppCompatActivity {
     private ActivityDashboardBinding binding;
     private MilkRecordDao recordDao;
     private PaymentDao paymentDao;
+    private SaleDao saleDao;
+    private InventoryDao inventoryDao;
     private SessionManager session;
     private static boolean isAppLaunchCheckDone = false;
 
@@ -64,6 +69,7 @@ public class DashboardActivity extends AppCompatActivity {
         // Hide dairy-only sections for Milk Supplier
         if (session.isSupplier()) {
             binding.btnSuppliers.setVisibility(View.GONE);
+            binding.btnCustomers.setVisibility(View.GONE);
             binding.btnSales.setVisibility(View.GONE);
             binding.btnInventory.setVisibility(View.GONE);
             binding.btnMonthlySummary.setVisibility(View.GONE);
@@ -72,6 +78,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         recordDao = new MilkRecordDao(this);
         paymentDao = new PaymentDao(this);
+        saleDao = new SaleDao(this);
+        inventoryDao = new InventoryDao(this);
 
         setupButtons();
 
@@ -145,6 +153,21 @@ public class DashboardActivity extends AppCompatActivity {
         binding.tvMonthlyLiters.setText(FormatUtils.liters(monthlyLiters));
         binding.tvMonthlyEarnings.setText(FormatUtils.money(monthlyEarnings));
         binding.tvPending.setText(FormatUtils.money(Math.max(0, pending)));
+
+        // Business stats
+        double todayPurchase = todayCowLiters + todayBufLiters;
+        binding.tvTodayPurchase.setText(FormatUtils.liters(todayPurchase));
+
+        Inventory todayInv = inventoryDao.getOrCreateToday(today);
+        binding.tvStockAvailable.setText(FormatUtils.liters(todayInv.getClosingStock()));
+
+        double monthlySales = saleDao.getTotalAmountByMonth(thisMonth);
+        double monthlyPurchaseCost = monthly[2]; // total earnings = purchase cost from suppliers
+        double profitEstimate = monthlySales - monthlyPurchaseCost;
+        binding.tvProfitEstimate.setText(FormatUtils.money(profitEstimate));
+        binding.tvProfitEstimate.setTextColor(profitEstimate >= 0
+                ? getResources().getColor(R.color.earnings_color, getTheme())
+                : getResources().getColor(R.color.pending_color, getTheme()));
 
         // Status indicator
         if (dayComplete) {
@@ -256,6 +279,8 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PaymentActivity.class)));
         binding.btnSuppliers.setOnClickListener(v ->
                 startActivity(new Intent(this, SupplierListActivity.class)));
+        binding.btnCustomers.setOnClickListener(v ->
+                startActivity(new Intent(this, CustomerListActivity.class)));
         binding.btnSales.setOnClickListener(v ->
                 startActivity(new Intent(this, SalesActivity.class)));
         binding.btnInventory.setOnClickListener(v ->
