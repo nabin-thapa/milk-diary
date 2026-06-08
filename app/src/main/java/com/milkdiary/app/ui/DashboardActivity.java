@@ -22,6 +22,7 @@ import com.milkdiary.app.model.MilkRecord;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
 import com.milkdiary.app.util.RoleManager;
+import com.milkdiary.app.util.SessionManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -31,6 +32,7 @@ public class DashboardActivity extends AppCompatActivity {
     private ActivityDashboardBinding binding;
     private MilkRecordDao recordDao;
     private PaymentDao paymentDao;
+    private SessionManager session;
     private static boolean isAppLaunchCheckDone = false;
 
     @Override
@@ -45,15 +47,22 @@ public class DashboardActivity extends AppCompatActivity {
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        RoleManager roleManager = new RoleManager(this);
-        if (!roleManager.isRoleSet()) {
-            startActivity(new Intent(this, RoleSetupActivity.class));
+        session = new SessionManager(this);
+        if (!session.isLoggedIn()) {
+            Intent welcomeIntent = new Intent(this, WelcomeActivity.class);
+            welcomeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(welcomeIntent);
             finish();
             return;
         }
 
+        RoleManager roleManager = new RoleManager(this);
+        if (!roleManager.isRoleSet()) {
+            roleManager.setRole(session.getUserRole());
+        }
+
         // Hide dairy-only sections for Milk Supplier
-        if (roleManager.isSupplier()) {
+        if (session.isSupplier()) {
             binding.btnSuppliers.setVisibility(View.GONE);
             binding.btnSales.setVisibility(View.GONE);
             binding.btnInventory.setVisibility(View.GONE);
@@ -213,8 +222,11 @@ public class DashboardActivity extends AppCompatActivity {
         } else {
             greeting = getString(R.string.greeting_evening);
         }
-        String name = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("profile_name", "").trim();
+        String name = session.getUserName();
+        if (name == null || name.isEmpty()) {
+            name = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("profile_name", "").trim();
+        }
         if (!name.isEmpty()) {
             greeting += ", " + name;
         }

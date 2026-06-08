@@ -20,13 +20,26 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".ui.DashboardActivity"
+            android:name=".ui.WelcomeActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.MilkDiary">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.SignupActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.DashboardActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity

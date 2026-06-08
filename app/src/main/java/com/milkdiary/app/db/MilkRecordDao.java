@@ -196,6 +196,86 @@ public class MilkRecordDao {
         return listFromCursor(cursor);
     }
 
+    // ---- Supplier-filtered queries ----
+
+    /** Get records for a specific supplier and date */
+    public List<MilkRecord> getRecordsBySupplierAndDate(long supplierId, String date) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+                DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + "=?",
+                new String[]{String.valueOf(supplierId), date},
+                null, null,
+                DatabaseHelper.COL_SESSION_TYPE + " ASC");
+        return listFromCursor(cursor);
+    }
+
+    /** Get records for a specific supplier by month */
+    public List<MilkRecord> getRecordsBySupplierAndMonth(long supplierId, String yearMonth) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+                DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + " LIKE ?",
+                new String[]{String.valueOf(supplierId), yearMonth + "-%"},
+                null, null,
+                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
+        return listFromCursor(cursor);
+    }
+
+    /** Get all records for a specific supplier */
+    public List<MilkRecord> getAllRecordsBySupplier(long supplierId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+                DatabaseHelper.COL_SUPPLIER_ID + "=?",
+                new String[]{String.valueOf(supplierId)},
+                null, null,
+                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
+        return listFromCursor(cursor);
+    }
+
+    /** Monthly stats for a specific supplier */
+    public double[] getMonthlyStatsBySupplier(long supplierId, String yearMonth) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + DatabaseHelper.COL_COW_LITERS + "), "
+                + "SUM(" + DatabaseHelper.COL_BUFFALO_LITERS + "), "
+                + "SUM(" + DatabaseHelper.COL_TOTAL + ") "
+                + "FROM " + DatabaseHelper.TABLE_RECORDS
+                + " WHERE " + DatabaseHelper.COL_SUPPLIER_ID + "=?"
+                + " AND " + DatabaseHelper.COL_DATE + " LIKE ?",
+                new String[]{String.valueOf(supplierId), yearMonth + "-%"});
+        double[] stats = {0, 0, 0};
+        if (cursor.moveToFirst()) {
+            stats[0] = cursor.isNull(0) ? 0 : cursor.getDouble(0);
+            stats[1] = cursor.isNull(1) ? 0 : cursor.getDouble(1);
+            stats[2] = cursor.isNull(2) ? 0 : cursor.getDouble(2);
+        }
+        cursor.close();
+        return stats;
+    }
+
+    /** Total earnings for a specific supplier */
+    public double getTotalEarningsBySupplier(long supplierId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + DatabaseHelper.COL_TOTAL + ") FROM " + DatabaseHelper.TABLE_RECORDS
+                + " WHERE " + DatabaseHelper.COL_SUPPLIER_ID + "=?",
+                new String[]{String.valueOf(supplierId)});
+        double total = 0;
+        if (cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
+        cursor.close();
+        return total;
+    }
+
+    /** Search by date for a specific supplier */
+    public List<MilkRecord> searchByDateForSupplier(long supplierId, String query) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+                DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + " LIKE ?",
+                new String[]{String.valueOf(supplierId), "%" + query + "%"},
+                null, null,
+                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
+        return listFromCursor(cursor);
+    }
+
     // ---- helpers ----
 
     private ContentValues toContentValues(MilkRecord r) {

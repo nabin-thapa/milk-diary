@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "milk_diary.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
 
     // Table: milk_records
     public static final String TABLE_RECORDS = "milk_records";
@@ -142,6 +142,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_INV_NOTE + " TEXT" +
             ");";
 
+    // Table: users
+    public static final String TABLE_USERS = "users";
+    public static final String COL_USER_FULL_NAME = "full_name";
+    public static final String COL_USER_PHONE = "phone";
+    public static final String COL_USER_PASSWORD_HASH = "password_hash";
+    public static final String COL_USER_ROLE = "role";
+    public static final String COL_USER_CREATED_AT = "created_at";
+
+    // Table: owner_profiles
+    public static final String TABLE_OWNER_PROFILES = "owner_profiles";
+    public static final String COL_OP_USER_ID = "user_id";
+    public static final String COL_OP_DAIRY_NAME = "dairy_name";
+    public static final String COL_OP_ADDRESS = "address";
+
+    // Table: supplier_profiles
+    public static final String TABLE_SUPPLIER_PROFILES = "supplier_profiles";
+    public static final String COL_SP_USER_ID = "user_id";
+    public static final String COL_SP_SUPPLIER_ID = "supplier_id";
+    public static final String COL_SP_VILLAGE = "village";
+    public static final String COL_SP_MILK_TYPE = "milk_type";
+
+    private static final String CREATE_USERS_TABLE =
+            "CREATE TABLE " + TABLE_USERS + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_USER_FULL_NAME + " TEXT NOT NULL, " +
+            COL_USER_PHONE + " TEXT NOT NULL UNIQUE, " +
+            COL_USER_PASSWORD_HASH + " TEXT NOT NULL, " +
+            COL_USER_ROLE + " TEXT NOT NULL, " +
+            COL_USER_CREATED_AT + " TEXT NOT NULL" +
+            ");";
+
+    private static final String CREATE_OWNER_PROFILES_TABLE =
+            "CREATE TABLE " + TABLE_OWNER_PROFILES + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_OP_USER_ID + " INTEGER NOT NULL, " +
+            COL_OP_DAIRY_NAME + " TEXT, " +
+            COL_OP_ADDRESS + " TEXT" +
+            ");";
+
+    private static final String CREATE_SUPPLIER_PROFILES_TABLE =
+            "CREATE TABLE " + TABLE_SUPPLIER_PROFILES + " (" +
+            COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_SP_USER_ID + " INTEGER NOT NULL, " +
+            COL_SP_SUPPLIER_ID + " INTEGER DEFAULT 0, " +
+            COL_SP_VILLAGE + " TEXT, " +
+            COL_SP_MILK_TYPE + " TEXT DEFAULT 'both'" +
+            ");";
+
     private static volatile DatabaseHelper instance;
 
     public static synchronized DatabaseHelper getInstance(Context context) {
@@ -169,6 +217,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SUPPLIERS_TABLE);
         db.execSQL(CREATE_SALES_TABLE);
         db.execSQL(CREATE_INVENTORY_TABLE);
+        db.execSQL(CREATE_USERS_TABLE);
+        db.execSQL(CREATE_OWNER_PROFILES_TABLE);
+        db.execSQL(CREATE_SUPPLIER_PROFILES_TABLE);
     }
 
     @Override
@@ -200,6 +251,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_SUPPLIERS_TABLE);
             db.execSQL(CREATE_SALES_TABLE);
             db.execSQL(CREATE_INVENTORY_TABLE);
+        }
+        if (oldVersion < 5) {
+            db.execSQL(CREATE_USERS_TABLE);
+            db.execSQL(CREATE_OWNER_PROFILES_TABLE);
+            db.execSQL(CREATE_SUPPLIER_PROFILES_TABLE);
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_SUPPLIERS + " ADD COLUMN user_id INTEGER DEFAULT 0");
+            } catch (Exception ignored) {
+                // Column may already exist
+            }
         }
     }
 }

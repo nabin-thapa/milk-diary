@@ -26,6 +26,7 @@ import com.milkdiary.app.util.BackupUtils;
 import com.milkdiary.app.util.ExportUtils;
 import com.milkdiary.app.util.FormatUtils;
 import com.milkdiary.app.util.RoleManager;
+import com.milkdiary.app.util.SessionManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
     private SharedPreferences prefs;
     private RoleManager roleManager;
+    private SessionManager session;
     private static final int PICK_BACKUP_FILE = 101;
     private static final int REQUEST_PICK_IMAGE = 202;
     private boolean ratesUpdating = false;
@@ -54,9 +56,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         roleManager = new RoleManager(this);
+        session = new SessionManager(this);
 
         // Role section
         setupRoleSection();
+
+        // Account section
+        setupAccountSection();
 
         // Dark mode
         binding.switchDarkMode.setChecked(prefs.getBoolean("dark_mode", false));
@@ -88,6 +94,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
         com.milkdiary.app.update.UpdateInstaller.checkAndResumePendingInstall(this);
         updateDownloadedVersionDisplay();
+        if (session.isLoggedIn()) {
+            setupAccountSection();
+        }
     }
 
     private void setupRoleSection() {
@@ -107,6 +116,28 @@ public class SettingsActivity extends AppCompatActivity {
                                 "Role changed to " + roleManager.getRoleDisplayName(),
                                 Toast.LENGTH_SHORT).show();
                     })
+                    .show();
+        });
+    }
+
+    private void setupAccountSection() {
+        binding.tvAccountName.setText(session.getUserName());
+        binding.tvAccountPhone.setText(session.getUserPhone());
+        binding.tvAccountRole.setText(session.isDairyOwner() ? "Dairy Owner" : "Milk Supplier");
+
+        binding.btnLogout.setOnClickListener(v -> {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setPositiveButton("Logout", (d, w) -> {
+                        session.logout();
+                        roleManager.setRole("");
+                        Intent intent = new Intent(this, WelcomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", null)
                     .show();
         });
     }
