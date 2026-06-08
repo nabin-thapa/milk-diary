@@ -86,6 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
         if (!isAppLaunchCheckDone) {
             isAppLaunchCheckDone = true;
             com.milkdiary.app.update.UpdateManager.checkForUpdates(this, false, null);
+            com.milkdiary.app.update.UpdateManager.showPostUpdateSuccessIfNeeded(this);
         }
 
         checkVersionChanged();

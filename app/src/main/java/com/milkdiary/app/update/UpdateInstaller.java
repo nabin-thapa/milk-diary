@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -18,6 +20,8 @@ import java.io.File;
 public class UpdateInstaller {
 
     private static final String PENDING_INSTALL_PATH = "pending_install_apk_path";
+    private static final String PREF_INSTALLED_VERSION_CODE = "installed_version_code_after_update";
+    private static final String APK_DIR_NAME = "updates";
 
     public static void installApk(Context context, File apkFile) {
         if (apkFile == null || !apkFile.exists()) {
@@ -82,25 +86,124 @@ public class UpdateInstaller {
         }
     }
 
-    public static void cleanupAfterInstall(Context context) {
-        File apkFile = new File(context.getCacheDir(), "milk_diary_update.apk");
-        if (apkFile.exists()) {
-            apkFile.delete();
+    public static String getVersionedApkFileName(String versionName) {
+        String safe = versionName.replaceAll("[^a-zA-Z0-9._-]", "_");
+        return "MilkDiary-v" + safe + ".apk";
+    }
+
+    public static File getVersionedApkFile(Context context, String versionName) {
+        File dir = new File(context.getCacheDir(), APK_DIR_NAME);
+        if (!dir.exists()) {
+            dir.mkdirs();
         }
+        return new File(dir, getVersionedApkFileName(versionName));
+    }
+
+    public static void clearOldApks(Context context) {
+        File dir = new File(context.getCacheDir(), APK_DIR_NAME);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    f.delete();
+                }
+            }
+        }
+        File legacy = new File(context.getCacheDir(), "milk_diary_update.apk");
+        if (legacy.exists()) {
+            legacy.delete();
+        }
+    }
+
+    public static void cleanupAfterInstall(Context context) {
+        clearOldApks(context);
         clearPendingInstallPath(context);
     }
 
     public static boolean hasDownloadedApk(Context context) {
-        File apkFile = new File(context.getCacheDir(), "milk_diary_update.apk");
-        return apkFile.exists() && apkFile.length() > 0;
+        File dir = new File(context.getCacheDir(), APK_DIR_NAME);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.exists() && f.length() > 0 && f.getName().endsWith(".apk")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        File legacy = new File(context.getCacheDir(), "milk_diary_update.apk");
+        return legacy.exists() && legacy.length() > 0;
     }
 
     public static File getDownloadedApkFile(Context context) {
-        File apkFile = new File(context.getCacheDir(), "milk_diary_update.apk");
-        if (apkFile.exists() && apkFile.length() > 0) {
-            return apkFile;
+        File dir = new File(context.getCacheDir(), APK_DIR_NAME);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null) {
+                File newest = null;
+                for (File f : files) {
+                    if (f.exists() && f.length() > 0 && f.getName().endsWith(".apk")) {
+                        if (newest == null || f.lastModified() > newest.lastModified()) {
+                            newest = f;
+                        }
+                    }
+                }
+                if (newest != null) return newest;
+            }
+        }
+        File legacy = new File(context.getCacheDir(), "milk_diary_update.apk");
+        if (legacy.exists() && legacy.length() > 0) {
+            return legacy;
         }
         return null;
+    }
+
+    public static void saveExpectedVersionCode(Context context, int versionCode) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putInt(PREF_INSTALLED_VERSION_CODE, versionCode).apply();
+    }
+
+    public static boolean verifyPostUpdate(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        int expectedCode = prefs.getInt(PREF_INSTALLED_VERSION_CODE, 0);
+        if (expectedCode == 0) return true;
+
+        int currentCode = 0;
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                currentCode = (int) pi.getLongVersionCode();
+            } else {
+                currentCode = pi.versionCode;
+            }
+        } catch (Exception ignored) {}
+
+        prefs.edit().remove(PREF_INSTALLED_VERSION_CODE).apply();
+
+        return currentCode >= expectedCode;
+    }
+
+    public static String getCurrentVersionName(Context context) {
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pi.versionName;
+        } catch (Exception e) {
+            return "unknown";
+        }
+    }
+
+    public static int getCurrentVersionCode(Context context) {
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                return (int) pi.getLongVersionCode();
+            } else {
+                return pi.versionCode;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     private static void savePendingInstallPath(Context context, String path) {

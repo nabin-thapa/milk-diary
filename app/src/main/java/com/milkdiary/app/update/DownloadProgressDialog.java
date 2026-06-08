@@ -83,12 +83,8 @@ public class DownloadProgressDialog {
     }
 
     private void populateVersionInfo() {
-        try {
-            PackageInfo pi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-            tvCurrentVersion.setText(pi.versionName + " (" + pi.versionCode + ")");
-        } catch (Exception e) {
-            tvCurrentVersion.setText("Unknown");
-        }
+        tvCurrentVersion.setText(UpdateInstaller.getCurrentVersionName(activity)
+                + " (" + UpdateInstaller.getCurrentVersionCode(activity) + ")");
         tvNewVersion.setText(updateInfo.getLatestVersion() + " (" + updateInfo.getVersionCode() + ")");
     }
 
@@ -110,7 +106,9 @@ public class DownloadProgressDialog {
     }
 
     private void startDownload() {
-        apkFile = new File(activity.getCacheDir(), "milk_diary_update.apk");
+        UpdateInstaller.clearOldApks(activity);
+        apkFile = UpdateInstaller.getVersionedApkFile(activity, updateInfo.getLatestVersion());
+        UpdateInstaller.saveExpectedVersionCode(activity, updateInfo.getVersionCode());
 
         downloader.download(updateInfo.getApkUrl(), apkFile, new ApkDownloader.DownloadCallback() {
             @Override
@@ -144,7 +142,7 @@ public class DownloadProgressDialog {
     private void showComplete(File file) {
         this.apkFile = file;
         tvTitle.setText("Update Ready");
-        tvSubtitle.setText("Download complete. Tap Install to update.");
+        tvSubtitle.setText("Download complete. Tap Install to update to v" + updateInfo.getLatestVersion());
         tvProgressPercent.setText("100%");
         tvProgressStatus.setText("Download complete");
         progressBar.setProgress(100);

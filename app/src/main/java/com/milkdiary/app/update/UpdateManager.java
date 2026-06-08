@@ -37,6 +37,7 @@ public class UpdateManager {
     public static String UPDATE_JSON_URL = "https://raw.githubusercontent.com/nabin-thapa/milk-diary/main/version.json";
 
     private static final String PREF_LAST_CHECK_TIME = "last_update_check_time";
+    private static final String PREF_POST_UPDATE_SHOWN = "post_update_success_shown";
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -76,7 +77,6 @@ public class UpdateManager {
                 }
             }
         } catch (Exception e) {
-            // Fall through to lenient check below
         }
 
         return true;
@@ -114,17 +114,9 @@ public class UpdateManager {
                         json.optInt("minimumSupportedVersion", 0)
                 );
 
-                PackageManager pm = activity.getPackageManager();
-                PackageInfo pi = pm.getPackageInfo(activity.getPackageName(), 0);
-                final int currentCode;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    currentCode = (int) pi.getLongVersionCode();
-                } else {
-                    currentCode = pi.versionCode;
-                }
-                final String currentName = pi.versionName != null ? pi.versionName : "0.0.0";
+                final int currentCode = UpdateInstaller.getCurrentVersionCode(activity);
 
-                final boolean hasUpdate = isUpdateAvailable(currentCode, currentName, updateInfo.getVersionCode(), updateInfo.getLatestVersion());
+                final boolean hasUpdate = currentCode < updateInfo.getVersionCode();
 
                 saveLastCheckResult(activity, hasUpdate ? "Update available" : "Up to date");
 
@@ -132,7 +124,7 @@ public class UpdateManager {
                     if (activity.isFinishing() || activity.isDestroyed()) return;
 
                     if (hasUpdate) {
-                        showUpdateDialog(activity, updateInfo);
+                        showUpdateDialog(activity, updateInfo, currentCode);
                         if (callback != null) callback.onUpdateChecked(UpdateStatus.UPDATE_AVAILABLE, updateInfo);
                     } else {
                         if (isManualCheck) {
@@ -194,42 +186,7 @@ public class UpdateManager {
         }
     }
 
-    public static boolean isUpdateAvailable(int currentCode, String currentName, int remoteCode, String remoteName) {
-        if (remoteCode > currentCode) {
-            return true;
-        }
-        if (remoteCode < currentCode) {
-            return false;
-        }
-        return compareVersionNames(remoteName, currentName) > 0;
-    }
-
-    private static int compareVersionNames(String v1, String v2) {
-        if (v1 == null && v2 == null) return 0;
-        if (v1 == null) return -1;
-        if (v2 == null) return 1;
-
-        String[] parts1 = v1.split("\\.");
-        String[] parts2 = v2.split("\\.");
-        int length = Math.max(parts1.length, parts2.length);
-        for (int i = 0; i < length; i++) {
-            int val1 = i < parts1.length ? parseVersionPart(parts1[i]) : 0;
-            int val2 = i < parts2.length ? parseVersionPart(parts2[i]) : 0;
-            if (val1 < val2) return -1;
-            if (val1 > val2) return 1;
-        }
-        return 0;
-    }
-
-    private static int parseVersionPart(String part) {
-        try {
-            return Integer.parseInt(part.replaceAll("[^0-9]", ""));
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    private static void showUpdateDialog(final Activity activity, final UpdateInfo updateInfo) {
+    private static void showUpdateDialog(final Activity activity, final UpdateInfo updateInfo, final int currentCode) {
         if (activity.isFinishing() || activity.isDestroyed()) return;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -244,19 +201,8 @@ public class UpdateManager {
         Button btnUpdate = dialogView.findViewById(R.id.btnUpdateNow);
         Button btnLater = dialogView.findViewById(R.id.btnUpdateLater);
 
-        int currentCode = 0;
-        try {
-            PackageInfo pi = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                currentCode = (int) pi.getLongVersionCode();
-            } else {
-                currentCode = pi.versionCode;
-            }
-            tvInstalled.setText(pi.versionName + " (" + pi.versionCode + ")");
-        } catch (Exception ignored) {
-            tvInstalled.setText("Unknown");
-        }
-
+        tvInstalled.setText(UpdateInstaller.getCurrentVersionName(activity)
+                + " (" + currentCode + ")");
         tvLatest.setText(updateInfo.getLatestVersion() + " (" + updateInfo.getVersionCode() + ")");
         tvNotes.setText(updateInfo.getReleaseNotes());
 
@@ -284,6 +230,40 @@ public class UpdateManager {
         progressDialog.show();
     }
 
+    public static void checkPostUpdate(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean alreadyShown = prefs.getBoolean(PREF_POST_UPDATE_SHOWN, false);
+        if (alreadyShown) return;
+
+        boolean success = UpdateInstaller.verifyPostUpdate(context);
+        if (success) {
+            int expectedCode = prefs.getInt("installed_version_code_after_update", 0);
+            if (expectedCode > 0) {
+                prefs.edit().putBoolean(PREF_POST_UPDATE_SHOWN, true).apply();
+            }
+        }
+    }
+
+    public static void showPostUpdateSuccessIfNeeded(Activity activity) {
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        boolean alreadyShown = prefs.getBoolean(PREF_POST_UPDATE_SHOWN, false);
+        if (alreadyShown) return;
+
+        boolean success = UpdateInstaller.verifyPostUpdate(activity);
+        prefs.edit().putBoolean(PREF_POST_UPDATE_SHOWN, true).apply();
+
+        if (success) {
+            String currentVersion = UpdateInstaller.getCurrentVersionName(activity);
+            new AlertDialog.Builder(activity)
+                .setTitle("Update Successful")
+                .setMessage("Successfully updated to version " + currentVersion + "!\n\nAll your data is safe.")
+                .setPositiveButton("Great!", null)
+                .show();
+        }
+    }
+
     private static void saveLastCheckResult(Context context, String status) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
@@ -301,11 +281,6 @@ public class UpdateManager {
         if (!UpdateInstaller.hasDownloadedApk(context)) {
             return "None";
         }
-        try {
-            PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return pi.versionName + " (cached)";
-        } catch (Exception e) {
-            return "Downloaded";
-        }
+        return UpdateInstaller.getCurrentVersionName(context) + " (cached)";
     }
 }
