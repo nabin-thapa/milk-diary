@@ -86,7 +86,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        com.milkdiary.app.update.UpdateManager.retryPendingDownload(this);
+        com.milkdiary.app.update.UpdateInstaller.checkAndResumePendingInstall(this);
+        updateDownloadedVersionDisplay();
     }
 
     private void setupRoleSection() {
@@ -294,6 +295,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         updateLastCheckedDisplay();
+        updateDownloadedVersionDisplay();
 
         // Set dynamic footer version
         String footerText = "Milk Diary v" + binding.tvCurrentVersion.getText()
@@ -309,6 +311,16 @@ public class SettingsActivity extends AppCompatActivity {
                 updateLastCheckedDisplay();
             });
         });
+    }
+
+    private void updateDownloadedVersionDisplay() {
+        String display = com.milkdiary.app.update.UpdateManager.getDownloadedVersionDisplay(this);
+        binding.tvDownloadedVersion.setText(display);
+        if (!"None".equals(display)) {
+            binding.tvDownloadedVersion.setTextColor(getResources().getColor(R.color.primary, getTheme()));
+        } else {
+            binding.tvDownloadedVersion.setTextColor(getResources().getColor(R.color.text_secondary, getTheme()));
+        }
     }
 
     private void updateLastCheckedDisplay() {
