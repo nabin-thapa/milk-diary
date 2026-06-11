@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "milk_diary.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
 
     // Table: milk_records
     public static final String TABLE_RECORDS = "milk_records";
@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_EDIT_COUNT = "edit_count";
     public static final String COL_SUPPLIER_ID = "supplier_id";
     public static final String COL_FAT_PERCENTAGE = "fat_percentage";
+    public static final String COL_IS_PAID = "is_paid";
 
     // Table: payments
     public static final String TABLE_PAYMENTS = "payments";
@@ -96,6 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_EDIT_COUNT + " INTEGER DEFAULT 0, " +
             COL_SUPPLIER_ID + " INTEGER DEFAULT 0, " +
             COL_FAT_PERCENTAGE + " REAL DEFAULT 0, " +
+            COL_IS_PAID + " INTEGER DEFAULT 0, " +
             "UNIQUE(" + COL_DATE + ", " + COL_SESSION_TYPE + ")" +
             ");";
 
@@ -286,6 +288,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_CUSTOMERS_TABLE);
             try {
                 db.execSQL("ALTER TABLE " + TABLE_SALES + " ADD COLUMN " + COL_SALE_CUSTOMER_ID + " INTEGER DEFAULT 0");
+            } catch (Exception ignored) {
+            }
+        }
+        if (oldVersion < 7) {
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_RECORDS + " ADD COLUMN " + COL_IS_PAID + " INTEGER DEFAULT 0");
             } catch (Exception ignored) {
             }
         }

@@ -39,4 +39,13 @@
     <color name="gradient_purple">#7C3AED</color>
     <color name="status_good">#16A34A</color>
     <color name="status_warn">#F59E0B</color>
+
+    <color name="stock_color">#0EA5E9</color>
+    <color name="card_border">#E2E8F0</color>
+    <color name="paid_badge">#DCFCE7</color>
+    <color name="unpaid_badge">#FEE2E2</color>
+    <color name="paid_text">#16A34A</color>
+    <color name="unpaid_text">#DC2626</color>
+    <color name="quick_action_bg">#F8FAFC</color>
+    <color name="quick_action_icon">#1B7A4A</color>
 </resources>

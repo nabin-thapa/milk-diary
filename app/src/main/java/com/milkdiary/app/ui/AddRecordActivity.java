@@ -62,14 +62,35 @@ public class AddRecordActivity extends AppCompatActivity {
             sessionType = MilkRecord.SESSION_MORNING;
         }
 
+        long intentSupplierId = getIntent().getLongExtra("supplier_id", -1);
         editRecordId = getIntent().getLongExtra(EXTRA_RECORD_ID, -1);
 
         setupSupplierDropdown();
 
+        // Pre-select supplier if passed from SupplierProfileActivity
+        if (intentSupplierId > 0 && editRecordId == -1) {
+            for (int i = 0; i < supplierList.size(); i++) {
+                if (supplierList.get(i).getId() == intentSupplierId) {
+                    binding.etSupplier.setText(supplierList.get(i).getName(), false);
+                    selectedSupplier = supplierList.get(i);
+                    selectedSupplierId = selectedSupplier.getId();
+                    autoFillRatesFromSupplier();
+                    break;
+                }
+            }
+        }
+
         if (editRecordId != -1) {
             loadRecord(editRecordId);
         } else {
-            if (recordDao.getRecordByDateAndSession(selectedDate, sessionType) != null) {
+            // Check for duplicate: supplier-specific if supplier selected, otherwise global
+            MilkRecord existing;
+            if (selectedSupplierId > 0) {
+                existing = recordDao.getRecordBySupplierDateAndSession(selectedSupplierId, selectedDate, sessionType);
+            } else {
+                existing = recordDao.getRecordByDateAndSession(selectedDate, sessionType);
+            }
+            if (existing != null) {
                 String msg = sessionType.equals(MilkRecord.SESSION_MORNING)
                         ? "Morning milk already recorded."
                         : "Evening milk already recorded.";

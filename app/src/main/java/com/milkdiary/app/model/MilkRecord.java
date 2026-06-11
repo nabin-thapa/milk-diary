@@ -19,6 +19,7 @@ public class MilkRecord {
     private int editCount;
     private long supplierId;
     private double fatPercentage;
+    private boolean isPaid;
 
     public MilkRecord() {}
 
@@ -96,4 +97,7 @@ public class MilkRecord {
 
     public double getFatPercentage() { return fatPercentage; }
     public void setFatPercentage(double fatPercentage) { this.fatPercentage = fatPercentage; }
+
+    public boolean isPaid() { return isPaid; }
+    public void setPaid(boolean paid) { isPaid = paid; }
 }

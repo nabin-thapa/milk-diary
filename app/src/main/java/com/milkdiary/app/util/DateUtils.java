@@ -53,4 +53,19 @@ public class DateUtils {
     public static String calendarToDb(Calendar cal) {
         return new SimpleDateFormat(FORMAT_DB, Locale.getDefault()).format(cal.getTime());
     }
+
+    /** Convert "yyyy-MM-dd" → "dd MMM" short display for table rows */
+    public static String dbToShortDisplay(String dbDate) {
+        try {
+            Date d = new SimpleDateFormat(FORMAT_DB, Locale.getDefault()).parse(dbDate);
+            return new SimpleDateFormat("dd MMM", Locale.getDefault()).format(d);
+        } catch (ParseException | NullPointerException e) {
+            return dbDate;
+        }
+    }
+
+    /** Current timestamp as "yyyy-MM-dd HH:mm:ss" */
+    public static String nowTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+    }
 }

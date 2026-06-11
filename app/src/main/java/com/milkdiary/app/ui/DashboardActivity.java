@@ -16,12 +16,12 @@ import androidx.preference.PreferenceManager;
 
 import com.milkdiary.app.R;
 import com.milkdiary.app.databinding.ActivityDashboardBinding;
-import com.milkdiary.app.db.InventoryDao;
 import com.milkdiary.app.db.MilkRecordDao;
 import com.milkdiary.app.db.PaymentDao;
 import com.milkdiary.app.db.SaleDao;
-import com.milkdiary.app.model.Inventory;
+import com.milkdiary.app.db.SupplierDao;
 import com.milkdiary.app.model.MilkRecord;
+import com.milkdiary.app.model.Sale;
 import com.milkdiary.app.util.DateUtils;
 import com.milkdiary.app.util.FormatUtils;
 import com.milkdiary.app.util.RoleManager;
@@ -36,7 +36,7 @@ public class DashboardActivity extends AppCompatActivity {
     private MilkRecordDao recordDao;
     private PaymentDao paymentDao;
     private SaleDao saleDao;
-    private InventoryDao inventoryDao;
+    private SupplierDao supplierDao;
     private SessionManager session;
     private static boolean isAppLaunchCheckDone = false;
 
@@ -66,43 +66,23 @@ public class DashboardActivity extends AppCompatActivity {
             roleManager.setRole(session.getUserRole());
         }
 
-        // Hide dairy-only sections for Milk Supplier
         if (session.isSupplier()) {
-            binding.btnSuppliers.setVisibility(View.GONE);
-            binding.btnCustomers.setVisibility(View.GONE);
-            binding.btnSales.setVisibility(View.GONE);
-            binding.btnInventory.setVisibility(View.GONE);
-            binding.btnMonthlySummary.setVisibility(View.GONE);
+            binding.sectionQuickActions.setVisibility(View.GONE);
             binding.sectionThisMonth.setVisibility(View.GONE);
+            binding.btnViewMyRecords.setVisibility(View.VISIBLE);
         }
 
         recordDao = new MilkRecordDao(this);
         paymentDao = new PaymentDao(this);
         saleDao = new SaleDao(this);
-        inventoryDao = new InventoryDao(this);
+        supplierDao = new SupplierDao(this);
 
         setupButtons();
 
         if (!isAppLaunchCheckDone) {
             isAppLaunchCheckDone = true;
             com.milkdiary.app.update.UpdateManager.checkForUpdates(this, false, null);
-            com.milkdiary.app.update.UpdateManager.showPostUpdateSuccessIfNeeded(this);
         }
-
-        checkVersionChanged();
-    }
-
-    private void checkVersionChanged() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        int savedVersion = sp.getInt("app_version_code", 0);
-        int currentVersion = 0;
-        try {
-            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-        } catch (Exception ignored) {}
-        if (currentVersion > 0 && savedVersion > 0 && currentVersion != savedVersion) {
-            Toast.makeText(this, "✅ Updated to v" + currentVersion, Toast.LENGTH_LONG).show();
-        }
-        sp.edit().putInt("app_version_code", currentVersion).apply();
     }
 
     @Override
@@ -118,122 +98,114 @@ public class DashboardActivity extends AppCompatActivity {
         setGreeting();
         loadProfileImage();
 
-        // Get today's records for both sessions
+        // ---- TODAY'S PURCHASED MILK ----
         List<MilkRecord> todayRecords = recordDao.getRecordsByDate(today);
-        MilkRecord morningRecord = null;
-        MilkRecord eveningRecord = null;
-        double todayCowLiters = 0, todayBufLiters = 0, todayEarnings = 0;
-
+        double todayCowLiters = 0, todayBufLiters = 0, todayPurchaseCost = 0;
         for (MilkRecord r : todayRecords) {
-            if (r.isMorning()) morningRecord = r;
-            if (r.isEvening()) eveningRecord = r;
             todayCowLiters += r.getCowLiters();
             todayBufLiters += r.getBuffaloLiters();
-            todayEarnings += r.getTotal();
+            todayPurchaseCost += r.getTotal();
+        }
+        double todayTotalLiters = todayCowLiters + todayBufLiters;
+
+        // ---- TODAY'S SOLD MILK (earnings) ----
+        List<Sale> todaySales = saleDao.getByDate(today);
+        double todaySoldAmount = 0;
+        double todaySoldLiters = 0;
+        double todayUnpaidAmount = 0;
+        for (Sale s : todaySales) {
+            todaySoldAmount += s.getAmount();
+            todaySoldLiters += s.getQuantity();
+            if (!s.isPaid()) {
+                todayUnpaidAmount += s.getAmount();
+            }
         }
 
-        boolean hasMorning = morningRecord != null;
-        boolean hasEvening = eveningRecord != null;
-        boolean dayComplete = hasMorning && hasEvening;
+        // ---- STOCK (purchased - sold, no negative) ----
+        double cowSold = getCowSoldToday();
+        double bufSold = getBufSoldToday();
+        double stockCow = Math.max(0, todayCowLiters - cowSold);
+        double stockBuf = Math.max(0, todayBufLiters - bufSold);
+        double stockTotal = Math.max(0, todayTotalLiters - todaySoldLiters);
 
-        // Monthly stats
+        // ---- PROFIT (sold amount - purchase cost of sold milk) ----
+        double avgPurchaseRate = todayTotalLiters > 0 ? todayPurchaseCost / todayTotalLiters : 0;
+        double costOfSoldMilk = todaySoldLiters * avgPurchaseRate;
+        double profit = todaySoldAmount > 0 ? todaySoldAmount - costOfSoldMilk : 0;
+
+        // ---- MONTHLY STATS ----
         double[] monthly = recordDao.getMonthlyStats(thisMonth);
         double monthlyLiters = monthly[0] + monthly[1];
-        double monthlyEarnings = monthly[2];
+        double monthlySalesAmount = saleDao.getTotalAmountByMonth(thisMonth);
+        double monthlyUnpaid = getMonthlyUnpaid();
 
-        // Pending
-        double totalEarnings = recordDao.getTotalEarningsAllTime();
-        double totalPaid = paymentDao.getTotalPaid();
-        double pending = totalEarnings - totalPaid;
-
-        // Update UI
+        // ---- UPDATE UI ----
         binding.tvTodayDate.setText(DateUtils.dbToDisplay(today));
+
+        // Today's purchased milk
         binding.tvCowLiters.setText(FormatUtils.liters(todayCowLiters));
         binding.tvBufLiters.setText(FormatUtils.liters(todayBufLiters));
-        binding.tvTodayEarnings.setText(FormatUtils.money(todayEarnings));
-        binding.tvMonthlyLiters.setText(FormatUtils.liters(monthlyLiters));
-        binding.tvMonthlyEarnings.setText(FormatUtils.money(monthlyEarnings));
-        binding.tvPending.setText(FormatUtils.money(Math.max(0, pending)));
 
-        // Business stats
-        double todayPurchase = todayCowLiters + todayBufLiters;
-        binding.tvTodayPurchase.setText(FormatUtils.liters(todayPurchase));
-
-        Inventory todayInv = inventoryDao.getOrCreateToday(today);
-        binding.tvStockAvailable.setText(FormatUtils.liters(todayInv.getClosingStock()));
-
-        double monthlySales = saleDao.getTotalAmountByMonth(thisMonth);
-        double monthlyPurchaseCost = monthly[2]; // total earnings = purchase cost from suppliers
-        double profitEstimate = monthlySales - monthlyPurchaseCost;
-        binding.tvProfitEstimate.setText(FormatUtils.money(profitEstimate));
-        binding.tvProfitEstimate.setTextColor(profitEstimate >= 0
-                ? getResources().getColor(R.color.earnings_color, getTheme())
-                : getResources().getColor(R.color.pending_color, getTheme()));
-
-        // Status indicator
-        if (dayComplete) {
-            binding.tvTodayStatus.setText("✓ Today completed");
-            binding.tvTodayStatus.setTextColor(
-                    getResources().getColor(R.color.earnings_color, getTheme()));
-        } else if (hasMorning || hasEvening) {
-            binding.tvTodayStatus.setText("⚠ Partial record");
-            binding.tvTodayStatus.setTextColor(
-                    getResources().getColor(R.color.warning_color, getTheme()));
-        } else {
-            binding.tvTodayStatus.setText("⚠ No record yet today");
-            binding.tvTodayStatus.setTextColor(
-                    getResources().getColor(R.color.pending_color, getTheme()));
-        }
-
-        // Pending color
-        binding.tvPending.setTextColor(pending > 0.01
+        // Earnings + Outstanding
+        binding.tvTodayEarnings.setText(FormatUtils.money(todaySoldAmount));
+        binding.tvOutstanding.setText(FormatUtils.money(todayUnpaidAmount));
+        binding.tvOutstanding.setTextColor(todayUnpaidAmount > 0.01
                 ? getResources().getColor(R.color.pending_color, getTheme())
                 : getResources().getColor(R.color.earnings_color, getTheme()));
 
-        // --- Morning/Evening Entry UI ---
-        updateSessionUI(hasMorning, hasEvening);
+        // Purchase
+        binding.tvPurchaseCow.setText(FormatUtils.liters(todayCowLiters));
+        binding.tvPurchaseBuf.setText(FormatUtils.liters(todayBufLiters));
+        binding.tvPurchaseTotal.setText(FormatUtils.liters(todayTotalLiters));
+        binding.tvPurchaseCost.setText(FormatUtils.money(todayPurchaseCost));
+
+        // Stock
+        binding.tvStockCow.setText(FormatUtils.liters(stockCow));
+        binding.tvStockBuf.setText(FormatUtils.liters(stockBuf));
+        binding.tvStockTotal.setText(FormatUtils.liters(stockTotal));
+
+        // Profit
+        binding.tvProfitSold.setText(FormatUtils.money(todaySoldAmount));
+        binding.tvProfitCost.setText(FormatUtils.money(costOfSoldMilk));
+        binding.tvProfit.setText(FormatUtils.money(profit));
+        binding.tvProfit.setTextColor(profit >= 0
+                ? getResources().getColor(R.color.earnings_color, getTheme())
+                : getResources().getColor(R.color.pending_color, getTheme()));
+
+        // Monthly
+        binding.tvMonthlyLiters.setText(FormatUtils.liters(monthlyLiters));
+        binding.tvMonthlyEarnings.setText(FormatUtils.money(monthlySalesAmount));
+        binding.tvMonthlyOutstanding.setText(FormatUtils.money(monthlyUnpaid));
+        binding.tvMonthlyOutstanding.setTextColor(monthlyUnpaid > 0.01
+                ? getResources().getColor(R.color.pending_color, getTheme())
+                : getResources().getColor(R.color.earnings_color, getTheme()));
     }
 
-    private void updateSessionUI(boolean hasMorning, boolean hasEvening) {
-        // Morning
-        if (hasMorning) {
-            binding.tvMorningStatus.setText("Completed");
-            binding.tvMorningStatus.setTextColor(
-                    getResources().getColor(R.color.earnings_color, getTheme()));
-            binding.btnMorningAdd.setText("✅  Morning Completed");
-            binding.btnMorningAdd.setEnabled(false);
-            binding.btnMorningAdd.setAlpha(0.7f);
-        } else {
-            binding.tvMorningStatus.setText("Pending");
-            binding.tvMorningStatus.setTextColor(
-                    getResources().getColor(R.color.warning_color, getTheme()));
-            binding.btnMorningAdd.setText("➕  Add Morning Milk");
-            binding.btnMorningAdd.setEnabled(true);
-            binding.btnMorningAdd.setAlpha(1f);
+    private double getMonthlyUnpaid() {
+        List<Sale> monthSales = saleDao.getByMonth(DateUtils.currentMonthDb());
+        double unpaid = 0;
+        for (Sale s : monthSales) {
+            if (!s.isPaid()) unpaid += s.getAmount();
         }
+        return unpaid;
+    }
 
-        // Evening
-        if (hasEvening) {
-            binding.tvEveningStatus.setText("Completed");
-            binding.tvEveningStatus.setTextColor(
-                    getResources().getColor(R.color.earnings_color, getTheme()));
-            binding.btnEveningAdd.setText("✅  Evening Completed");
-            binding.btnEveningAdd.setEnabled(false);
-            binding.btnEveningAdd.setAlpha(0.7f);
-        } else {
-            binding.tvEveningStatus.setText("Pending");
-            binding.tvEveningStatus.setTextColor(
-                    getResources().getColor(R.color.warning_color, getTheme()));
-            binding.btnEveningAdd.setText("➕  Add Evening Milk");
-            binding.btnEveningAdd.setEnabled(true);
-            binding.btnEveningAdd.setAlpha(1f);
+    private double getCowSoldToday() {
+        List<Sale> todaySales = saleDao.getByDate(DateUtils.todayDb());
+        double cowSold = 0;
+        for (Sale s : todaySales) {
+            if (Sale.MILK_COW.equals(s.getMilkType())) cowSold += s.getQuantity();
         }
+        return cowSold;
+    }
 
-        // Day complete card
-        boolean dayComplete = hasMorning && hasEvening;
-        binding.cardDayComplete.setVisibility(dayComplete ? View.VISIBLE : View.GONE);
-        binding.cardMorning.setVisibility(dayComplete ? View.GONE : View.VISIBLE);
-        binding.cardEvening.setVisibility(dayComplete ? View.GONE : View.VISIBLE);
+    private double getBufSoldToday() {
+        List<Sale> todaySales = saleDao.getByDate(DateUtils.todayDb());
+        double bufSold = 0;
+        for (Sale s : todaySales) {
+            if (Sale.MILK_BUFFALO.equals(s.getMilkType())) bufSold += s.getQuantity();
+        }
+        return bufSold;
     }
 
     private void setGreeting() {
@@ -268,32 +240,20 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        binding.btnMorningAdd.setOnClickListener(v ->
-                openAddRecord(MilkRecord.SESSION_MORNING));
-        binding.btnEveningAdd.setOnClickListener(v ->
-                openAddRecord(MilkRecord.SESSION_EVENING));
-        binding.btnHistory.setOnClickListener(v ->
+        binding.btnViewMyRecords.setOnClickListener(v ->
                 startActivity(new Intent(this, HistoryActivity.class)));
-        binding.btnMonthlySummary.setOnClickListener(v ->
-                startActivity(new Intent(this, MonthlySummaryActivity.class)));
-        binding.btnPayments.setOnClickListener(v ->
-                startActivity(new Intent(this, PaymentActivity.class)));
         binding.btnSuppliers.setOnClickListener(v ->
                 startActivity(new Intent(this, SupplierListActivity.class)));
         binding.btnCustomers.setOnClickListener(v ->
                 startActivity(new Intent(this, CustomerListActivity.class)));
         binding.btnSales.setOnClickListener(v ->
                 startActivity(new Intent(this, SalesActivity.class)));
-        binding.btnInventory.setOnClickListener(v ->
-                startActivity(new Intent(this, InventoryActivity.class)));
+        binding.btnHistory.setOnClickListener(v ->
+                startActivity(new Intent(this, HistoryActivity.class)));
+        binding.btnMonthlySummary.setOnClickListener(v ->
+                startActivity(new Intent(this, MonthlySummaryActivity.class)));
         binding.btnSettings.setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
-    }
-
-    private void openAddRecord(String sessionType) {
-        Intent intent = new Intent(this, AddRecordActivity.class);
-        intent.putExtra(AddRecordActivity.EXTRA_SESSION_TYPE, sessionType);
-        startActivity(intent);
     }
 
     @Override

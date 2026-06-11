@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Milk Diary - Dairy Management</string>
+    <string name="app_name_short">Milk Diary</string>
     <string name="today_cow_milk">Today\'s Cow Milk</string>
     <string name="today_buffalo_milk">Today\'s Buffalo Milk</string>
     <string name="today_earnings">Today\'s Earnings</string>
@@ -34,6 +35,24 @@
     <string name="add_record_btn">Add Record</string>
     <string name="monthly_report">Monthly Report</string>
     <string name="greeting_default">Welcome</string>
+
+    <!-- Dashboard redesign -->
+    <string name="todays_purchased_milk">TODAY\'S PURCHASED MILK</string>
+    <string name="todays_earnings">TODAY\'S EARNINGS</string>
+    <string name="outstanding">Outstanding</string>
+    <string name="purchase">PURCHASE</string>
+    <string name="purchase_cost">Purchase Cost</string>
+    <string name="stock">STOCK</string>
+    <string name="milk_available">Milk Available</string>
+    <string name="profit">PROFIT</string>
+    <string name="sold_amount">Sold Amount</string>
+    <string name="purchase_cost_sold">Purchase Cost (Sold)</string>
+    <string name="estimated_profit">Estimated Profit</string>
+    <string name="this_month">THIS MONTH</string>
+    <string name="total">Total</string>
+    <string name="paid">Paid</string>
+    <string name="unpaid">Unpaid</string>
+    <string name="no_records_this_month">No records this month</string>
 
     <!-- Auth strings -->
     <string name="welcome_title">Welcome to Milk Diary</string>

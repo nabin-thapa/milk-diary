@@ -117,6 +117,30 @@ public class SaleDao {
         return 0;
     }
 
+    public double getUnpaidAmountByDate(String date) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor c = db.rawQuery(
+                "SELECT SUM(" + DatabaseHelper.COL_SALE_AMOUNT + ") FROM " +
+                DatabaseHelper.TABLE_SALES + " WHERE " + DatabaseHelper.COL_SALE_DATE + "=? AND " +
+                DatabaseHelper.COL_SALE_PAID + "=0",
+                new String[]{date})) {
+            if (c != null && c.moveToFirst()) return c.getDouble(0);
+        }
+        return 0;
+    }
+
+    public boolean hasUnpaidSalesOnDate(String date) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor c = db.rawQuery(
+                "SELECT COUNT(*) FROM " + DatabaseHelper.TABLE_SALES +
+                " WHERE " + DatabaseHelper.COL_SALE_DATE + "=? AND " +
+                DatabaseHelper.COL_SALE_PAID + "=0",
+                new String[]{date})) {
+            if (c != null && c.moveToFirst()) return c.getInt(0) > 0;
+        }
+        return false;
+    }
+
     private ContentValues toValues(Sale s) {
         ContentValues v = new ContentValues();
         v.put(DatabaseHelper.COL_SALE_DATE, s.getDate());

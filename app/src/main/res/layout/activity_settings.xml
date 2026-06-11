@@ -376,27 +376,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Last Checked"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="15sp" />
-                        <TextView
-                            android:id="@+id/tvLastUpdateCheck"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Never"
-                            android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="16dp">
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -422,7 +402,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Downloaded Version"
+                            android:text="Downloaded"
                             android:textColor="@color/text_secondary"
                             android:textSize="15sp" />
                         <TextView
@@ -437,12 +417,12 @@
                     <Button
                         android:id="@+id/btnCheckUpdates"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:text="🔄  Check for Updates"
-                        android:textSize="15sp"
+                        android:layout_height="48dp"
+                        android:text="Check for Updates"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:backgroundTint="@color/primary"
-                        app:cornerRadius="14dp"
+                        app:cornerRadius="12dp"
                         android:stateListAnimator="@null" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -496,6 +476,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="Milk Diary  •  Fully Offline  •  Data stored on this device"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary"
                 android:paddingBottom="4dp" />

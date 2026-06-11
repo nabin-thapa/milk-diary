@@ -198,6 +198,21 @@ public class MilkRecordDao {
 
     // ---- Supplier-filtered queries ----
 
+    /** Get a specific record by supplier, date and session */
+    public MilkRecord getRecordBySupplierDateAndSession(long supplierId, String date, String sessionType) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+                DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + "=? AND " + DatabaseHelper.COL_SESSION_TYPE + "=?",
+                new String[]{String.valueOf(supplierId), date, sessionType},
+                null, null, null);
+        MilkRecord record = null;
+        if (cursor.moveToFirst()) {
+            record = fromCursor(cursor);
+        }
+        cursor.close();
+        return record;
+    }
+
     /** Get records for a specific supplier and date */
     public List<MilkRecord> getRecordsBySupplierAndDate(long supplierId, String date) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -296,6 +311,7 @@ public class MilkRecordDao {
         v.put(DatabaseHelper.COL_EDIT_COUNT, r.getEditCount());
         v.put(DatabaseHelper.COL_SUPPLIER_ID, r.getSupplierId());
         v.put(DatabaseHelper.COL_FAT_PERCENTAGE, r.getFatPercentage());
+        v.put(DatabaseHelper.COL_IS_PAID, r.isPaid() ? 1 : 0);
         return v;
     }
 
@@ -315,6 +331,7 @@ public class MilkRecordDao {
         r.setEditCount(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_EDIT_COUNT)));
         r.setSupplierId(c.getLong(c.getColumnIndexOrThrow(DatabaseHelper.COL_SUPPLIER_ID)));
         r.setFatPercentage(c.getDouble(c.getColumnIndexOrThrow(DatabaseHelper.COL_FAT_PERCENTAGE)));
+        r.setPaid(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_IS_PAID)) == 1);
         return r;
     }
 

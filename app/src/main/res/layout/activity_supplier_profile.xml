@@ -13,21 +13,23 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="14dp">
 
+            <!-- SUPPLIER INFO -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -66,229 +68,481 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- TODAY'S MILK -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Today's Entry"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:paddingBottom="8dp" />
+                android:text="TODAY'S MILK"
+                style="@style/SectionLabel" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                android:layout_marginBottom="6dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="14dp">
                     <TextView
-                        android:id="@+id/tvTodayStatus"
+                        android:id="@+id/tvMorningStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Morning: No entry"
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary" />
                     <TextView
-                        android:id="@+id/tvTodayDetails"
+                        android:id="@+id/tvMorningDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary"
-                        android:paddingTop="4dp"
-                        android:visibility="gone" />
-                    <Button
-                        android:id="@+id/btnAddEntry"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Add Milk Entry"
                         android:textSize="13sp"
-                        android:backgroundTint="@color/primary"
-                        app:cornerRadius="12dp"
-                        android:stateListAnimator="@null" />
+                        android:textColor="@color/text_primary"
+                        android:paddingTop="2dp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Monthly Summary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:paddingBottom="8dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    android:padding="14dp">
+                    <TextView
+                        android:id="@+id/tvEveningStatus"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Cow Liters"
-                            android:textSize="13sp"
-                            android:textColor="@color/text_secondary" />
-                        <TextView
-                            android:id="@+id/tvMonthCowLiters"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00 L"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
-                    </LinearLayout>
+                        android:text="Evening: No entry"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary" />
+                    <TextView
+                        android:id="@+id/tvEveningDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_primary"
+                        android:paddingTop="2dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ADD ENTRY BUTTONS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+                <Button
+                    android:id="@+id/btnAddMorning"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:text="Add Morning Milk"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/accent"
+                    app:cornerRadius="10dp"
+                    android:stateListAnimator="@null" />
+                <Button
+                    android:id="@+id/btnAddEvening"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:text="Add Evening Milk"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/gradient_purple"
+                    app:cornerRadius="10dp"
+                    android:stateListAnimator="@null" />
+            </LinearLayout>
+
+            <!-- MONTHLY TABLE -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MONTHLY RECORDS"
+                style="@style/SectionLabel" />
+
+            <!-- Month Navigation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+                <Button
+                    android:id="@+id/btnPrevMonth"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:text="&#8249;"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/primary_light"
+                    android:textColor="@color/primary_dark"
+                    app:cornerRadius="10dp"
+                    android:stateListAnimator="@null" />
+                <TextView
+                    android:id="@+id/tvSelectedMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="June 2026"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:gravity="center" />
+                <Button
+                    android:id="@+id/btnNextMonth"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:text="&#8250;"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/primary_light"
+                    android:textColor="@color/primary_dark"
+                    app:cornerRadius="10dp"
+                    android:stateListAnimator="@null" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/card_bg">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <!-- Table Header -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="6dp">
+                        android:paddingBottom="6dp"
+                        android:paddingTop="2dp">
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Buffalo Liters"
-                            android:textSize="13sp"
+                            android:layout_weight="2.2"
+                            android:text="Date"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
                             android:textColor="@color/text_secondary" />
                         <TextView
-                            android:id="@+id/tvMonthBufLiters"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="0.00 L"
-                            android:textSize="14sp"
+                            android:layout_weight="1.3"
+                            android:text="AM"
+                            android:textSize="11sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
+                            android:textColor="@color/text_secondary"
+                            android:gravity="end" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:text="PM"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_secondary"
+                            android:gravity="end" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:text="Total"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_secondary"
+                            android:gravity="end" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.8"
+                            android:text="Amount"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_secondary"
+                            android:gravity="end" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:text="Status"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_secondary"
+                            android:gravity="end" />
                     </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/divider"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="4dp" />
+
+                    <!-- Table Rows (populated dynamically) -->
                     <LinearLayout
+                        android:id="@+id/tableRows"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical" />
+
+                    <!-- Empty state -->
+                    <TextView
+                        android:id="@+id/tvNoMonthlyData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No records this month"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_hint"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:visibility="gone" />
+
+                    <!-- Monthly Total -->
+                    <View
+                        android:id="@+id/dividerTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/rowMonthlyTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="6dp"
+                        android:visibility="gone">
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Total Earnings"
-                            android:textSize="14sp"
+                            android:layout_weight="2.2"
+                            android:text="Total"
+                            android:textSize="12sp"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary" />
                         <TextView
-                            android:id="@+id/tvMonthEarnings"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvTotalMorning"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Rs. 0.00"
-                            android:textSize="16sp"
+                            android:layout_weight="1.3"
+                            android:text="0.0 L"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:textColor="@color/accent_dark" />
+                            android:textColor="@color/text_primary"
+                            android:gravity="end" />
+                        <TextView
+                            android:id="@+id/tvTotalEvening"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:text="0.0 L"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"
+                            android:gravity="end" />
+                        <TextView
+                            android:id="@+id/tvTotalLiters"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:text="0.0 L"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"
+                            android:gravity="end" />
+                        <TextView
+                            android:id="@+id/tvTotalAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.8"
+                            android:text="Rs. 0"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary"
+                            android:gravity="end" />
+                        <TextView
+                            android:id="@+id/tvTotalStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:text=""
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:gravity="end" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- PAYMENT SUMMARY -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Payment Summary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:paddingBottom="8dp" />
+                android:text="PAYMENT"
+                style="@style/SectionLabel" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
+                android:layout_marginBottom="6dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@color/card_bg">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="14dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Total Paid"
-                            android:textSize="14sp"
-                            android:textColor="@color/text_secondary" />
-                        <TextView
-                            android:id="@+id/tvTotalPaid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rs. 0.00"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/primary" />
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Total Owed" android:textSize="13sp" android:textColor="@color/text_secondary" />
+                        <TextView android:id="@+id/tvTotalOwed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="6dp">
-                        <TextView
+                        android:paddingBottom="4dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Paid" android:textSize="13sp" android:textColor="@color/text_secondary" />
+                        <TextView android:id="@+id/tvTotalPaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/earnings_color" />
+                    </LinearLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginBottom="4dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Remaining" android:textSize="14sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+                        <TextView android:id="@+id/tvRemaining" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rs. 0.00" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/pending_color" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Record Payment (inline) -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/card_bg">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Record Payment"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:paddingBottom="8dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Pending Balance"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary" />
-                        <TextView
-                            android:id="@+id/tvPendingBalance"
-                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:hint="Amount"
+                            style="@style/InputField">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPayAmount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:textSize="16sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Rs. 0.00"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/pending_color" />
+                            android:layout_weight="1"
+                            android:hint="Note"
+                            style="@style/InputField">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPayNote"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <Button
                         android:id="@+id/btnRecordPayment"
                         android:layout_width="match_parent"
-                        android:layout_height="44dp"
+                        android:layout_height="40dp"
                         android:layout_marginTop="8dp"
-                        android:text="Record Payment"
+                        android:text="Save Payment"
                         android:textSize="13sp"
+                        android:textStyle="bold"
                         android:backgroundTint="@color/primary"
-                        app:cornerRadius="12dp"
+                        app:cornerRadius="10dp"
                         android:stateListAnimator="@null" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- PAYMENT HISTORY -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PAYMENT HISTORY"
+                style="@style/SectionLabel" />
+
+            <LinearLayout
+                android:id="@+id/paymentHistoryContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvNoPayments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No payments recorded"
+                android:textSize="14sp"
+                android:textColor="@color/text_hint"
+                android:gravity="center"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone" />
+
+            <!-- VIEW FULL HISTORY -->
             <Button
                 android:id="@+id/btnViewHistory"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="View Full History"
-                android:textSize="14sp"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="View Full Milk History"
+                android:textSize="13sp"
+                android:textStyle="bold"
                 android:backgroundTint="@color/primary_light"
                 android:textColor="@color/primary_dark"
                 app:cornerRadius="12dp"
