@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.5.1",
-  "versionCode": 106,
+  "latestVersion": "2.6.1",
+  "versionCode": 108,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "Universal Update System - any old version updates directly to latest\n• Versioned APK filenames prevent cache issues\n• Old APKs auto-cleaned before new download\n• Post-update validation confirms successful install\n• Force update for very old versions (minimumSupportedVersion)\n• Smart versionCode comparison - direct jump, no chained updates\n• Database migrations safe across any version gap\n• All existing data preserved during updates",
+  "releaseNotes": "Dairy Owner Redesign v2.6.0\n• Redesigned dashboard with clean card layout\n• Supplier profile with Paid/Unpaid status in monthly table\n• Improved profit calculation (only counts sold milk)\n• Stock tracking (purchased minus sold)\n• Outstanding balance tracking\n• Removed inventory and payment standalone pages\n• Cleaner navigation with card-based quick actions\n• UI/UX improvements throughout",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }
