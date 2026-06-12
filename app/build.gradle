@@ -10,8 +10,8 @@ android {
         applicationId "com.milkdiary.app"
         minSdk 21
         targetSdk 34
-        versionCode 114
-        versionName "2.7.5"
+        versionCode 115
+        versionName "2.7.6"
     }
 
     signingConfigs {
