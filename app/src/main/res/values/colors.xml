@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1B7A4A</color>
-    <color name="primary_dark">#0F5C36</color>
-    <color name="primary_light">#E8F5E9</color>
-    <color name="primary_ultra_light">#F1F8E9</color>
+    <color name="primary">#0E8F52</color>
+    <color name="primary_dark">#0a6c3e</color>
+    <color name="primary_light">#EBF7F0</color>
+    <color name="primary_ultra_light">#F3FAF6</color>
     <color name="primary_surface">#F0FDF4</color>
     <color name="accent">#F59E0B</color>
     <color name="accent_light">#FEF3C7</color>
     <color name="accent_dark">#D97706</color>
 
-    <color name="background">#F8FAFC</color>
+    <color name="background">#F5F7FA</color>
     <color name="surface">#FFFFFF</color>
     <color name="card_bg">#FFFFFF</color>
     <color name="card_bg_alt">#F1F5F9</color>
@@ -21,9 +21,9 @@
     <color name="text_on_primary">#FFFFFF</color>
     <color name="text_on_accent">#FFFFFF</color>
 
-    <color name="earnings_color">#16A34A</color>
-    <color name="pending_color">#DC2626</color>
-    <color name="paid_color">#16A34A</color>
+    <color name="earnings_color">#0E8F52</color>
+    <color name="pending_color">#ea580c</color>
+    <color name="paid_color">#0E8F52</color>
     <color name="cow_color">#2563EB</color>
     <color name="buffalo_color">#7C3AED</color>
     <color name="warning_color">#F59E0B</color>
@@ -31,21 +31,21 @@
     <color name="input_bg">#F1F5F9</color>
     <color name="input_stroke">#CBD5E1</color>
 
-    <color name="header_start">#1B7A4A</color>
-    <color name="header_end">#0F5C36</color>
+    <color name="header_start">#0E8F52</color>
+    <color name="header_end">#059669</color>
     <color name="header_accent">#F59E0B</color>
 
     <color name="gradient_blue">#2563EB</color>
     <color name="gradient_purple">#7C3AED</color>
-    <color name="status_good">#16A34A</color>
+    <color name="status_good">#0E8F52</color>
     <color name="status_warn">#F59E0B</color>
 
     <color name="stock_color">#0EA5E9</color>
     <color name="card_border">#E2E8F0</color>
-    <color name="paid_badge">#DCFCE7</color>
-    <color name="unpaid_badge">#FEE2E2</color>
-    <color name="paid_text">#16A34A</color>
-    <color name="unpaid_text">#DC2626</color>
-    <color name="quick_action_bg">#F8FAFC</color>
-    <color name="quick_action_icon">#1B7A4A</color>
+    <color name="paid_badge">#EBF7F0</color>
+    <color name="unpaid_badge">#FFEDE3</color>
+    <color name="paid_text">#0E8F52</color>
+    <color name="unpaid_text">#ea580c</color>
+    <color name="quick_action_bg">#F5F7FA</color>
+    <color name="quick_action_icon">#0E8F52</color>
 </resources>

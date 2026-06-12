@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.7.2",
-  "versionCode": 111,
+  "latestVersion": "2.7.3",
+  "versionCode": 112,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "v2.7.2 - Stability & Quality of Life Improvements\n• Fixed critical cursor resource leaks in database queries\n• Increased maximum record edits from 1 to 5 for better flexibility\n• Enhanced stability of monthly summary calculations",
+  "releaseNotes": "v2.7.3 - Premium Modern Redesign Release\n• Updated theme colors to Deep Emerald Green (#0E8F52)\n• Redesigned spacing, layout accents, and dashboard color cues to align with visual spec",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }
