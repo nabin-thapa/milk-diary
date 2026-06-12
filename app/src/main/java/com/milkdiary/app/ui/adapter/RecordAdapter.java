@@ -50,9 +50,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
         // Session type
         if (record.isMorning()) {
-            holder.tvSession.setText("🌅");
+            holder.tvSession.setText("Morning");
         } else {
-            holder.tvSession.setText("🌆");
+            holder.tvSession.setText("Evening");
         }
 
         holder.tvDate.setText(DateUtils.dbToDisplay(record.getDate()));
@@ -60,7 +60,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         // Cow info
         if (record.getCowLiters() > 0) {
             holder.tvCow.setVisibility(View.VISIBLE);
-            holder.tvCow.setText("🐄 "
+            holder.tvCow.setText("Cow: "
                     + FormatUtils.liters(record.getCowLiters())
                     + " × " + FormatUtils.rate(record.getCowRate())
                     + " = " + FormatUtils.money(record.getCowAmount()));
@@ -71,7 +71,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         // Buffalo info
         if (record.getBuffaloLiters() > 0) {
             holder.tvBuf.setVisibility(View.VISIBLE);
-            holder.tvBuf.setText("🐃 "
+            holder.tvBuf.setText("Buffalo: "
                     + FormatUtils.liters(record.getBuffaloLiters())
                     + " × " + FormatUtils.rate(record.getBuffaloRate())
                     + " = " + FormatUtils.money(record.getBuffaloAmount()));

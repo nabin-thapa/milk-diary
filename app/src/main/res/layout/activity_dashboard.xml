@@ -15,17 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:paddingTop="180dp"
-            android:paddingBottom="90dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="120dp"
+            android:paddingBottom="24dp">
 
             <!-- TODAY'S OVERVIEW -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Today's Overview"
-                style="@style/SectionLabel" />
+                style="@style/SectionLabel"
+                android:layout_marginBottom="8dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -97,6 +98,7 @@
                         android:alignmentMode="alignBounds"
                         android:columnOrderPreserved="false">
 
+                        <!-- Cow Milk -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -104,15 +106,14 @@
                             android:layout_marginEnd="6dp"
                             android:layout_marginBottom="12dp"
                             android:background="@drawable/bg_stat_cow"
-                            android:padding="10dp"
+                            android:padding="12dp"
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🐄"
-                                android:textSize="18sp"
-                                android:paddingEnd="8dp" />
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_cow"
+                                android:layout_marginEnd="8dp" />
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -134,6 +135,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <!-- Buffalo Milk -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -141,15 +143,14 @@
                             android:layout_marginStart="6dp"
                             android:layout_marginBottom="12dp"
                             android:background="@drawable/bg_stat_buffalo"
-                            android:padding="10dp"
+                            android:padding="12dp"
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🦬"
-                                android:textSize="18sp"
-                                android:paddingEnd="8dp" />
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_buffalo"
+                                android:layout_marginEnd="8dp" />
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -171,21 +172,21 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <!-- Outstanding -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
                             android:layout_marginEnd="6dp"
                             android:background="@drawable/bg_stat_pending"
-                            android:padding="10dp"
+                            android:padding="12dp"
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="⏳"
-                                android:textSize="18sp"
-                                android:paddingEnd="8dp" />
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_pending"
+                                android:layout_marginEnd="8dp" />
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -207,21 +208,21 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <!-- Today's Profit -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
                             android:layout_marginStart="6dp"
                             android:background="@drawable/bg_stat_profit"
-                            android:padding="10dp"
+                            android:padding="12dp"
                             android:orientation="horizontal"
                             android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="📈"
-                                android:textSize="18sp"
-                                android:paddingEnd="8dp" />
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/ic_profit"
+                                android:layout_marginEnd="8dp" />
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -265,13 +266,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="30dp">
+                    android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🥛"
-                        android:textSize="48sp"
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_milk_drop"
+                        app:tint="@color/primary"
                         android:layout_marginBottom="16dp" />
 
                     <TextView
@@ -292,15 +293,18 @@
                         android:gravity="center"
                         android:layout_marginBottom="20dp" />
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnEmptyAddPurchase"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
                         android:text="Add Today's Purchase"
-                        android:backgroundTint="@color/primary"
                         android:textColor="#FFFFFF"
-                        app:cornerRadius="12dp"
-                        android:textStyle="bold" />
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/btn_gradient_primary"
+                        android:stateListAnimator="@null" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -316,7 +320,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Milk Stock Tanks"
-                    style="@style/SectionLabel" />
+                    style="@style/SectionLabel"
+                    android:layout_marginBottom="8dp" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -348,7 +353,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="🐄 Cow Milk Stock"
+                                    android:text="Cow Milk Stock"
                                     android:textSize="13sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_primary" />
@@ -387,7 +392,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="🦬 Buffalo Milk Stock"
+                                    android:text="Buffalo Milk Stock"
                                     android:textSize="13sp"
                                     android:textStyle="bold"
                                     android:textColor="@color/text_primary" />
@@ -443,14 +448,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground">
-                        <View
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_stat_profit"
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_quick_purchase"
+                            app:tint="@color/primary"
                             android:layout_marginBottom="8dp" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -477,14 +483,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground">
-                        <View
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_stat_pending"
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_quick_sale"
+                            app:tint="@color/pending_color"
                             android:layout_marginBottom="8dp" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -510,14 +517,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground">
-                        <View
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/bg_stat_cow"
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_quick_suppliers"
+                            app:tint="@color/cow_color"
                             android:layout_marginBottom="8dp" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -563,13 +571,13 @@
     <LinearLayout
         android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="150dp"
         android:orientation="vertical"
         android:background="@drawable/header_gradient"
         android:paddingStart="20dp"
         android:paddingEnd="16dp"
-        android:paddingTop="44dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="12dp"
         android:elevation="4dp"
         android:clipToPadding="false">
 
@@ -578,12 +586,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingBottom="4dp">
+            android:paddingBottom="2dp">
 
             <ImageView
                 android:id="@+id/ivProfile"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:src="@drawable/ic_person"
                 android:background="@drawable/bg_profile_circle"
                 android:scaleType="centerCrop"
@@ -609,19 +617,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_name_short"
                     android:textColor="#FFFFFF"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/btnSettings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:src="@android:drawable/ic_menu_manage"
                 android:background="@drawable/icon_bg"
                 android:tint="#FFFFFF"
                 android:contentDescription="Settings"
-                android:padding="9dp" />
+                android:padding="8dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -629,26 +637,26 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="12dp">
+            android:paddingTop="8dp">
             <TextView
                 android:id="@+id/tvTodayDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="#D0FFFFFF"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fully Offline 🔒"
+                android:text="Fully Offline"
                 android:textColor="#FFFFFF"
-                android:textSize="11sp"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 android:background="@drawable/bg_status_tag"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp" />
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp" />
         </LinearLayout>
     </LinearLayout>
 

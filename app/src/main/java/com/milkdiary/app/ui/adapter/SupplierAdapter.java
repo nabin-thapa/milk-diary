@@ -70,10 +70,10 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.ViewHo
     private String formatRate(Supplier s) {
         StringBuilder sb = new StringBuilder();
         if (s.getDefaultCowRate() > 0)
-            sb.append("🐄 ₹").append(String.format("%.2f", s.getDefaultCowRate()));
+            sb.append("Cow: Rs. ").append(String.format("%.2f", s.getDefaultCowRate()));
         if (s.getDefaultBuffaloRate() > 0) {
-            if (sb.length() > 0) sb.append("  ");
-            sb.append("🐃 ₹").append(String.format("%.2f", s.getDefaultBuffaloRate()));
+            if (sb.length() > 0) sb.append("  •  ");
+            sb.append("Buffalo: Rs. ").append(String.format("%.2f", s.getDefaultBuffaloRate()));
         }
         if (sb.length() == 0) sb.append("No rates set");
         return sb.toString();

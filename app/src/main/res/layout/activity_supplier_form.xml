@@ -83,21 +83,21 @@
                     android:id="@+id/chipCow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🐄  Cow"
+                    android:text="Cow"
                     style="@style/Widget.MaterialComponents.Chip.Choice" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipBuffalo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🐃  Buffalo"
+                    android:text="Buffalo"
                     style="@style/Widget.MaterialComponents.Chip.Choice" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipBoth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🐄🐃  Both"
+                    android:text="Both"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:checked="true" />
 
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="6dp"
-                    android:hint="🐄  Cow Rate (Rs/L)"
+                    android:hint="Cow Rate (Rs/L)"
                     style="@style/InputField">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCowRate"
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="6dp"
-                    android:hint="🐃  Buffalo Rate (Rs/L)"
+                    android:hint="Buffalo Rate (Rs/L)"
                     style="@style/InputField">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etBufRate"
@@ -154,7 +154,7 @@
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:text="💾  Save Supplier"
+                android:text="Save Supplier"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:backgroundTint="@color/primary"

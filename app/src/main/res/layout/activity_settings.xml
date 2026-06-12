@@ -45,7 +45,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="🌙  Dark Mode"
+                        android:text="Dark Mode"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary" />
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -242,7 +242,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="👤  Current Role"
+                        android:text="Current Role"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary" />
                     <TextView
@@ -302,7 +302,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            android:hint="🐄  Cow Rate (Rs/L)"
+                            android:hint="Cow Rate (Rs/L)"
                             style="@style/InputField">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etDefaultCowRate"
@@ -317,7 +317,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="🐃  Buffalo Rate (Rs/L)"
+                            android:hint="Buffalo Rate (Rs/L)"
                             style="@style/InputField">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etDefaultBufRate"
@@ -439,7 +439,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginBottom="10dp"
-                android:text="📤  Backup Database"
+                android:text="Backup Database"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:backgroundTint="@color/primary"
@@ -451,7 +451,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginBottom="10dp"
-                android:text="📥  Restore Data"
+                android:text="Restore Data"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:backgroundTint="@color/primary_dark"
@@ -463,7 +463,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginBottom="24dp"
-                android:text="📊  Export CSV"
+                android:text="Export CSV"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:backgroundTint="@color/accent"
