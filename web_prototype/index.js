@@ -201,6 +201,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
   DOM.btnToggleShowcase.addEventListener('click', toggleDesignSystemView);
   
+  document.getElementById('btn-header-settings').addEventListener('click', () => {
+    switchTab('profile');
+  });
+  document.querySelector('.user-profile').addEventListener('click', () => {
+    switchTab('profile');
+  });
+  
   // Form input changes
   DOM.rateCow.addEventListener('input', (e) => {
     db.rates.cow = parseFloat(e.target.value) || 85;

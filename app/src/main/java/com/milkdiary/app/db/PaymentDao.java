@@ -42,64 +42,73 @@ public class PaymentDao {
 
     public List<Payment> getAllPayments() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        List<Payment> list = new ArrayList<>();
+        try (Cursor cursor = db.rawQuery(
                 "SELECT p.*, COALESCE(s.name, '') as party_name " +
                 "FROM " + DatabaseHelper.TABLE_PAYMENTS + " p " +
                 "LEFT JOIN " + DatabaseHelper.TABLE_SUPPLIERS + " s ON p." +
                 DatabaseHelper.COL_PARTY_ID + "=s." + DatabaseHelper.COL_ID + " " +
                 "ORDER BY p." + DatabaseHelper.COL_PAY_DATE + " DESC",
-                null);
-        return listFromCursor(cursor);
+                null)) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     public List<Payment> getPaymentsByParty(String partyType, long partyId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_PAYMENTS, null,
+        List<Payment> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_PAYMENTS, null,
                 DatabaseHelper.COL_PARTY_TYPE + "=? AND " +
                 DatabaseHelper.COL_PARTY_ID + "=?",
                 new String[]{partyType, String.valueOf(partyId)},
                 null, null,
-                DatabaseHelper.COL_PAY_DATE + " DESC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_PAY_DATE + " DESC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     public double getTotalPaid() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        try (Cursor cursor = db.rawQuery(
                 "SELECT SUM(" + DatabaseHelper.COL_PAY_AMOUNT + ") FROM " +
                 DatabaseHelper.TABLE_PAYMENTS + " WHERE " +
                 DatabaseHelper.COL_PARTY_TYPE + "=?",
-                new String[]{Payment.PARTY_CUSTOMER});
-        double total = 0;
-        if (cursor.moveToFirst()) total = cursor.getDouble(0);
-        cursor.close();
-        return total;
+                new String[]{Payment.PARTY_CUSTOMER})) {
+            double total = 0;
+            if (cursor != null && cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
+            return total;
+        }
     }
 
     public double getTotalPaidToSuppliers() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        try (Cursor cursor = db.rawQuery(
                 "SELECT SUM(" + DatabaseHelper.COL_PAY_AMOUNT + ") FROM " +
                 DatabaseHelper.TABLE_PAYMENTS + " WHERE " +
                 DatabaseHelper.COL_PARTY_TYPE + "=?",
-                new String[]{Payment.PARTY_SUPPLIER});
-        double total = 0;
-        if (cursor.moveToFirst()) total = cursor.getDouble(0);
-        cursor.close();
-        return total;
+                new String[]{Payment.PARTY_SUPPLIER})) {
+            double total = 0;
+            if (cursor != null && cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
+            return total;
+        }
     }
 
     public List<Payment> getPaymentsByType(String partyType) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        List<Payment> list = new ArrayList<>();
+        try (Cursor cursor = db.rawQuery(
                 "SELECT p.*, COALESCE(s.name, '') as party_name " +
                 "FROM " + DatabaseHelper.TABLE_PAYMENTS + " p " +
                 "LEFT JOIN " + DatabaseHelper.TABLE_SUPPLIERS + " s ON p." +
                 DatabaseHelper.COL_PARTY_ID + "=s." + DatabaseHelper.COL_ID + " " +
                 "WHERE p." + DatabaseHelper.COL_PARTY_TYPE + "=? " +
                 "ORDER BY p." + DatabaseHelper.COL_PAY_DATE + " DESC",
-                new String[]{partyType});
-        return listFromCursor(cursor);
+                new String[]{partyType})) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     private ContentValues toContentValues(Payment p) {
@@ -120,16 +129,8 @@ public class PaymentDao {
         p.setNote(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_PAY_NOTE)));
         p.setPartyType(c.getString(c.getColumnIndexOrThrow(DatabaseHelper.COL_PARTY_TYPE)));
         p.setPartyId(c.getLong(c.getColumnIndexOrThrow(DatabaseHelper.COL_PARTY_ID)));
-        // Try to get joined party_name if available
         int colIdx = c.getColumnIndex("party_name");
         if (colIdx >= 0) p.setPartyName(c.getString(colIdx));
         return p;
-    }
-
-    private List<Payment> listFromCursor(Cursor cursor) {
-        List<Payment> list = new ArrayList<>();
-        while (cursor.moveToNext()) list.add(fromCursor(cursor));
-        cursor.close();
-        return list;
     }
 }

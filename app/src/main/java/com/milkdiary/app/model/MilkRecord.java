@@ -3,7 +3,7 @@ package com.milkdiary.app.model;
 public class MilkRecord {
     public static final String SESSION_MORNING = "morning";
     public static final String SESSION_EVENING = "evening";
-    public static final int MAX_EDIT_COUNT = 1;
+    public static final int MAX_EDIT_COUNT = 5;
 
     private long id;
     private String date;          // YYYY-MM-DD

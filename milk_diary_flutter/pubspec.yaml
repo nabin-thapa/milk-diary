@@ -1,6 +1,6 @@
 name: milk_diary
 description: Premium Dairy Management App for Dairy Owners
-version: 2.0.0+1
+version: 2.7.2
 
 environment:
   sdk: '>=3.2.0 <4.0.0'

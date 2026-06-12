@@ -90,7 +90,7 @@ public class SaleDao {
                 "SELECT SUM(" + DatabaseHelper.COL_SALE_QUANTITY + ") FROM " +
                 DatabaseHelper.TABLE_SALES + " WHERE " + DatabaseHelper.COL_SALE_DATE + "=?",
                 new String[]{date})) {
-            if (c != null && c.moveToFirst()) return c.getDouble(0);
+            if (c != null && c.moveToFirst() && !c.isNull(0)) return c.getDouble(0);
         }
         return 0;
     }
@@ -101,7 +101,7 @@ public class SaleDao {
                 "SELECT SUM(" + DatabaseHelper.COL_SALE_AMOUNT + ") FROM " +
                 DatabaseHelper.TABLE_SALES + " WHERE " + DatabaseHelper.COL_SALE_DATE + " LIKE ?",
                 new String[]{yearMonth + "%"})) {
-            if (c != null && c.moveToFirst()) return c.getDouble(0);
+            if (c != null && c.moveToFirst() && !c.isNull(0)) return c.getDouble(0);
         }
         return 0;
     }
@@ -109,7 +109,7 @@ public class SaleDao {
     public double getTotalSalesAllTime() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try (Cursor c = db.rawQuery("SELECT SUM(" + DatabaseHelper.COL_SALE_AMOUNT + ") FROM " + DatabaseHelper.TABLE_SALES, null)) {
-            if (c != null && c.moveToFirst()) return c.getDouble(0);
+            if (c != null && c.moveToFirst() && !c.isNull(0)) return c.getDouble(0);
         }
         return 0;
     }
@@ -120,7 +120,7 @@ public class SaleDao {
                 "SELECT SUM(" + DatabaseHelper.COL_SALE_AMOUNT + ") FROM " +
                 DatabaseHelper.TABLE_SALES + " WHERE " + DatabaseHelper.COL_SALE_PAID + "=0",
                 null)) {
-            if (c != null && c.moveToFirst()) return c.getDouble(0);
+            if (c != null && c.moveToFirst() && !c.isNull(0)) return c.getDouble(0);
         }
         return 0;
     }
@@ -132,7 +132,7 @@ public class SaleDao {
                 DatabaseHelper.TABLE_SALES + " WHERE " + DatabaseHelper.COL_SALE_DATE + "=? AND " +
                 DatabaseHelper.COL_SALE_PAID + "=0",
                 new String[]{date})) {
-            if (c != null && c.moveToFirst()) return c.getDouble(0);
+            if (c != null && c.moveToFirst() && !c.isNull(0)) return c.getDouble(0);
         }
         return 0;
     }

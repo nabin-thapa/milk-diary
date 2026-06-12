@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.7.1",
-  "versionCode": 110,
+  "latestVersion": "2.7.2",
+  "versionCode": 111,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "v2.7.1 - PDF Export & Payment Tracking Improvements\n• Export milk records to PDF with detailed summaries\n• Improved payment tracking logic and stability\n• Enhanced monthly payment toggles for supplier milk records",
+  "releaseNotes": "v2.7.2 - Stability & Quality of Life Improvements\n• Fixed critical cursor resource leaks in database queries\n• Increased maximum record edits from 1 to 5 for better flexibility\n• Enhanced stability of monthly summary calculations",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }

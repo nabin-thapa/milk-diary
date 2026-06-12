@@ -44,41 +44,42 @@ public class MilkRecordDao {
     /** Get a single record by ID */
     public MilkRecord getRecordById(long id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_ID + "=?", new String[]{String.valueOf(id)},
-                null, null, null);
-        MilkRecord record = null;
-        if (cursor.moveToFirst()) {
-            record = fromCursor(cursor);
+                null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return fromCursor(cursor);
+            }
         }
-        cursor.close();
-        return record;
+        return null;
     }
 
     /** Get record for a specific date + session (morning/evening) */
     public MilkRecord getRecordByDateAndSession(String date, String sessionType) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_DATE + "=? AND " + DatabaseHelper.COL_SESSION_TYPE + "=?",
                 new String[]{date, sessionType},
-                null, null, null);
-        MilkRecord record = null;
-        if (cursor.moveToFirst()) {
-            record = fromCursor(cursor);
+                null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return fromCursor(cursor);
+            }
         }
-        cursor.close();
-        return record;
+        return null;
     }
 
     /** Get all records for a specific date (both morning and evening) */
     public List<MilkRecord> getRecordsByDate(String date) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_DATE + "=?",
                 new String[]{date},
                 null, null,
-                DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     /** Check if morning record exists for date */
@@ -99,32 +100,41 @@ public class MilkRecordDao {
     /** All records ordered newest first, morning before evening within same day */
     public List<MilkRecord> getAllRecords() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 null, null, null, null,
-                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     /** Records for a given month, e.g. "2024-06", ordered oldest first */
     public List<MilkRecord> getRecordsByMonth(String yearMonth) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_DATE + " LIKE ?",
                 new String[]{yearMonth + "-%"},
                 null, null,
-                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     /** Search by partial date string */
     public List<MilkRecord> searchByDate(String query) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_DATE + " LIKE ?",
                 new String[]{"%" + query + "%"},
                 null, null,
-                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     public MonthlySummary getMonthlySummary(String yearMonth) {
@@ -144,56 +154,58 @@ public class MilkRecordDao {
     /** Returns double[3]: [0]=cowLiters, [1]=bufLiters, [2]=totalEarnings */
     public double[] getMonthlyStats(String yearMonth) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        double[] stats = {0, 0, 0};
+        try (Cursor cursor = db.rawQuery(
                 "SELECT SUM(" + DatabaseHelper.COL_COW_LITERS + "), "
                 + "SUM(" + DatabaseHelper.COL_BUFFALO_LITERS + "), "
                 + "SUM(" + DatabaseHelper.COL_TOTAL + ") "
                 + "FROM " + DatabaseHelper.TABLE_RECORDS
                 + " WHERE " + DatabaseHelper.COL_DATE + " LIKE ?",
-                new String[]{yearMonth + "-%"});
-        double[] stats = {0, 0, 0};
-        if (cursor.moveToFirst()) {
-            stats[0] = cursor.isNull(0) ? 0 : cursor.getDouble(0);
-            stats[1] = cursor.isNull(1) ? 0 : cursor.getDouble(1);
-            stats[2] = cursor.isNull(2) ? 0 : cursor.getDouble(2);
+                new String[]{yearMonth + "-%"})) {
+            if (cursor != null && cursor.moveToFirst()) {
+                stats[0] = cursor.isNull(0) ? 0 : cursor.getDouble(0);
+                stats[1] = cursor.isNull(1) ? 0 : cursor.getDouble(1);
+                stats[2] = cursor.isNull(2) ? 0 : cursor.getDouble(2);
+            }
         }
-        cursor.close();
         return stats;
     }
 
     private int getMonthlyRecordCount(String yearMonth) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // Count distinct days (not sessions) for "days recorded" display
-        Cursor cursor = db.rawQuery(
+        try (Cursor cursor = db.rawQuery(
                 "SELECT COUNT(DISTINCT " + DatabaseHelper.COL_DATE + ") FROM "
                 + DatabaseHelper.TABLE_RECORDS
                 + " WHERE " + DatabaseHelper.COL_DATE + " LIKE ?",
-                new String[]{yearMonth + "-%"});
-        int count = 0;
-        if (cursor.moveToFirst()) count = cursor.getInt(0);
-        cursor.close();
-        return count;
+                new String[]{yearMonth + "-%"})) {
+            int count = 0;
+            if (cursor != null && cursor.moveToFirst()) count = cursor.getInt(0);
+            return count;
+        }
     }
 
     /** Sum of all totals ever */
     public double getTotalEarningsAllTime() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        try (Cursor cursor = db.rawQuery(
                 "SELECT SUM(" + DatabaseHelper.COL_TOTAL + ") FROM " + DatabaseHelper.TABLE_RECORDS,
-                null);
-        double total = 0;
-        if (cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
-        cursor.close();
-        return total;
+                null)) {
+            double total = 0;
+            if (cursor != null && cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
+            return total;
+        }
     }
 
     /** All records ordered oldest first (for CSV export) */
     public List<MilkRecord> getAllRecordsAsc() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 null, null, null, null,
-                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     // ---- Supplier-filtered queries ----
@@ -201,94 +213,105 @@ public class MilkRecordDao {
     /** Get a specific record by supplier, date and session */
     public MilkRecord getRecordBySupplierDateAndSession(long supplierId, String date, String sessionType) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + "=? AND " + DatabaseHelper.COL_SESSION_TYPE + "=?",
                 new String[]{String.valueOf(supplierId), date, sessionType},
-                null, null, null);
-        MilkRecord record = null;
-        if (cursor.moveToFirst()) {
-            record = fromCursor(cursor);
+                null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                return fromCursor(cursor);
+            }
         }
-        cursor.close();
-        return record;
+        return null;
     }
 
     /** Get records for a specific supplier and date */
     public List<MilkRecord> getRecordsBySupplierAndDate(long supplierId, String date) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + "=?",
                 new String[]{String.valueOf(supplierId), date},
                 null, null,
-                DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     /** Get records for a specific supplier by month */
     public List<MilkRecord> getRecordsBySupplierAndMonth(long supplierId, String yearMonth) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + " LIKE ?",
                 new String[]{String.valueOf(supplierId), yearMonth + "-%"},
                 null, null,
-                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " ASC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     /** Get all records for a specific supplier */
     public List<MilkRecord> getAllRecordsBySupplier(long supplierId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_SUPPLIER_ID + "=?",
                 new String[]{String.valueOf(supplierId)},
                 null, null,
-                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     /** Monthly stats for a specific supplier */
     public double[] getMonthlyStatsBySupplier(long supplierId, String yearMonth) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        double[] stats = {0, 0, 0};
+        try (Cursor cursor = db.rawQuery(
                 "SELECT SUM(" + DatabaseHelper.COL_COW_LITERS + "), "
                 + "SUM(" + DatabaseHelper.COL_BUFFALO_LITERS + "), "
                 + "SUM(" + DatabaseHelper.COL_TOTAL + ") "
                 + "FROM " + DatabaseHelper.TABLE_RECORDS
                 + " WHERE " + DatabaseHelper.COL_SUPPLIER_ID + "=?"
                 + " AND " + DatabaseHelper.COL_DATE + " LIKE ?",
-                new String[]{String.valueOf(supplierId), yearMonth + "-%"});
-        double[] stats = {0, 0, 0};
-        if (cursor.moveToFirst()) {
-            stats[0] = cursor.isNull(0) ? 0 : cursor.getDouble(0);
-            stats[1] = cursor.isNull(1) ? 0 : cursor.getDouble(1);
-            stats[2] = cursor.isNull(2) ? 0 : cursor.getDouble(2);
+                new String[]{String.valueOf(supplierId), yearMonth + "-%"})) {
+            if (cursor != null && cursor.moveToFirst()) {
+                stats[0] = cursor.isNull(0) ? 0 : cursor.getDouble(0);
+                stats[1] = cursor.isNull(1) ? 0 : cursor.getDouble(1);
+                stats[2] = cursor.isNull(2) ? 0 : cursor.getDouble(2);
+            }
         }
-        cursor.close();
         return stats;
     }
 
     /** Total earnings for a specific supplier */
     public double getTotalEarningsBySupplier(long supplierId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
+        try (Cursor cursor = db.rawQuery(
                 "SELECT SUM(" + DatabaseHelper.COL_TOTAL + ") FROM " + DatabaseHelper.TABLE_RECORDS
                 + " WHERE " + DatabaseHelper.COL_SUPPLIER_ID + "=?",
-                new String[]{String.valueOf(supplierId)});
-        double total = 0;
-        if (cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
-        cursor.close();
-        return total;
+                new String[]{String.valueOf(supplierId)})) {
+            double total = 0;
+            if (cursor != null && cursor.moveToFirst() && !cursor.isNull(0)) total = cursor.getDouble(0);
+            return total;
+        }
     }
 
     /** Search by date for a specific supplier */
     public List<MilkRecord> searchByDateForSupplier(long supplierId, String query) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
+        List<MilkRecord> list = new ArrayList<>();
+        try (Cursor cursor = db.query(DatabaseHelper.TABLE_RECORDS, null,
                 DatabaseHelper.COL_SUPPLIER_ID + "=? AND " + DatabaseHelper.COL_DATE + " LIKE ?",
                 new String[]{String.valueOf(supplierId), "%" + query + "%"},
                 null, null,
-                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC");
-        return listFromCursor(cursor);
+                DatabaseHelper.COL_DATE + " DESC, " + DatabaseHelper.COL_SESSION_TYPE + " ASC")) {
+            while (cursor != null && cursor.moveToNext()) list.add(fromCursor(cursor));
+        }
+        return list;
     }
 
     // ---- helpers ----
@@ -333,12 +356,5 @@ public class MilkRecordDao {
         r.setFatPercentage(c.getDouble(c.getColumnIndexOrThrow(DatabaseHelper.COL_FAT_PERCENTAGE)));
         r.setPaid(c.getInt(c.getColumnIndexOrThrow(DatabaseHelper.COL_IS_PAID)) == 1);
         return r;
-    }
-
-    private List<MilkRecord> listFromCursor(Cursor cursor) {
-        List<MilkRecord> list = new ArrayList<>();
-        while (cursor.moveToNext()) list.add(fromCursor(cursor));
-        cursor.close();
-        return list;
     }
 }
