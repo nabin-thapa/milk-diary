@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.7.0",
-  "versionCode": 109,
+  "latestVersion": "2.7.1",
+  "versionCode": 110,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "v2.7.0 - Supplier Payment Status per Milk Collection\n• Tap Paid/Unpaid status in monthly table to toggle payment for each day's milk\n• Per-session (morning/evening) payment tracking for supplier milk collections\n• Visual paid/unpaid indicators with color coding\n• Monthly summary shows 'All Paid' or 'Has Credit' based on milk collection payments\n• Database migration adds paid status to existing milk records",
+  "releaseNotes": "v2.7.1 - PDF Export & Payment Tracking Improvements\n• Export milk records to PDF with detailed summaries\n• Improved payment tracking logic and stability\n• Enhanced monthly payment toggles for supplier milk records",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }
