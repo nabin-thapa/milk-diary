@@ -172,6 +172,11 @@ public class DashboardActivity extends AppCompatActivity {
                 ? getResources().getColor(R.color.earnings_color, getTheme())
                 : getResources().getColor(R.color.pending_color, getTheme()));
 
+        binding.tvProfitOverview.setText(FormatUtils.money(profit));
+        binding.tvProfitOverview.setTextColor(profit >= 0
+                ? getResources().getColor(R.color.earnings_color, getTheme())
+                : getResources().getColor(R.color.pending_color, getTheme()));
+
         // Monthly
         binding.tvMonthlyLiters.setText(FormatUtils.liters(monthlyLiters));
         binding.tvMonthlyEarnings.setText(FormatUtils.money(monthlySalesAmount));
