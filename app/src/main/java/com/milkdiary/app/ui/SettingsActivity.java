@@ -96,6 +96,9 @@ public class SettingsActivity extends AppCompatActivity {
             setupAccountSection();
         }
         updateDownloadedVersionDisplay();
+        String lastStatus = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("last_update_status", "Never checked");
+        binding.tvUpdateStatus.setText(lastStatus);
     }
 
     private void setupRoleSection() {
@@ -329,9 +332,22 @@ public class SettingsActivity extends AppCompatActivity {
         binding.btnCheckUpdates.setOnClickListener(v -> {
             binding.btnCheckUpdates.setEnabled(false);
             binding.btnCheckUpdates.setText("Checking...");
+            binding.tvUpdateStatus.setText("Checking...");
             com.milkdiary.app.update.UpdateManager.checkForUpdates(this, true, (status, updateInfo) -> {
                 binding.btnCheckUpdates.setEnabled(true);
                 binding.btnCheckUpdates.setText("Check for Updates");
+                String statusStr = "Unknown";
+                if (status == com.milkdiary.app.update.UpdateManager.UpdateStatus.NO_UPDATE) {
+                    statusStr = "Up to date";
+                } else if (status == com.milkdiary.app.update.UpdateManager.UpdateStatus.UPDATE_AVAILABLE) {
+                    statusStr = "Update available";
+                } else if (status == com.milkdiary.app.update.UpdateManager.UpdateStatus.OFFLINE) {
+                    statusStr = "Offline";
+                } else if (status == com.milkdiary.app.update.UpdateManager.UpdateStatus.ERROR) {
+                    statusStr = "Error checking updates";
+                }
+                binding.tvUpdateStatus.setText(statusStr);
+                updateDownloadedVersionDisplay();
             });
         });
     }

@@ -278,9 +278,19 @@ public class UpdateManager {
     }
 
     public static String getDownloadedVersionDisplay(Context context) {
-        if (!UpdateInstaller.hasDownloadedApk(context)) {
+        java.io.File apkFile = UpdateInstaller.getDownloadedApkFile(context);
+        if (apkFile == null || !apkFile.exists()) {
             return "None";
         }
-        return UpdateInstaller.getCurrentVersionName(context) + " (cached)";
+        try {
+            android.content.pm.PackageManager pm = context.getPackageManager();
+            android.content.pm.PackageInfo info = pm.getPackageArchiveInfo(apkFile.getAbsolutePath(), 0);
+            if (info != null) {
+                return info.versionName + " (cached)";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Unknown (cached)";
     }
 }
