@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.7.7",
-  "versionCode": 116,
+  "latestVersion": "2.7.8",
+  "versionCode": 117,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "v2.7.7 - Premium Layout Touch Fix\n• Relocated layout header Z-order to fix settings gear and avatar button click blockages\n• Configured custom elevations (header 4dp, card 8dp) for clean overlap and slide-under scroll effects",
+  "releaseNotes": "v2.7.8 - Premium 1:1 Dashboard Redesign\n• Aligned layout exactly with the premium web prototype preview\n• Added visual progress-based Milk Stock Tanks, custom Empty State view, clean 3-button Quick Actions layout, and floating Bottom Navigation Bar",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }

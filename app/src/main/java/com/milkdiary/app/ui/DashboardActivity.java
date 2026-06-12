@@ -67,9 +67,8 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         if (session.isSupplier()) {
-            binding.sectionQuickActions.setVisibility(View.GONE);
-            binding.sectionThisMonth.setVisibility(View.GONE);
             binding.btnViewMyRecords.setVisibility(View.VISIBLE);
+            binding.fabAdd.setVisibility(View.GONE);
         }
 
         recordDao = new MilkRecordDao(this);
@@ -153,37 +152,25 @@ public class DashboardActivity extends AppCompatActivity {
                 ? getResources().getColor(R.color.pending_color, getTheme())
                 : getResources().getColor(R.color.earnings_color, getTheme()));
 
-        // Purchase
-        binding.tvPurchaseCow.setText(FormatUtils.liters(todayCowLiters));
-        binding.tvPurchaseBuf.setText(FormatUtils.liters(todayBufLiters));
-        binding.tvPurchaseTotal.setText(FormatUtils.liters(todayTotalLiters));
-        binding.tvPurchaseCost.setText(FormatUtils.money(todayPurchaseCost));
-
-        // Stock
-        binding.tvStockCow.setText(FormatUtils.liters(stockCow));
-        binding.tvStockBuf.setText(FormatUtils.liters(stockBuf));
-        binding.tvStockTotal.setText(FormatUtils.liters(stockTotal));
-
-        // Profit
-        binding.tvProfitSold.setText(FormatUtils.money(todaySoldAmount));
-        binding.tvProfitCost.setText(FormatUtils.money(costOfSoldMilk));
-        binding.tvProfit.setText(FormatUtils.money(profit));
-        binding.tvProfit.setTextColor(profit >= 0
-                ? getResources().getColor(R.color.earnings_color, getTheme())
-                : getResources().getColor(R.color.pending_color, getTheme()));
-
         binding.tvProfitOverview.setText(FormatUtils.money(profit));
         binding.tvProfitOverview.setTextColor(profit >= 0
                 ? getResources().getColor(R.color.earnings_color, getTheme())
                 : getResources().getColor(R.color.pending_color, getTheme()));
 
-        // Monthly
-        binding.tvMonthlyLiters.setText(FormatUtils.liters(monthlyLiters));
-        binding.tvMonthlyEarnings.setText(FormatUtils.money(monthlySalesAmount));
-        binding.tvMonthlyOutstanding.setText(FormatUtils.money(monthlyUnpaid));
-        binding.tvMonthlyOutstanding.setTextColor(monthlyUnpaid > 0.01
-                ? getResources().getColor(R.color.pending_color, getTheme())
-                : getResources().getColor(R.color.earnings_color, getTheme()));
+        // Empty state vs stock tanks toggle
+        if (todayRecords.isEmpty() && todaySales.isEmpty()) {
+            binding.cardEmptyState.setVisibility(View.VISIBLE);
+            binding.cardMilkTanks.setVisibility(View.GONE);
+        } else {
+            binding.cardEmptyState.setVisibility(View.GONE);
+            binding.cardMilkTanks.setVisibility(View.VISIBLE);
+
+            // Update Stock Tanks
+            binding.tvStockCow.setText(FormatUtils.liters(stockCow) + " / 50.0 L");
+            binding.tvStockBuf.setText(FormatUtils.liters(stockBuf) + " / 50.0 L");
+            binding.pbStockCow.setProgress((int) Math.min(50, stockCow));
+            binding.pbStockBuf.setProgress((int) Math.min(50, stockBuf));
+        }
     }
 
     private double getMonthlyUnpaid() {
@@ -245,20 +232,39 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        binding.btnViewMyRecords.setOnClickListener(v ->
-                startActivity(new Intent(this, HistoryActivity.class)));
-        binding.btnSuppliers.setOnClickListener(v ->
-                startActivity(new Intent(this, SupplierListActivity.class)));
-        binding.btnCustomers.setOnClickListener(v ->
-                startActivity(new Intent(this, CustomerListActivity.class)));
-        binding.btnSales.setOnClickListener(v ->
-                startActivity(new Intent(this, SalesActivity.class)));
-        binding.btnHistory.setOnClickListener(v ->
-                startActivity(new Intent(this, HistoryActivity.class)));
-        binding.btnMonthlySummary.setOnClickListener(v ->
-                startActivity(new Intent(this, MonthlySummaryActivity.class)));
+        // Main toolbar Settings
         binding.btnSettings.setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
+
+        // Supplier-only button
+        binding.btnViewMyRecords.setOnClickListener(v ->
+                startActivity(new Intent(this, HistoryActivity.class)));
+
+        // Quick Actions
+        binding.btnQuickAddPurchase.setOnClickListener(v ->
+                startActivity(new Intent(this, AddRecordActivity.class)));
+        binding.btnQuickAddSale.setOnClickListener(v ->
+                startActivity(new Intent(this, AddSaleActivity.class)));
+        binding.btnQuickSuppliers.setOnClickListener(v ->
+                startActivity(new Intent(this, SupplierListActivity.class)));
+
+        // Empty state button
+        binding.btnEmptyAddPurchase.setOnClickListener(v ->
+                startActivity(new Intent(this, AddRecordActivity.class)));
+
+        // Floating Bottom Navigation
+        binding.navHome.setOnClickListener(v -> {
+            refreshDashboard();
+            Toast.makeText(this, "Home Refreshed", Toast.LENGTH_SHORT).show();
+        });
+        binding.navSales.setOnClickListener(v ->
+                startActivity(new Intent(this, HistoryActivity.class)));
+        binding.navCustomers.setOnClickListener(v ->
+                startActivity(new Intent(this, CustomerListActivity.class)));
+        binding.navReports.setOnClickListener(v ->
+                startActivity(new Intent(this, MonthlySummaryActivity.class)));
+        binding.fabAdd.setOnClickListener(v ->
+                startActivity(new Intent(this, AddRecordActivity.class)));
     }
 
     @Override
