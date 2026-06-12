@@ -1,0 +1,98 @@
+name: milk_diary
+description: Premium Dairy Management App for Dairy Owners
+version: 2.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  
+  # Navigation
+  go_router: ^13.2.0
+  
+  # Database
+  drift: ^2.18.0
+  sqlite3_flutter_libs: ^0.5.20
+  path_provider: ^2.1.2
+  path: ^1.9.0
+  
+  # UI & Animation
+  fl_chart: ^0.68.0
+  lottie: ^3.1.2
+  shimmer: ^3.0.0
+  animate_do: ^3.3.4
+  flutter_animate: ^4.5.0
+  
+  # Utilities
+  intl: ^0.19.0
+  uuid: ^4.4.0
+  collection: ^1.18.0
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  
+  # Permissions & System
+  permission_handler: ^11.3.1
+  share_plus: ^10.0.2
+  url_launcher: ^6.2.5
+  package_info_plus: ^8.0.2
+  device_info_plus: ^10.1.0
+  
+  # Image & Media
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+  
+  # Security
+  flutter_secure_storage: ^9.2.2
+  local_auth: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.0
+  drift_dev: ^2.18.0
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.10
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/animations/
+    - assets/images/
+    - assets/icons/
+  
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+          weight: 800
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800

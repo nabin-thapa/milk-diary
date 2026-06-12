@@ -1,29 +1,36 @@
 package com.milkdiary.app.ui;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.milkdiary.app.R;
 import com.milkdiary.app.databinding.ActivityPaymentBinding;
 import com.milkdiary.app.db.MilkRecordDao;
 import com.milkdiary.app.db.PaymentDao;
+import com.milkdiary.app.db.SaleDao;
 import com.milkdiary.app.db.SupplierDao;
 import com.milkdiary.app.model.Payment;
 import com.milkdiary.app.model.Supplier;
 import com.milkdiary.app.ui.adapter.PaymentAdapter;
-import com.milkdiary.app.util.RoleManager;
 import com.milkdiary.app.util.DateUtils;
+import com.milkdiary.app.util.ExportUtils;
 import com.milkdiary.app.util.FormatUtils;
+import com.milkdiary.app.util.RoleManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,6 +40,7 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
     private ActivityPaymentBinding binding;
     private PaymentDao paymentDao;
     private MilkRecordDao recordDao;
+    private SaleDao saleDao;
     private SupplierDao supplierDao;
     private PaymentAdapter adapter;
     private String selectedDate;
@@ -54,6 +62,7 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
 
         paymentDao = new PaymentDao(this);
         recordDao = new MilkRecordDao(this);
+        saleDao = new SaleDao(this);
         supplierDao = new SupplierDao(this);
         selectedDate = DateUtils.todayDb();
 
@@ -101,26 +110,26 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
         binding.tabCustomerPayments.setOnClickListener(v -> {
             showingSupplierPayments = false;
             binding.tabCustomerPayments.setBackgroundColor(
-                    getResources().getColor(R.color.primary, getTheme()));
+                    ContextCompat.getColor(this, R.color.primary));
             binding.tabCustomerPayments.setTextColor(
-                    getResources().getColor(R.color.text_on_primary, getTheme()));
+                    ContextCompat.getColor(this, R.color.text_on_primary));
             binding.tabSupplierPayments.setBackgroundColor(
-                    getResources().getColor(R.color.card_bg, getTheme()));
+                    ContextCompat.getColor(this, R.color.card_bg));
             binding.tabSupplierPayments.setTextColor(
-                    getResources().getColor(R.color.text_primary, getTheme()));
+                    ContextCompat.getColor(this, R.color.text_primary));
             binding.supplierSection.setVisibility(View.GONE);
             loadPayments();
         });
         binding.tabSupplierPayments.setOnClickListener(v -> {
             showingSupplierPayments = true;
             binding.tabSupplierPayments.setBackgroundColor(
-                    getResources().getColor(R.color.primary, getTheme()));
+                    ContextCompat.getColor(this, R.color.primary));
             binding.tabSupplierPayments.setTextColor(
-                    getResources().getColor(R.color.text_on_primary, getTheme()));
+                    ContextCompat.getColor(this, R.color.text_on_primary));
             binding.tabCustomerPayments.setBackgroundColor(
-                    getResources().getColor(R.color.card_bg, getTheme()));
+                    ContextCompat.getColor(this, R.color.card_bg));
             binding.tabCustomerPayments.setTextColor(
-                    getResources().getColor(R.color.text_primary, getTheme()));
+                    ContextCompat.getColor(this, R.color.text_primary));
             binding.supplierSection.setVisibility(View.VISIBLE);
             loadPayments();
         });
@@ -156,8 +165,8 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
         binding.tvSupplierPaid.setText(FormatUtils.money(paid));
         binding.tvSupplierPending.setText(FormatUtils.money(Math.max(0, pending)));
         binding.tvSupplierPending.setTextColor(pending > 0.01
-                ? getResources().getColor(R.color.pending_color, getTheme())
-                : getResources().getColor(R.color.earnings_color, getTheme()));
+                ? ContextCompat.getColor(this, R.color.pending_color)
+                : ContextCompat.getColor(this, R.color.earnings_color));
         binding.cardSupplierBalance.setVisibility(View.VISIBLE);
     }
 
@@ -234,19 +243,28 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
         adapter.setPayments(payments);
         binding.tvNoPayments.setVisibility(payments.isEmpty() ? View.VISIBLE : View.GONE);
 
-        double totalEarnings = recordDao.getTotalEarningsAllTime();
-        double totalPaid = paymentDao.getTotalPaid();
-        double totalPaidToSuppliers = paymentDao.getTotalPaidToSuppliers();
-        double pending = totalEarnings - totalPaid;
-
         if (showingSupplierPayments) {
-            binding.tvTotalEarned.setText("Total paid to suppliers: " + FormatUtils.money(totalPaidToSuppliers));
-            binding.tvTotalPaid.setText("");
-            binding.tvPendingAmt.setText("Paid Out: " + FormatUtils.money(totalPaidToSuppliers));
+            double totalPurchaseCost = recordDao.getTotalEarningsAllTime();
+            double totalPaidToSuppliers = paymentDao.getTotalPaidToSuppliers();
+            double pendingToSuppliers = totalPurchaseCost - totalPaidToSuppliers;
+
+            binding.tvTotalEarned.setText("Total Purchases: " + FormatUtils.money(totalPurchaseCost));
+            binding.tvTotalPaid.setText("Total Paid: " + FormatUtils.money(totalPaidToSuppliers));
+            binding.tvPendingAmt.setText("Pending: " + FormatUtils.money(Math.max(0, pendingToSuppliers)));
+            binding.tvPendingAmt.setTextColor(pendingToSuppliers > 0.01 
+                    ? ContextCompat.getColor(this, R.color.pending_color) 
+                    : ContextCompat.getColor(this, R.color.earnings_color));
         } else {
-            binding.tvTotalEarned.setText("Total Earned: " + FormatUtils.money(totalEarnings));
-            binding.tvTotalPaid.setText("Total Paid: " + FormatUtils.money(totalPaid));
-            binding.tvPendingAmt.setText("Pending: " + FormatUtils.money(pending));
+            double totalSales = saleDao.getTotalSalesAllTime();
+            double totalReceived = paymentDao.getTotalPaid();
+            double pendingFromCustomers = totalSales - totalReceived;
+
+            binding.tvTotalEarned.setText("Total Sales: " + FormatUtils.money(totalSales));
+            binding.tvTotalPaid.setText("Total Received: " + FormatUtils.money(totalReceived));
+            binding.tvPendingAmt.setText("Due: " + FormatUtils.money(Math.max(0, pendingFromCustomers)));
+            binding.tvPendingAmt.setTextColor(pendingFromCustomers > 0.01 
+                    ? ContextCompat.getColor(this, R.color.pending_color) 
+                    : ContextCompat.getColor(this, R.color.earnings_color));
         }
     }
 
@@ -264,8 +282,37 @@ public class PaymentActivity extends AppCompatActivity implements PaymentAdapter
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_payment, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { finish(); return true; }
+        if (item.getItemId() == android.R.id.home) { 
+            finish(); 
+            return true; 
+        } else if (item.getItemId() == R.id.action_export_pdf) {
+            exportPdf();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void exportPdf() {
+        try {
+            String title = showingSupplierPayments ? "Purchase Payment Report" : "Sales Payment Report";
+            List<Payment> payments = adapter.getPayments();
+            File file = ExportUtils.exportPaymentsPdf(this, payments, title);
+            Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", file);
+            
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("application/pdf");
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(intent, "Share Payment Report"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to export PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

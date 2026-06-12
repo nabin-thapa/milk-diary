@@ -35,6 +35,10 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

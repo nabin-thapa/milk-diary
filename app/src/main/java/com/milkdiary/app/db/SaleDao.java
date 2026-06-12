@@ -106,6 +106,14 @@ public class SaleDao {
         return 0;
     }
 
+    public double getTotalSalesAllTime() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try (Cursor c = db.rawQuery("SELECT SUM(" + DatabaseHelper.COL_SALE_AMOUNT + ") FROM " + DatabaseHelper.TABLE_SALES, null)) {
+            if (c != null && c.moveToFirst()) return c.getDouble(0);
+        }
+        return 0;
+    }
+
     public double getCreditBalance() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         try (Cursor c = db.rawQuery(

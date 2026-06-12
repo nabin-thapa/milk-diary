@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Milk Diary - Premium Redesign Preview</title>
+  <!-- Google Fonts: Poppins (Headings) and Inter (Numbers/Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Web Showcase Wrapper -->
+  <div class="web-showcase">
+    <!-- Left panel: Showcase & Controls -->
+    <div class="showcase-info">
+      <div class="brand">
+        <span class="logo-icon">🥛</span>
+        <h1>Milk Diary <span class="badge">PRO</span></h1>
+      </div>
+      <p class="subtitle">Next-Gen Premium Dairy Management Suite</p>
+      
+      <div class="feature-bullets">
+        <div class="bullet"><span class="bullet-icon">⚡</span> 60 FPS Micro-animations & Ripple Effects</div>
+        <div class="bullet"><span class="bullet-icon">🎨</span> Curated HSL Palette & Dark Mode Support</div>
+        <div class="bullet"><span class="bullet-icon">🎛️</span> Interactive LocalStorage DB Simulation</div>
+        <div class="bullet"><span class="bullet-icon">📊</span> Dynamic Stocks, Profit, & Weekly Trend Analytics</div>
+      </div>
+
+      <div class="control-box">
+        <h3>Simulator Controls</h3>
+        <div class="control-group">
+          <label>Theme Preset</label>
+          <button id="showcase-toggle-dark" class="btn-control">Toggle Dark Mode 🌙</button>
+        </div>
+        <div class="control-group">
+          <label>Seed Simulated Data</label>
+          <button id="showcase-seed" class="btn-control btn-secondary">Seed Sample Records</button>
+          <button id="showcase-clear" class="btn-control btn-danger">Clear All Data</button>
+        </div>
+      </div>
+
+      <div class="components-showcase-btn">
+        <button id="btn-toggle-showcase-view" class="btn-control btn-accent">View Design System Spec</button>
+      </div>
+    </div>
+
+    <!-- Right panel: Interactive Mobile Simulator -->
+    <div class="phone-wrapper">
+      <div class="phone-bezel">
+        <div class="phone-speaker"></div>
+        <div class="phone-screen" id="phone-screen">
+          
+          <!-- MOBILE STATUS BAR -->
+          <div class="status-bar">
+            <span class="status-time" id="status-time">09:41</span>
+            <div class="status-icons">
+              <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M2 3h1v5H2zm3-1h1v6H5zm3-2h1v8H8zm3-2h1v10h-1zm3 4h1v6h-1z"/></svg>
+              <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M13.8 2.2a9 9 0 0 0-12.6 0l6.3 7.8z"/></svg>
+              <svg width="22" height="11" viewBox="0 0 22 11" fill="currentColor"><rect x="1" y="1" width="18" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1"/><rect x="3" y="3" width="14" height="5" rx="1"/><path d="M20 4v3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <!-- APP SCREEN CONTAINER (Scrollable) -->
+          <div class="app-body" id="app-body">
+            
+            <!-- SECTION: HOME / DASHBOARD (Active by default) -->
+            <section class="screen-section active" id="screen-home">
+              
+              <!-- Curved Top Header -->
+              <div class="app-header">
+                <div class="header-shapes">
+                  <div class="shape shape-1"></div>
+                  <div class="shape shape-2"></div>
+                </div>
+                <div class="header-main">
+                  <div class="user-profile">
+                    <div class="avatar-container">
+                      <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="Avatar" id="user-avatar">
+                      <span class="avatar-ring"></span>
+                    </div>
+                    <div class="user-greeting">
+                      <p class="greeting-subtitle">Welcome Back</p>
+                      <h2 class="greeting-title" id="lbl-greeting">Good Morning, Nabin 👋</h2>
+                    </div>
+                  </div>
+                  <div class="header-actions">
+                    <button class="header-btn" id="btn-notification" aria-label="Notifications">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      <span class="notification-badge"></span>
+                    </button>
+                    <button class="header-btn" id="btn-header-settings" aria-label="Settings">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </button>
+                  </div>
+                </div>
+                
+                <!-- Quick Summary Row inside Header -->
+                <div class="header-summary-row">
+                  <div class="summary-item">
+                    <span class="summary-label">Today's Date</span>
+                    <span class="summary-value" id="lbl-today-date">June 12, 2026</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="summary-label">System Mode</span>
+                    <span class="summary-value mode-tag">Fully Offline 🔒</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Content Area with subtle fade-in stagger -->
+              <div class="dashboard-scrollable">
+                
+                <!-- HERO SUMMARY CARD -->
+                <div class="card hero-summary-card">
+                  <div class="hero-header">
+                    <h3>Today's Overview</h3>
+                    <span class="trend-indicator-pill positive">
+                      <span class="arrow">↑</span> 12.4% vs yesterday
+                    </span>
+                  </div>
+                  
+                  <div class="hero-earnings">
+                    <p class="hero-label">TODAY'S EARNINGS</p>
+                    <h1 class="earnings-value counter" id="card-today-earnings">Rs. 0.00</h1>
+                  </div>
+
+                  <div class="hero-grid">
+                    <div class="grid-item">
+                      <span class="dot cow-dot"></span>
+                      <div class="grid-text">
+                        <p class="grid-label">Cow Milk</p>
+                        <h4 class="grid-val" id="card-cow-liters">0.00 L</h4>
+                      </div>
+                    </div>
+                    <div class="grid-item">
+                      <span class="dot buffalo-dot"></span>
+                      <div class="grid-text">
+                        <p class="grid-label">Buffalo Milk</p>
+                        <h4 class="grid-val" id="card-buf-liters">0.00 L</h4>
+                      </div>
+                    </div>
+                    <div class="grid-item">
+                      <span class="dot pending-dot"></span>
+                      <div class="grid-text">
+                        <p class="grid-label">Outstanding</p>
+                        <h4 class="grid-val pending" id="card-outstanding">Rs. 0.00</h4>
+                      </div>
+                    </div>
+                    <div class="grid-item">
+                      <span class="dot profit-dot"></span>
+                      <div class="grid-text">
+                        <p class="grid-label">Today's Profit</p>
+                        <h4 class="grid-val success" id="card-today-profit">Rs. 0.00</h4>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Mini line chart layout simulated with SVG -->
+                  <div class="hero-chart-container">
+                    <svg class="mini-line-chart" id="mini-trend-chart" viewBox="0 0 320 60">
+                      <defs>
+                        <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="var(--primary-color)" stop-opacity="0.25"/>
+                          <stop offset="100%" stop-color="var(--primary-color)" stop-opacity="0.0"/>
+                        </linearGradient>
+                      </defs>
+                      <path d="M 0 50 Q 50 30 100 45 T 200 15 T 320 20 L 320 60 L 0 60 Z" fill="url(#chart-grad)" />
+                      <path d="M 0 50 Q 50 30 100 45 T 200 15 T 320 20" fill="none" stroke="var(--primary-color)" stroke-width="3" stroke-linecap="round" />
+                      <circle cx="320" cy="20" r="4" fill="var(--primary-color)" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- EMPTY STATE INTERACTIVE VIEW (Hidden if there is data) -->
+                <div class="card empty-state-card" id="empty-state-container" style="display: none;">
+                  <div class="empty-state-animation">
+                    <div class="milk-bottle-icon animate-bounce">🥛</div>
+                    <div class="empty-sparkles"></div>
+                  </div>
+                  <h3>No milk records today</h3>
+                  <p>Start recording purchases and sales of cow and buffalo milk for today to get insights.</p>
+                  <button class="btn btn-primary" onclick="openAddEntryModal('purchase')">Add Today's Purchase</button>
+                </div>
+
+                <!-- QUICK ACTIONS GRID -->
+                <div class="section-title-row">
+                  <h3>Quick Actions</h3>
+                </div>
+                <div class="quick-actions-grid">
+                  <div class="action-card" onclick="openAddEntryModal('purchase')">
+                    <div class="action-icon-wrapper purchase">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    </div>
+                    <span>Add Purchase</span>
+                  </div>
+                  <div class="action-card" onclick="openAddEntryModal('sale')">
+                    <div class="action-icon-wrapper sale">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 9V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2m2 4h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2z"/></svg>
+                    </div>
+                    <span>Add Sale</span>
+                  </div>
+                  <div class="action-card" onclick="switchTab('customers')">
+                    <div class="action-icon-wrapper customers">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <span>Customers</span>
+                  </div>
+                  <div class="action-card" onclick="switchTab('customers', 'suppliers')">
+                    <div class="action-icon-wrapper suppliers">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                    </div>
+                    <span>Suppliers</span>
+                  </div>
+                  <div class="action-card" onclick="switchTab('sales')">
+                    <div class="action-icon-wrapper history">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                    </div>
+                    <span>History</span>
+                  </div>
+                  <div class="action-card" onclick="switchTab('reports')">
+                    <div class="action-icon-wrapper report">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                    </div>
+                    <span>Monthly Report</span>
+                  </div>
+                </div>
+
+                <!-- STOCK SECTION (MILK TANKS) -->
+                <div class="section-title-row">
+                  <h3>Milk Stock Tanks</h3>
+                  <span class="value-subtitle">Today's Remaining Stock</span>
+                </div>
+                
+                <div class="tanks-container">
+                  <!-- Cow Tank -->
+                  <div class="tank-card">
+                    <div class="tank-visual-wrapper">
+                      <div class="tank-body">
+                        <div class="tank-liquid cow" id="tank-cow-fill" style="height: 0%;">
+                          <div class="tank-wave"></div>
+                        </div>
+                      </div>
+                      <span class="tank-percentage" id="tank-cow-percent">0%</span>
+                    </div>
+                    <div class="tank-meta">
+                      <h4>Cow Stock</h4>
+                      <p id="tank-cow-liters">0.00 L</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Buffalo Tank -->
+                  <div class="tank-card">
+                    <div class="tank-visual-wrapper">
+                      <div class="tank-body">
+                        <div class="tank-liquid buffalo" id="tank-buf-fill" style="height: 0%;">
+                          <div class="tank-wave"></div>
+                        </div>
+                      </div>
+                      <span class="tank-percentage" id="tank-buf-percent">0%</span>
+                    </div>
+                    <div class="tank-meta">
+                      <h4>Buffalo Stock</h4>
+                      <p id="tank-buf-liters">0.00 L</p>
+                    </div>
+                  </div>
+
+                  <!-- Total Stock Mini Tank -->
+                  <div class="tank-card total-tank">
+                    <div class="tank-visual-wrapper">
+                      <div class="tank-body">
+                        <div class="tank-liquid total" id="tank-total-fill" style="height: 0%;">
+                          <div class="tank-wave"></div>
+                        </div>
+                      </div>
+                      <span class="tank-percentage" id="tank-total-percent">0%</span>
+                    </div>
+                    <div class="tank-meta">
+                      <h4>Total Stock</h4>
+                      <p id="tank-total-liters">0.00 L</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PROFIT & FINANCES SECTION -->
+                <div class="section-title-row">
+                  <h3>Profit Analysis</h3>
+                </div>
+                <div class="card profit-card">
+                  <div class="finance-row">
+                    <div class="fin-stat">
+                      <span class="fin-dot revenue"></span>
+                      <div>
+                        <p class="fin-label">Sales Revenue</p>
+                        <h4 id="profit-revenue">Rs. 0.00</h4>
+                      </div>
+                    </div>
+                    <div class="fin-stat">
+                      <span class="fin-dot expenses"></span>
+                      <div>
+                        <p class="fin-label">Purchase Cost</p>
+                        <h4 id="profit-purchases">Rs. 0.00</h4>
+                      </div>
+                    </div>
+                    <div class="fin-stat">
+                      <span class="fin-dot net-profit"></span>
+                      <div>
+                        <p class="fin-label">Net Profit</p>
+                        <h4 class="success" id="profit-net">Rs. 0.00</h4>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="weekly-trend-box">
+                    <p class="trend-box-title">Weekly Net Profit Trend (NPR)</p>
+                    <div class="bar-chart-container" id="bar-chart-profit">
+                      <!-- Simulated Bar Graph with HTML Flexbox/CSS bars -->
+                      <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 45%;"><span class="bar-val">1.2K</span></div><span class="bar-lbl">Sun</span></div>
+                      <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 60%;"><span class="bar-val">1.8K</span></div><span class="bar-lbl">Mon</span></div>
+                      <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 35%;"><span class="bar-val">900</span></div><span class="bar-lbl">Tue</span></div>
+                      <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 80%;"><span class="bar-val">2.4K</span></div><span class="bar-lbl">Wed</span></div>
+                      <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 55%;"><span class="bar-val">1.6K</span></div><span class="bar-lbl">Thu</span></div>
+                      <div class="chart-bar-wrapper"><div class="chart-bar" style="height: 70%;"><span class="bar-val">2.1K</span></div><span class="bar-lbl">Fri</span></div>
+                      <div class="chart-bar-wrapper"><div class="chart-bar active" style="height: 90%;" id="profit-bar-today"><div class="wave-pulse"></div><span class="bar-val" id="profit-bar-val-today">2.7K</span></div><span class="bar-lbl">Today</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- THIS MONTH QUICK GLANCE -->
+                <div class="section-title-row">
+                  <h3>This Month Overview</h3>
+                </div>
+                <div class="card month-summary-card">
+                  <div class="month-metrics">
+                    <div class="metric">
+                      <span class="metric-icon">🥛</span>
+                      <div class="metric-data">
+                        <p class="metric-label">Total Purchased</p>
+                        <h3 id="month-total-liters">0.00 L</h3>
+                      </div>
+                    </div>
+                    <div class="metric">
+                      <span class="metric-icon">💰</span>
+                      <div class="metric-data">
+                        <p class="metric-label">Sales Earned</p>
+                        <h3 class="success" id="month-total-earnings">Rs. 0.00</h3>
+                      </div>
+                    </div>
+                    <div class="metric">
+                      <span class="metric-icon">⏳</span>
+                      <div class="metric-data">
+                        <p class="metric-label">Pending Outstanding</p>
+                        <h3 class="warning" id="month-total-outstanding">Rs. 0.00</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer Credit -->
+                <div class="app-footer">
+                  <p class="credit">Milk Diary Pro • Design System 2.0</p>
+                  <p class="offline-indicator">Secure, local SQLite database storage</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION: SALES & PURCHASES HISTORY -->
+            <section class="screen-section" id="screen-sales">
+              <div class="screen-header">
+                <h2>Transactions History</h2>
+                <div class="segmented-control" id="history-segment">
+                  <button class="segment-btn active" onclick="filterHistory('all')">All</button>
+                  <button class="segment-btn" onclick="filterHistory('purchase')">Purchases</button>
+                  <button class="segment-btn" onclick="filterHistory('sale')">Sales</button>
+                </div>
+              </div>
+              
+              <div class="screen-content">
+                <div class="search-bar-wrapper">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" placeholder="Search by name, date or type..." id="history-search-input">
+                </div>
+                
+                <div class="transaction-list" id="transaction-list-container">
+                  <!-- Dynamic Item Injection -->
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION: CUSTOMERS & SUPPLIERS -->
+            <section class="screen-section" id="screen-customers">
+              <div class="screen-header">
+                <h2 id="contacts-screen-title">Directory</h2>
+                <div class="segmented-control" id="contacts-segment">
+                  <button class="segment-btn active" id="btn-segment-customers" onclick="filterContacts('customers')">Customers</button>
+                  <button class="segment-btn" id="btn-segment-suppliers" onclick="filterContacts('suppliers')">Suppliers</button>
+                </div>
+              </div>
+              
+              <div class="screen-content">
+                <div class="search-bar-row">
+                  <div class="search-bar-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search directory..." id="contacts-search-input">
+                  </div>
+                  <button class="btn btn-add-icon" onclick="openContactFormModal()" aria-label="Add Contact">+</button>
+                </div>
+                
+                <div class="contact-list" id="contact-list-container">
+                  <!-- Dynamic Item Injection -->
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION: REPORTS & ANALYTICS -->
+            <section class="screen-section" id="screen-reports">
+              <div class="screen-header">
+                <h2>Reports & Summaries</h2>
+              </div>
+              
+              <div class="screen-content reports-content">
+                <div class="card reports-header-card">
+                  <div class="report-month-picker">
+                    <button class="month-arrow" onclick="adjustReportMonth(-1)">←</button>
+                    <span class="month-title" id="lbl-report-month">June 2026</span>
+                    <button class="month-arrow" onclick="adjustReportMonth(1)">→</button>
+                  </div>
+                  <div class="report-totals">
+                    <div class="rep-stat">
+                      <p>Total Liters</p>
+                      <h3 id="report-total-liters">0.00 L</h3>
+                    </div>
+                    <div class="rep-stat">
+                      <p>Total Revenue</p>
+                      <h3 class="success" id="report-total-revenue">Rs. 0.00</h3>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card reports-analytics-card">
+                  <h3>Daily Sales Analytics</h3>
+                  <p class="card-subtitle">Volume of Milk Sold (L)</p>
+                  
+                  <div class="report-svg-container">
+                    <svg viewBox="0 0 320 180" class="report-svg-chart" id="svg-report-chart">
+                      <!-- Rendered by JS -->
+                    </svg>
+                  </div>
+                  
+                  <div class="report-grid-details">
+                    <div class="report-grid-item">
+                      <span class="rep-lbl">Daily Avg Sold</span>
+                      <span class="rep-val" id="report-avg-sold">0.00 L</span>
+                    </div>
+                    <div class="report-grid-item">
+                      <span class="rep-lbl">Buffalo Milk Sold</span>
+                      <span class="rep-val" id="report-buf-sold">0.00 L</span>
+                    </div>
+                    <div class="report-grid-item">
+                      <span class="rep-lbl">Cow Milk Sold</span>
+                      <span class="rep-val" id="report-cow-sold">0.00 L</span>
+                    </div>
+                    <div class="report-grid-item">
+                      <span class="rep-lbl">Outstanding Pending</span>
+                      <span class="rep-val warning" id="report-outstanding">Rs. 0.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- SECTION: PROFILE & SETTINGS -->
+            <section class="screen-section" id="screen-profile">
+              <div class="screen-header">
+                <h2>Owner Profile</h2>
+              </div>
+              
+              <div class="screen-content">
+                <div class="profile-card-header">
+                  <div class="avatar-large">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80" alt="Avatar LARGE" id="profile-avatar-large">
+                    <button class="btn-change-avatar">📸</button>
+                  </div>
+                  <h3>Nabin Thapa</h3>
+                  <p class="role-tag">Dairy Administrator</p>
+                </div>
+                
+                <div class="settings-group">
+                  <h3>App Settings</h3>
+                  <div class="settings-item">
+                    <div class="settings-label">
+                      <span>Dark Theme Override</span>
+                      <p>Switch app looks dynamically</p>
+                    </div>
+                    <label class="switch-toggle">
+                      <input type="checkbox" id="settings-dark-mode">
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                  
+                  <div class="settings-item">
+                    <div class="settings-label">
+                      <span>Default Cow Milk Rate</span>
+                      <p>Rate per liter (NPR)</p>
+                    </div>
+                    <input type="number" class="settings-input" id="rate-cow" value="85">
+                  </div>
+                  
+                  <div class="settings-item">
+                    <div class="settings-label">
+                      <span>Default Buffalo Rate</span>
+                      <p>Rate per liter (NPR)</p>
+                    </div>
+                    <input type="number" class="settings-input" id="rate-buf" value="115">
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <h3>Database & Backup</h3>
+                  <button class="settings-action-btn" onclick="exportDataCSV()">
+                    <span class="btn-icon">📥</span> Export Records to CSV
+                  </button>
+                  <button class="settings-action-btn" onclick="backupRestoreDatabase()">
+                    <span class="btn-icon">🔄</span> Backup / Restore database
+                  </button>
+                </div>
+              </div>
+            </section>
+
+          </div> <!-- /app-body -->
+
+          <!-- BOTTOM APP SHEET MODAL (Add Purchase/Sale) -->
+          <div class="bottom-sheet-overlay" id="add-entry-overlay" onclick="closeAddEntryModal()">
+            <div class="bottom-sheet" onclick="event.stopPropagation()">
+              <div class="bottom-sheet-handle"></div>
+              <div class="bottom-sheet-header">
+                <h3 id="bottom-sheet-title">Add Entry</h3>
+                <button class="btn-close-sheet" onclick="closeAddEntryModal()">×</button>
+              </div>
+              
+              <form class="bottom-sheet-form" id="entry-form" onsubmit="saveEntry(event)">
+                <input type="hidden" id="form-entry-type" value="purchase">
+                
+                <!-- Milk Type Segment -->
+                <div class="form-group">
+                  <label>Milk Type</label>
+                  <div class="segmented-control font-secondary">
+                    <button type="button" class="segment-btn active" id="form-milk-cow" onclick="setFormMilkType('cow')">Cow Milk 🐄</button>
+                    <button type="button" class="segment-btn" id="form-milk-buf" onclick="setFormMilkType('buffalo')">Buffalo Milk 🦬</button>
+                  </div>
+                </div>
+
+                <!-- Contact selector (Supplier if purchase, Customer if sale) -->
+                <div class="form-group">
+                  <label id="form-label-contact">Associated Contact</label>
+                  <select id="form-contact-select" required class="form-input">
+                    <!-- Dynamic Injection -->
+                  </select>
+                </div>
+
+                <!-- Liters + Rate Fields in grid -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Volume (Liters)</label>
+                    <input type="number" step="0.01" id="form-liters" class="form-input" placeholder="0.00" required oninput="calculateLiveTotal()">
+                  </div>
+                  <div class="form-group">
+                    <label>Rate per Liter</label>
+                    <input type="number" step="0.1" id="form-rate" class="form-input" placeholder="0.00" required oninput="calculateLiveTotal()">
+                  </div>
+                </div>
+
+                <!-- Calculated live total -->
+                <div class="form-total-banner">
+                  <div class="banner-labels">
+                    <span>Estimated Amount</span>
+                    <p class="payment-hint">Auto calculates Liters × Rate</p>
+                  </div>
+                  <h2 id="form-live-total">Rs. 0.00</h2>
+                </div>
+
+                <!-- Paid/Pending checkbox if it is a Sale -->
+                <div class="form-group flex-row" id="form-sale-paid-group">
+                  <label for="form-sale-paid">Is Amount Fully Paid?</label>
+                  <label class="switch-toggle small">
+                    <input type="checkbox" id="form-sale-paid" checked>
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Confirm and Save Entry</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- DIALOG MODAL FOR CONTACT ENTRY -->
+          <div class="bottom-sheet-overlay" id="contact-form-overlay" onclick="closeContactFormModal()">
+            <div class="bottom-sheet" onclick="event.stopPropagation()">
+              <div class="bottom-sheet-handle"></div>
+              <div class="bottom-sheet-header">
+                <h3 id="contact-form-title">New Contact</h3>
+                <button class="btn-close-sheet" onclick="closeContactFormModal()">×</button>
+              </div>
+              
+              <form class="bottom-sheet-form" id="contact-form" onsubmit="saveContact(event)">
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input type="text" id="contact-name" class="form-input" placeholder="E.g., Ram Bahadur" required>
+                </div>
+                <div class="form-group">
+                  <label>Phone Number</label>
+                  <input type="tel" id="contact-phone" class="form-input" placeholder="E.g., 98xxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" id="contact-address" class="form-input" placeholder="E.g., Kathmandu, Nepal">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Add to Directory</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- SPEC / DESIGN SYSTEM VIEWER (Hidden overlay) -->
+          <div class="design-system-overlay" id="design-system-view" style="display:none;">
+            <div class="ds-header">
+              <h2>Design System Spec</h2>
+              <button onclick="toggleDesignSystemView()" class="btn-close-ds">×</button>
+            </div>
+            <div class="ds-body">
+              <h3>🎨 Color Tokens</h3>
+              <div class="color-row">
+                <div class="color-tile" style="background:#1B7A4A;"><p>Primary Green<br>#1B7A4A</p></div>
+                <div class="color-tile" style="background:#2563EB;"><p>Cow Milk Blue<br>#2563EB</p></div>
+                <div class="color-tile" style="background:#7C3AED;"><p>Buf Purple<br>#7C3AED</p></div>
+                <div class="color-tile" style="background:#DC2626;"><p>Pending Red<br>#DC2626</p></div>
+                <div class="color-tile" style="background:#F59E0B;"><p>Pending Orange<br>#F59E0B</p></div>
+              </div>
+              <h3>📐 Spacing & Border Radius</h3>
+              <ul>
+                <li><strong>Gradients:</strong> Emerald header (linear #1B7A4A -> #0F5C36)</li>
+                <li><strong>Border Radius:</strong> Rounded cards (24px), buttons (16px), navigation corners (28px)</li>
+                <li><strong>Shadows:</strong> Modern soft shadows (blur 20px, spread 0, opacity 0.05)</li>
+                <li><strong>Fonts:</strong> Poppins (Title), Inter (Body & numbers)</li>
+              </ul>
+              <h3>🕹️ Navigation Bar</h3>
+              <p>Custom glassmorphic bottom bar containing 5 tabs and a center animated entry button (FAB).</p>
+            </div>
+          </div>
+
+          <!-- BOTTOM NAVIGATION BAR -->
+          <nav class="bottom-nav">
+            <button class="nav-item active" id="nav-home" onclick="switchTab('home')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>Home</span>
+            </button>
+            <button class="nav-item" id="nav-sales" onclick="switchTab('sales')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Sales</span>
+            </button>
+            
+            <!-- Floating Add Entry Action Button -->
+            <div class="fab-wrapper">
+              <button class="fab-button" id="fab-main-btn" onclick="openAddEntryModal('purchase')" aria-label="Add entry">
+                <span class="fab-plus">+</span>
+              </button>
+            </div>
+            
+            <button class="nav-item" id="nav-customers" onclick="switchTab('customers')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <span>Contacts</span>
+            </button>
+            <button class="nav-item" id="nav-reports" onclick="switchTab('reports')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+              <span>Reports</span>
+            </button>
+          </nav>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
