@@ -1,8 +1,8 @@
 {
-  "latestVersion": "2.7.6",
-  "versionCode": 115,
+  "latestVersion": "2.7.7",
+  "versionCode": 116,
   "apkUrl": "https://github.com/nabin-thapa/milk-diary/raw/main/MilkDiary.apk",
-  "releaseNotes": "v2.7.6 - Premium Redesign Card Overlap & Profile Glow\n• Consolidated summary content into a single premium Today's Overview card overlapping the header vertical gradient\n• Added profile avatar border glow and increased header bottom corner radius to 36dp",
+  "releaseNotes": "v2.7.7 - Premium Layout Touch Fix\n• Relocated layout header Z-order to fix settings gear and avatar button click blockages\n• Configured custom elevations (header 4dp, card 8dp) for clean overlap and slide-under scroll effects",
   "forceUpdate": false,
   "minimumSupportedVersion": 0
 }
